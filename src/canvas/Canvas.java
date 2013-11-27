@@ -25,6 +25,8 @@ public class Canvas extends JPanel {
     // image where the user's drawing is stored
     private Image drawingBuffer;
 
+    private boolean erasing = false;
+
     /**
      * Make a canvas.
      * 
@@ -120,7 +122,13 @@ public class Canvas extends JPanel {
     private void drawLineSegment(int x1, int y1, int x2, int y2) {
         Graphics2D g = (Graphics2D) drawingBuffer.getGraphics();
 
-        g.setColor(Color.BLACK);
+        if (!erasing) {
+            g.setColor(Color.BLACK);
+            g.setStroke(new BasicStroke(1.0f));
+        } else {
+            g.setColor(Color.WHITE);
+            g.setStroke(new BasicStroke(15.0f));
+        }
         g.drawLine(x1, y1, x2, y2);
 
         // IMPORTANT! every time we draw on the internal drawing buffer, we
@@ -175,6 +183,10 @@ public class Canvas extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                erasing = !erasing;
+                System.out.println(erasing);
+            }
         }
 
         @Override
