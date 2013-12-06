@@ -52,7 +52,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
 
 	@Override
 	public StrokeMessage fromJSON(String jsonString) {
-	return fromJSON( (JSONObject) JSONValue.parse(jsonString));
+		return fromJSON((JSONObject) JSONValue.parse(jsonString));
 	}
 
 	@Override
