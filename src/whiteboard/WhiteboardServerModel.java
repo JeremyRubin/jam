@@ -5,7 +5,6 @@ import java.util.Map;
 
 import drawable.Drawable;
 
-
 public class WhiteboardServerModel {
 	// unique ID per Whiteboard instance generated from the random combination
 	// of 2 or more words from a large dictionary (i.e., correct horse battery

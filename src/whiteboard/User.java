@@ -12,7 +12,6 @@ import message.Messages;
 import message.NewWhiteboardMessage;
 import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
-import message.WhiteboardCreatedMessage;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;

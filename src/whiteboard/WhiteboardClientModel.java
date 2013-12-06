@@ -5,7 +5,6 @@ import java.util.Map;
 
 import drawable.Drawable;
 
-
 public class WhiteboardClientModel {
 	// Drawables that have been acknowledged by the server
 	private Map<Integer, Drawable> syncedState = new HashMap<Integer, Drawable>();
