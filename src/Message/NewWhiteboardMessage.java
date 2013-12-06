@@ -1,13 +1,14 @@
-package Message;
+package message;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class NewWhiteboardMessage implements JSONable<NewWhiteboardMessage> {
 
 	@Override
 	public NewWhiteboardMessage fromJSON(String jsonString) {
-		// TODO Auto-generated method stub
-		return null;
+		return fromJSON((JSONObject) JSONValue.parse(jsonString));
+
 	}
 
 	@Override

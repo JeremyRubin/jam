@@ -1,5 +1,9 @@
-package Message;
+package message;
 
+/**
+ * 
+ * Essentially just an enum for some method names
+ */
 public final class Messages {
 	public final static String stroke = "StrokeMessage";
 	public final static String newWhiteboard = "NewWhiteboardMessage";

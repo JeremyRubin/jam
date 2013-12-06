@@ -1,8 +1,9 @@
-package Drawable;
+package drawable;
 
 import java.awt.Graphics2D;
 
-import Message.JSONable;
+import message.JSONable;
+
 
 public interface Drawable<T extends Drawable<T>> extends JSONable<T> {
 	public void draw(Graphics2D g);

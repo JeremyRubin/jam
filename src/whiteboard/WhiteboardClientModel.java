@@ -3,7 +3,8 @@ package whiteboard;
 import java.util.HashMap;
 import java.util.Map;
 
-import Drawable.Drawable;
+import drawable.Drawable;
+
 
 public class WhiteboardClientModel {
 	// Drawables that have been acknowledged by the server

@@ -1,12 +1,10 @@
-package Drawable;
+package drawable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 import org.json.simple.JSONObject;
-
-import Message.JSONable;
 
 public class DrawableSegment implements Drawable<DrawablePath> {
 	private final int x1;
@@ -39,7 +37,8 @@ public class DrawableSegment implements Drawable<DrawablePath> {
 		g.setStroke(new BasicStroke(1.0f));
 		g.drawLine(x1, y1, x2, y2);
 
-		// need to deal with this - IMPORTANT! every time we draw on the internal drawing buffer, we
+		// need to deal with this - IMPORTANT! every time we draw on the
+		// internal drawing buffer, we
 		// have to notify Swing to repaint this component on the screen.
 		// JPanel.repaint();
 	}

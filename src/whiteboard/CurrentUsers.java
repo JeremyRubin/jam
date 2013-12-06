@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 public class CurrentUsers {
 	// all currently logged in users
 	// why does this need to be a hashmap? just store a set of Users?
-	// FIXME: Users aren't hashable/behavior not well defined. 
+	// FIXME: Users aren't hashable/behavior not well defined.
 	// set vs list - does order of connecting matter??
 	private final Set<User> users = new HashSet<User>();
 
@@ -50,7 +50,7 @@ public class CurrentUsers {
 	 * Only handles names of users
 	 */
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 		return null;
 
 	}

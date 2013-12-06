@@ -7,12 +7,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+import message.JSONable;
+import message.Messages;
+import message.NewWhiteboardMessage;
+import message.StrokeMessage;
+import message.SwitchWhiteboardMessage;
+import message.WhiteboardCreatedMessage;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import server.WhiteboardServer;
-import Message.JSONable;
-import Message.Messages;
 
 /**
  * Represents a user.
@@ -85,14 +90,12 @@ public class User implements JSONable<User>, Runnable {
 			PrintWriter out = new PrintWriter(this.socket.getOutputStream(),
 					true);
 			try {
-
 				for (String line = in.readLine(); line != null; line = in
 						.readLine()) {
 					String output = handleRequest(line);
 					if (output != null) {
 						out.println(output);
 					}
-
 				}
 			} catch (IOException e) {
 			} finally {
@@ -109,12 +112,20 @@ public class User implements JSONable<User>, Runnable {
 		String action = (String) j.get("action");
 		JSONObject data = (JSONObject) j.get("data");
 		if (action.equals(Messages.newWhiteboard)) {
-
+			NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
+			// TODO what should be done with s?
 		} else if (action.equals(Messages.stroke)) {
+			StrokeMessage s = new StrokeMessage().fromJSON(data);
+			// TODO what should be done with s?
 
 		} else if (action.equals(Messages.switchWhiteboard)) {
+			SwitchWhiteboardMessage s = new SwitchWhiteboardMessage()
+					.fromJSON(data);
+			// TODO what should be done with s?
 
 		} else if (action.equals(Messages.whiteboardCreated)) {
+			throw new RuntimeException(
+					"Server shouldn't recieve WhiteboardCreatedMessage");
 
 		}
 		// Should never get here--make sure to return in each of the valid cases

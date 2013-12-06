@@ -1,4 +1,4 @@
-package Message;
+package message;
 
 import java.awt.Color;
 import java.util.LinkedHashMap;
@@ -7,8 +7,8 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import Drawable.Drawable;
-import Drawable.DrawablePath;
+import drawable.Drawable;
+import drawable.DrawablePath;
 
 public class StrokeMessage implements JSONable<StrokeMessage> {
 
@@ -25,20 +25,22 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
 	private final Color color;
 	// from http://docs.oracle.com/javase/7/docs/api/java/awt/Color.html
 	private final int brushWidth;
+
 	// represents thickness of brush strokes
-	
+
 	/**
 	 * Should only be used to access the fromJSON methods
 	 */
-	public StrokeMessage(){
+	public StrokeMessage() {
 		this.id = 0;
-		this.userSeqId =0;
-		this.drawable =null;
+		this.userSeqId = 0;
+		this.drawable = null;
 		this.username = null;
 		this.whiteboardID = null;
 		this.color = null;
 		this.brushWidth = 0;
 	}
+
 	public StrokeMessage(int id, int userSeqId, Drawable drawable,
 			String username, String whiteboardID, Color color, int brushWidth) {
 		this.id = id;
