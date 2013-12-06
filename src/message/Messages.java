@@ -1,5 +1,6 @@
 package message;
 
+//try to fix
 /**
  * 
  * Essentially just an enum for some method names
