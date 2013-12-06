@@ -3,7 +3,7 @@ package whiteboard;
 import java.util.ArrayList;
 import java.util.Map;
 
-import Drawable.Drawable;
+import drawable.Drawable;
 
 public class WhiteboardServerModel {
 	// unique ID per Whiteboard instance generated from the random combination of 2 or more words from a large dictionary (i.e., correct horse battery staple).

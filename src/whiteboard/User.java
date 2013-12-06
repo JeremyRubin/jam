@@ -7,12 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+import message.JSONable;
+import message.Messages;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import server.WhiteboardServer;
-import Message.JSONable;
-import Message.Messages;
 
 /**
  * Represents a user.
