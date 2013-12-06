@@ -5,21 +5,29 @@ import java.util.concurrent.BlockingQueue;
 
 import org.json.simple.JSONObject;
 
+import server.WhiteboardServer;
 import Message.JSONable;
 
 /**
  * Represents a user.
  * 
  */
-public class User implements JSONable<User> {
+public class User implements JSONable<User>, Runnable {
 
 	private String username;	
 	private final Socket socket;
 	private BlockingQueue<JSONable> queue;
-
-	public User(String name, Socket socket) {
+	private final WhiteboardServer server;
+	public User(Socket socket, WhiteboardServer server){
+		this.server = server;
+		this.socket = socket;
+	}
+	
+	public User(String name, Socket socket, WhiteboardServer server) {
 		this.username = name;
 		this.socket = socket;
+		this.server = server;
+
 	}
 
 	public String getName() {
@@ -60,5 +68,17 @@ public class User implements JSONable<User> {
 	public JSONObject toJSON() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public User fromJSON(JSONObject j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	};
 }

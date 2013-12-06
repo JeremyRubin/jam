@@ -7,9 +7,14 @@ import org.json.simple.JSONObject;
 
 import Message.JSONable;
 
-public class DrawablePath implements Drawable, JSONable<DrawablePath> {
+public class DrawablePath implements Drawable<DrawablePath> {
 	private final ArrayList<DrawableSegment> segmentsList;
-	
+	/**
+	 * Only used to get empty obj for fromJSON
+	 */
+	public DrawablePath(){
+		this.segmentsList = null;
+	}
 	public DrawablePath(ArrayList<DrawableSegment> segmentsList) {
 		this.segmentsList = segmentsList;
 	}
@@ -31,5 +36,11 @@ public class DrawablePath implements Drawable, JSONable<DrawablePath> {
 		for (DrawableSegment segment : segmentsList) {
 			segment.draw(g);
 		}
+	}
+
+	@Override
+	public DrawablePath fromJSON(JSONObject j) {
+		// TODO Auto-generated method stub
+		return null;
 	};
 }

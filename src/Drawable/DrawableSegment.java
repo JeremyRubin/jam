@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 
 import Message.JSONable;
 
-public class DrawableSegment implements Drawable, JSONable<DrawablePath> {
+public class DrawableSegment implements Drawable<DrawablePath> {
 	private final int x1;
 	private final int y1;
 	private final int x2;
@@ -42,5 +42,11 @@ public class DrawableSegment implements Drawable, JSONable<DrawablePath> {
 		// need to deal with this - IMPORTANT! every time we draw on the internal drawing buffer, we
 		// have to notify Swing to repaint this component on the screen.
 		// JPanel.repaint();
+	}
+
+	@Override
+	public DrawablePath fromJSON(JSONObject j) {
+		// TODO Auto-generated method stub
+		return null;
 	};
 }
