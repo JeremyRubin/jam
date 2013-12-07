@@ -11,7 +11,7 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
     // same pool as StrokeMessage (which is
     // where they store that in their buffer)
     // client username that drew the Drawable
-    private final String whiteboardID;
+    public final String whiteboardID;
 
     public SwitchWhiteboardMessage(String whiteboardID, int userSeqId) {
         this.userSeqId = userSeqId;
