@@ -23,11 +23,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     // client username that drew the Drawable
     private final String whiteboardID;
     // id of WhiteboardModel
-    private final Color color;
-    // from http://docs.oracle.com/javase/7/docs/api/java/awt/Color.html
-    private final int brushWidth;
-
-    // represents thickness of brush strokes
 
     /**
      * Should only be used to access the fromJSON methods
@@ -38,8 +33,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         this.drawable = null;
         this.username = null;
         this.whiteboardID = null;
-        this.color = null;
-        this.brushWidth = 0;
     }
 
     public StrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID, Color color,
@@ -49,8 +42,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         this.drawable = drawable;
         this.username = username;
         this.whiteboardID = whiteboardID;
-        this.color = color;
-        this.brushWidth = brushWidth;
     }
 
     @Override
@@ -67,11 +58,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         m.put("drawable", this.drawable.toJSON());
         m.put("username", this.username);
         m.put("wb", this.whiteboardID);
-        m.put("r", this.color.getRed());
-        m.put("g", this.color.getGreen());
-        m.put("b", this.color.getBlue());
-        m.put("a", this.color.getAlpha());
-        m.put("width", this.brushWidth);
         j.putAll(m);
         return j;
     }

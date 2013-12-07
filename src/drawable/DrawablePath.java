@@ -2,6 +2,8 @@ package drawable;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -33,8 +35,10 @@ public class DrawablePath implements Drawable<DrawablePath> {
 
     @Override
     public DrawablePath fromJSON(JSONObject j) {
-        // TODO Properly deserialize
-        return null;
+        Map m = new LinkedHashMap();
+        JSONObject j = new JSONObject();
+        m.put("segmentsList", this.segmentsList);
+        j.putAll(m);
     };
 
     @Override
