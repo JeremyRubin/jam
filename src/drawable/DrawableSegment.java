@@ -81,16 +81,6 @@ public class DrawableSegment implements Drawable<DrawablePath> {
 	}
 
 	@Override
-	public Color getColor() {
-		return this.color;
-	};
-
-	@Override
-	public int getBrushWidth() {
-		return this.brushWidth;
-	};
-
-	@Override
 	public DrawablePath fromJSON(JSONObject j) {
 		// TODO proper deserialize
 		return null;

@@ -7,8 +7,4 @@ import message.JSONable;
 
 public interface Drawable<T extends Drawable<T>> extends JSONable<T> {
 	public void draw(Graphics2D g);
-
-	public Color getColor();
-
-	public int getBrushWidth();
 }
