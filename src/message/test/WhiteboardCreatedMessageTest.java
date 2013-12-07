@@ -1,14 +1,19 @@
 package message.test;
 
-import static org.junit.Assert.fail;
+import junit.framework.TestCase;
+import message.StrokeMessage;
+import message.WhiteboardCreatedMessage;
 
 import org.junit.Test;
 
-public class WhiteboardCreatedMessageTest {
+public class WhiteboardCreatedMessageTest extends TestCase {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+    @Test
+    public void testEquals() {
+        WhiteboardCreatedMessage m = new WhiteboardCreatedMessage("test");
+        assertTrue(m.equals(new WhiteboardCreatedMessage().fromJSON(m.toJSON().toJSONString())));
+        assertFalse(m.equals(new WhiteboardCreatedMessage("bad")));
+        assertFalse(m.equals(new StrokeMessage()));
 
+    }
 }

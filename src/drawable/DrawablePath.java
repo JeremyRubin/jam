@@ -4,43 +4,50 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class DrawablePath implements Drawable<DrawablePath> {
-	private final ArrayList<DrawableSegment> segmentsList;
+    private final ArrayList<DrawableSegment> segmentsList;
 
-	/**
-	 * Only used to get empty obj for fromJSON
-	 */
-	public DrawablePath() {
-		this.segmentsList = null;
-	}
+    /**
+     * Only used to get empty obj for fromJSON
+     */
+    public DrawablePath() {
+        this.segmentsList = null;
+    }
 
-	public DrawablePath(ArrayList<DrawableSegment> segmentsList) {
-		this.segmentsList = segmentsList;
-	}
+    public DrawablePath(ArrayList<DrawableSegment> segmentsList) {
+        this.segmentsList = segmentsList;
+    }
 
-	@Override
-	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
-		return null;
-	};
+    @Override
+    public JSONObject toJSON() {
+        // TODO Properly serialize
+        return null;
+    };
 
-	@Override
-	public DrawablePath fromJSON(String data) {
-		// TODO Auto-generated method stub
-		return null;
-	};
+    @Override
+    public DrawablePath fromJSON(String data) {
+        return fromJSON((JSONObject) JSONValue.parse(data));
+    };
 
-	@Override
-	public void draw(Graphics2D g) {
-		for (DrawableSegment segment : segmentsList) {
-			segment.draw(g);
-		}
-	}
+    @Override
+    public DrawablePath fromJSON(JSONObject j) {
+        // TODO Properly deserialize
+        return null;
+    };
 
-	@Override
-	public DrawablePath fromJSON(JSONObject j) {
-		// TODO Auto-generated method stub
-		return null;
-	};
+    @Override
+    public boolean equals(Object obj) {
+        // TODO proper equals function, assume true for now.
+        return true;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        for (DrawableSegment segment : segmentsList) {
+            segment.draw(g);
+        }
+    }
+
 }
