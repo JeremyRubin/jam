@@ -1,6 +1,5 @@
 package message;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,6 +21,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     private final String username;
     // client username that drew the Drawable
     private final String whiteboardID;
+
     // id of WhiteboardModel
 
     /**
@@ -35,8 +35,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         this.whiteboardID = null;
     }
 
-    public StrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID, Color color,
-            int brushWidth) {
+    public StrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID) {
         this.id = id;
         this.userSeqId = userSeqId;
         this.drawable = drawable;
@@ -64,13 +63,15 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
 
     @Override
     public StrokeMessage fromJSON(JSONObject j) {
-        Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new BigDecimal((Long) j.get("g")).intValue(),
-                new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long) j.get("a")).intValue());
+        // TODO this bit is useful for you later in serializing color
+
+        // Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new
+        // BigDecimal((Long) j.get("g")).intValue(),
+        // new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long)
+        // j.get("a")).intValue());
         return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
                 (Long) j.get("userSeqId"))).intValue(), new DrawablePath().fromJSON((JSONObject) j.get("drawable")),
-                (String) j.get("username"), (String) j.get("wb"), c, (new BigDecimal((Long) j.get("width"))).intValue()
-
-        );
+                (String) j.get("username"), (String) j.get("wb"));
     }
 
     @Override
@@ -79,8 +80,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
             return false;
         StrokeMessage other = (StrokeMessage) obj;
         if (this.id == other.id && this.userSeqId == other.userSeqId && this.drawable.equals(other.drawable)
-                && this.username.equals(other.username) && this.whiteboardID.equals(other.whiteboardID)
-                && this.color.equals(other.color) && this.brushWidth == other.brushWidth)
+                && this.username.equals(other.username) && this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;

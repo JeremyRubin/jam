@@ -20,4 +20,12 @@ public class NewWhiteboardMessage implements JSONable<NewWhiteboardMessage> {
     public JSONObject toJSON() {
         return new JSONObject();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NewWhiteboardMessage))
+            return false;
+        else
+            return true;
+    }
 }

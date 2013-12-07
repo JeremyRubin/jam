@@ -1,14 +1,20 @@
 package message.test;
 
-import static org.junit.Assert.fail;
+import junit.framework.TestCase;
+import message.SwitchWhiteboardMessage;
 
 import org.junit.Test;
 
-public class SwitchWhiteboardMessageTest {
+/**
+ * @category no_didit
+ * 
+ */
+public class SwitchWhiteboardMessageTest extends TestCase {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+    @Test
+    public void test() {
+        SwitchWhiteboardMessage test = new SwitchWhiteboardMessage("ocelot", 10);
+        assertTrue(test.equals(new SwitchWhiteboardMessage().fromJSON(test.toJSON().toJSONString())));
+    }
 
 }

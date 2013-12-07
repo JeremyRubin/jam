@@ -6,6 +6,10 @@ import message.WhiteboardCreatedMessage;
 
 import org.junit.Test;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class WhiteboardCreatedMessageTest extends TestCase {
 
     @Test
