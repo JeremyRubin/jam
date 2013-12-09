@@ -41,6 +41,8 @@ public class SetUsernameMessage implements JSONable<SetUsernameMessage> {
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         j.put("id", this.username);
+        j.put("action", this.getClass().getSimpleName());
+
         return j;
     }
 }

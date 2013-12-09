@@ -55,6 +55,7 @@ public class DrawableSegment implements Drawable<DrawablePath> {
     public JSONObject toJSON() {
         Map m = new LinkedHashMap();
         JSONObject j = new JSONObject();
+        // TODO add types
         m.put("x1", this.x1);
         m.put("y1", this.y1);
         m.put("x2", this.x2);

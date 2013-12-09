@@ -18,7 +18,9 @@ public class NewWhiteboardMessage implements JSONable<NewWhiteboardMessage> {
 
     @Override
     public JSONObject toJSON() {
-        return new JSONObject();
+        JSONObject j = new JSONObject();
+        j.put(Messages.type, this.getClass().getSimpleName());
+        return j;
     }
 
     @Override

@@ -43,6 +43,8 @@ public class WhiteboardCreatedMessage implements JSONable<WhiteboardCreatedMessa
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         j.put("name", this.whiteboardID);
+        j.put(Messages.type, this.getClass().getSimpleName());
+
         return j;
     }
 }
