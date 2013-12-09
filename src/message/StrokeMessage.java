@@ -43,6 +43,10 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         this.whiteboardID = whiteboardID;
     }
 
+    public Drawable drawable() {
+    	return this.drawable;
+    }
+    
     @Override
     public StrokeMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));
