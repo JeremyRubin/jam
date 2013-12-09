@@ -139,7 +139,7 @@ public class WhiteboardServer {
             }
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
-            System.err.println("usage: MinesweeperServer [--debug] [--port PORT] [--size SIZE | --file FILE]");
+            System.err.println("usage: MinesweeperServer  [--port PORT]");
             return;
         }
 
