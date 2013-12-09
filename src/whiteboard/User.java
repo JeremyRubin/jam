@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 import message.JSONable;
@@ -23,115 +25,115 @@ import server.WhiteboardServer;
  * 
  */
 public class User implements JSONable<User>, Runnable {
+	private final String username;
+	private final Socket socket;
+	private BlockingQueue<String> queue;
+	private final WhiteboardServer server;
+	private WhiteboardServerModel wb;
 
-    private String username;
-    private final Socket socket;
-    private BlockingQueue<JSONable> queue;
-    private final WhiteboardServer server;
-    private WhiteboardServerModel wb;
+	public User(Socket socket, WhiteboardServer server) {
+		this.server = server;
+		this.socket = socket;
+	}
 
-    public User(Socket socket, WhiteboardServer server) {
-        this.server = server;
-        this.socket = socket;
-    }
+	public User(String name, Socket socket, WhiteboardServer server) {
+		this.username = name;
+		this.socket = socket;
+		this.server = server;
 
-    public User(String name, Socket socket, WhiteboardServer server) {
-        this.username = name;
-        this.socket = socket;
-        this.server = server;
+	}
 
-    }
+	public String getName() {
+		return this.username;
+	}
 
-    public String getName() {
-        return this.username;
-    }
+	/**
+	 * Add a msg to the queue to be sent out.
+	 * 
+	 * @param msg
+	 */
+	public void add(String msg) {
+		queue.add(msg);
+	}
 
-    public void changeName() {
-        // TODO: figure out specs
-    }
+	@Override
+	public User fromJSON(String jsonString) {
+		// TODO Auto-generated method stub
+		return null;
+	};
 
-    /**
-     * Add a msg to the queue to be sent out
-     * 
-     * @param msg
-     */
-    public void add(String msg) {
-        // need to convert msg to JSONable - how do i know which type of
-        // JSONable it is?
-        // queue.add()
-    }
+	/**
+	 * Partially serialize User object.
+	 */
+	@Override
+	public JSONObject toJSON() {
+		Map m = new LinkedHashMap();
+		JSONObject j = new JSONObject();
+		m.put("username", this.username);
+		j.putAll(m);
+		return j;
+	}
 
-    @Override
-    public User fromJSON(String jsonString) {
-        // TODO Auto-generated method stub
-        return null;
-    };
+	@Override
+	public User fromJSON(JSONObject j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public JSONObject toJSON() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	/**
+	 * start the User thread
+	 */
+	@Override
+	public void run() {
+		try {
+			String output = "";
+			while (output != "quit") {
+				String message = queue.take();
+				output = handleRequest(message);
+				// what to do with output??
+			}
+		} catch (Exception e) {
+		} finally {
+			try {
+				this.wb.removeClient(this);  // remove user from users
+				this.socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    public User fromJSON(JSONObject j) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	private String handleRequest(String input) {
+		JSONObject j = (JSONObject) JSONValue.parse(input);
+		String action = (String) j.get("action");
+		JSONObject data = (JSONObject) j.get("data");
+		if (action.equals(Messages.newWhiteboard)) {
+			NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
+			wb = server.createWhiteboard();
+			return new SwitchWhiteboardMessage(wb.id, 10).toJSON()
+					.toJSONString();
+		} else if (action.equals(Messages.stroke)) {
+			StrokeMessage s = new StrokeMessage().fromJSON(data);
+			// TODO what should be done with s?
 
-    /**
-     * start the User thread
-     */
-    @Override
-    public void run() {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-            try {
-                for (String line = in.readLine(); line != null; line = in.readLine()) {
-                    String output = handleRequest(line);
-                    if (output != null) {
-                        out.println(output);
-                    }
-                }
-            } catch (IOException e) {
-            } finally {
-                out.close();
-                in.close();
-                this.socket.close();
-            }
-        } catch (IOException e) {
-        }
-    }
+		} else if (action.equals(Messages.switchWhiteboard)) {
+			SwitchWhiteboardMessage s = new SwitchWhiteboardMessage()
+					.fromJSON(data);
+			if (server.openWhiteboards.containsKey(s.whiteboardID))
+				wb = server.openWhiteboards.get(s.whiteboardID);
+			else {
+				wb = server.createWhiteboard(s.whiteboardID);
+				return new SwitchWhiteboardMessage(wb.id, 10).toJSON()
+						.toJSONString();
+			}
+		} else if (action.equals(Messages.whiteboardCreated)) {
+			throw new RuntimeException(
+					"Server shouldn't recieve WhiteboardCreatedMessage");
 
-    private String handleRequest(String input) {
-        JSONObject j = (JSONObject) JSONValue.parse(input);
-        String action = (String) j.get("action");
-        JSONObject data = (JSONObject) j.get("data");
-        if (action.equals(Messages.newWhiteboard)) {
-            NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
-            wb = server.createWhiteboard();
-            return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
-        } else if (action.equals(Messages.stroke)) {
-            StrokeMessage s = new StrokeMessage().fromJSON(data);
-            // TODO what should be done with s?
+		}
+		// Should never get here--make sure to return in each of the valid cases
+		// above.
+		throw new UnsupportedOperationException();
+	}
 
-        } else if (action.equals(Messages.switchWhiteboard)) {
-            SwitchWhiteboardMessage s = new SwitchWhiteboardMessage().fromJSON(data);
-            if (server.openWhiteboards.containsKey(s.whiteboardID))
-                wb = server.openWhiteboards.get(s.whiteboardID);
-            else {
-                wb = server.createWhiteboard(s.whiteboardID);
-                return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
-            }
-            // TODO what should be done with s?
-
-        } else if (action.equals(Messages.whiteboardCreated)) {
-            throw new RuntimeException("Server shouldn't recieve WhiteboardCreatedMessage");
-
-        }
-        // Should never get here--make sure to return in each of the valid cases
-        // above.
-        throw new UnsupportedOperationException();
-    }
 }
