@@ -21,8 +21,8 @@ import server.ConnectedUser;
  */
 public class User implements Runnable {
     private String username;
-    private BlockingQueue<String> inQueue = new LinkedBlockingQueue<String>();
-    public BlockingQueue<String> outQueue = new LinkedBlockingQueue<String>();
+    private BlockingQueue<String> inQueue;
+    public BlockingQueue<String> outQueue;
 
     private WhiteboardServerModel wb;
     private ConnectedUser connection;
@@ -30,6 +30,9 @@ public class User implements Runnable {
     public User(ConnectedUser connection) {
         this.connection = connection;
         this.username = "guest";
+        this.inQueue = new LinkedBlockingQueue<String>();
+        this.outQueue = new LinkedBlockingQueue<String>();
+
     }
 
     public String getName() {
@@ -46,7 +49,7 @@ public class User implements Runnable {
      * @param msg
      */
     public void input(String msg) {
-        inQueue.add(msg);
+        this.inQueue.add(msg);
     }
 
     public void output(String msg) {
@@ -61,7 +64,7 @@ public class User implements Runnable {
         try {
             String output = "";
             while (true) {
-                String message = inQueue.take();
+                String message = this.inQueue.take();
                 if (message == null)
                     break;
                 output = handleRequest(message);

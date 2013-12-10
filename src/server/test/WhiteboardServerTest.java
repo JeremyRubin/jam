@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import junit.framework.TestCase;
+import message.SetUsernameMessage;
 
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ public class WhiteboardServerTest extends TestCase {
      * @throws InterruptedException
      */
     @Test(timeout = 10000)
-    public void firstTest() throws IOException, InterruptedException {
+    public void test() throws IOException, InterruptedException {
         TestUtil.startServer();
         // Avoid race where we try to connect to server too early
         Thread.sleep(100);
@@ -30,13 +31,13 @@ public class WhiteboardServerTest extends TestCase {
             PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 
             // TODO Add test code
-            out.println("What should we Print?");
-            assertEquals("What should this equal?", TestUtil.nextNonEmptyLine(in));
+            SetUsernameMessage username = new SetUsernameMessage("fred");
+            out.println(username.toJSON().toJSONString());
+            assertEquals(username.toJSON().toJSONString(), TestUtil.nextNonEmptyLine(in));
 
             sock.close();
         } catch (SocketTimeoutException e) {
             throw new RuntimeException(e);
         }
     }
-
 }
