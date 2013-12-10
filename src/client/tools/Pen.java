@@ -28,6 +28,6 @@ public class Pen implements DrawingTool {
 
     @Override
     public DrawingTool createFromModel(WhiteboardClientModel model) {
-        return new Pen(model.color, model.brushWidth);
+        return new Pen(model.getColor(), model.getBrushWidth());
     }
 }

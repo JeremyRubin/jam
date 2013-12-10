@@ -4,7 +4,6 @@ import global.Constants;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -18,9 +17,6 @@ import drawable.Drawable;
  * freehand, with the mouse.
  */
 public class Canvas extends JPanel {
-    // image where the user's drawing is stored
-    private Image drawingBuffer;
-
     private final WhiteboardClientModel model;
 
     public Canvas(WhiteboardClientModel model) {

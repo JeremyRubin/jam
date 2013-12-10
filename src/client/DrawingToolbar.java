@@ -42,12 +42,12 @@ public class DrawingToolbar extends JToolBar {
 
         this.add(new JLabel("Current color: "));
         colorPickerButton = new JButton("             "); // makes it bigger
-        colorPickerButton.setBackground(this.model.color);
+        colorPickerButton.setBackground(this.model.getColor());
         colorPickerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color color = JColorChooser.showDialog(DrawingToolbar.this, "Pick color",
-                        DrawingToolbar.this.model.color);
+                        DrawingToolbar.this.model.getColor());
                 if (color != null) {
                     colorPickerButton.setBackground(color);
                     DrawingToolbar.this.model.setColor(color);

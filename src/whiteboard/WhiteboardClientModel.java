@@ -26,11 +26,18 @@ public class WhiteboardClientModel {
 
     private int nextLocalIndex = 0;
 
-    public Color color = Color.BLACK;
-    public int brushWidth = 5;
-    public DrawingTool tool;
+    private Color color;
+    private int brushWidth;
+    private DrawingTool tool;
 
-    public WhiteboardClientModel() {
+    public final String whiteboardID;
+
+    public WhiteboardClientModel(String whiteboardID) {
+        this.whiteboardID = whiteboardID;
+
+        // default tool
+        brushWidth = 5;
+        setColor(Color.BLACK);
         setTool(Pen.class);
     }
 
@@ -97,13 +104,11 @@ public class WhiteboardClientModel {
         try {
             tool = toolClass.newInstance().createFromModel(this);
         } catch (InstantiationException e) {
-            // this should never happen if there are no bugs, hence
-            // System.exit(1)
+            // this should never happen if there are no bugs, hence exit
             e.printStackTrace();
             System.exit(1);
         } catch (IllegalAccessException e) {
-            // this should never happen if there are no bugs, hence
-            // System.exit(1)
+            // this should never happen if there are no bugs, hence exit
             e.printStackTrace();
             System.exit(1);
         }
@@ -112,5 +117,17 @@ public class WhiteboardClientModel {
     public void setColor(Color color) {
         this.color = color;
         setTool(this.tool.getClass());
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public int getBrushWidth() {
+        return brushWidth;
+    }
+
+    public DrawingTool getTool() {
+        return tool;
     }
 }
