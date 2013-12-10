@@ -36,13 +36,13 @@ public class ConnectedUser implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
                 try {
                     for (String line = in.readLine(); line != null; line = in.readLine()) {
-                        this.user.add(line);
+                        this.user.input(line);
                     }
                 } catch (IOException e) {
                 } finally {
                     in.close();
                     this.socket.close();
-                    this.user.add(null);
+                    this.user.input(null);
                 }
             } catch (IOException e) {
             }
@@ -65,8 +65,8 @@ public class ConnectedUser implements Runnable {
             try {
                 PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
                 try {
-                    String output = "";
-                    while (output != "quit") {
+                    // does this ever stop if socket closes?
+                    while (true) {
                         out.println(this.user.outQueue.take());
                     }
 
@@ -74,7 +74,7 @@ public class ConnectedUser implements Runnable {
                 } finally {
                     out.close();
                     this.socket.close();
-                    this.user.add(null);
+                    this.user.input(null);
                 }
             } catch (IOException e) {
             }

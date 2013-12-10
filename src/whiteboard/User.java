@@ -49,8 +49,12 @@ public class User implements JSONable<User>, Runnable {
      * 
      * @param msg
      */
-    public void add(String msg) {
+    public void input(String msg) {
         inQueue.add(msg);
+    }
+
+    public void output(String msg) {
+        this.outQueue.add(msg);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class User implements JSONable<User>, Runnable {
                 if (message == null)
                     break;
                 output = handleRequest(message);
-                this.outQueue.add(output);
+                this.output(output);
             }
         } catch (Exception e) {
         } finally {
@@ -137,4 +141,5 @@ public class User implements JSONable<User>, Runnable {
         // above.
         throw new UnsupportedOperationException();
     }
+
 }

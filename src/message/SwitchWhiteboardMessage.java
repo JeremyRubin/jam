@@ -45,7 +45,6 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         j.put("id", this.whiteboardID);
-        j.put("usid", this.userSeqId);
         j.put(Messages.type, this.getClass().getSimpleName());
 
         return j;
