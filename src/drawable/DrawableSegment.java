@@ -82,7 +82,6 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
         // TODO add types ??
-
         j.put("x1", this.x1);
         j.put("y1", this.y1);
         j.put("x2", this.x2);
