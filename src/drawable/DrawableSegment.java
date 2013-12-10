@@ -40,9 +40,12 @@ public class DrawableSegment implements Drawable<DrawablePath> {
     };
 
     /**
-     * Null constructor
+     * this is only used as a hack to allow "static" access to non-static
+     * methods
+     * 
+     * see {@link #STATIC}
      */
-    public DrawableSegment() {
+    private DrawableSegment() {
         this.x1 = 0;
         this.y1 = 0;
         this.x2 = 0;
@@ -50,6 +53,8 @@ public class DrawableSegment implements Drawable<DrawablePath> {
         this.color = Color.BLACK;
         this.brushWidth = 1;
     }
+
+    public static final DrawableSegment STATIC = new DrawableSegment();
 
     @Override
     public JSONObject toJSON() {
