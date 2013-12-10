@@ -14,6 +14,9 @@ import org.json.simple.JSONValue;
  * 
  */
 public class DrawableSegment implements Drawable<DrawableSegment> {
+    // empty DrawableSegment, accessed in various parts of the code.
+    public static final DrawableSegment STATIC = new DrawableSegment();
+
     private final int x1;
     private final int y1;
     private final int x2;
@@ -87,9 +90,6 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
         this.brushWidth = 1;
     }
 
-    // empty DrawableSegment, accessed in various parts of the code.
-    public static final DrawableSegment STATIC = new DrawableSegment();
-
     /**
      * Asserts whether an object is equivalent to this DrawableSegment.
      */
@@ -128,7 +128,6 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
     @Override
     public JSONObject toJSON() {
         JSONObject j = new JSONObject();
-        // TODO add types ??
         j.put("x1", this.x1);
         j.put("y1", this.y1);
         j.put("x2", this.x2);
@@ -138,6 +137,7 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
         j.put("b", this.color.getBlue());
         j.put("a", this.color.getAlpha());
         j.put("width", this.brushWidth);
+        j.put(Drawables.type, Drawables.drawableSegment);
         return j;
     };
 

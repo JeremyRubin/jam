@@ -17,8 +17,8 @@ public class DrawingGUI {
         frame = new JFrame("Whiteboard");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-
-        model = new WhiteboardClientModel();
+        // TODO set this properly (should be resetable)
+        model = new WhiteboardClientModel("TODO");
         canvas = new Canvas(model);
         frame.add(canvas, BorderLayout.CENTER);
         toolbar = new DrawingToolbar(model);
