@@ -1,13 +1,13 @@
 package message;
 
-
 //try to fix
 /**
  * 
  * Essentially just an enum for some method names
  */
 public final class Messages {
-    public final static String stroke = new StrokeMessage().getClass().getSimpleName();
+    public final static String fromServerStroke = FromServerStrokeMessage.STATIC.getClass().getSimpleName();
+    public final static String toServerStroke = ToServerStrokeMessage.STATIC.getClass().getSimpleName();
     public final static String newWhiteboard = new NewWhiteboardMessage().getClass().getSimpleName();
     public final static String switchWhiteboard = new SwitchWhiteboardMessage().getClass().getSimpleName();
     public final static String whiteboardCreated = new WhiteboardCreatedMessage().getClass().getSimpleName();

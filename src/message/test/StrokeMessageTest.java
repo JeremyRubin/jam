@@ -35,7 +35,7 @@ public class StrokeMessageTest extends TestCase {
         assertFalse(test.equals(test4));
         assertFalse(test.equals(test6));
         assertFalse(test.equals(test7));
-        assertFalse(test.equals(test5));
+        assertTrue(test.equals(test5));
 
     }
 }

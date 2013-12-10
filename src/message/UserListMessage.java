@@ -1,24 +1,32 @@
 package message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import whiteboard.User;
+
 public class UserListMessage implements JSONable<UserListMessage> {
     private final List<String> users;
-    private final String wb;
+    public final String whiteboardID;
 
-    public UserListMessage(String wb, List<String> linkedList) {
+    public UserListMessage(String whiteboardID, List<String> linkedList) {
         this.users = linkedList;
-        this.wb = wb;
+        this.whiteboardID = whiteboardID;
     }
 
     public UserListMessage() {
         this.users = null;
-        this.wb = null;
+        this.whiteboardID = null;
     }
 
+    
+    public List<String> getUsers() {
+        return new ArrayList<String>(this.users);
+    }
+    
     @Override
     public UserListMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));
@@ -27,7 +35,7 @@ public class UserListMessage implements JSONable<UserListMessage> {
 
     @Override
     public UserListMessage fromJSON(JSONObject j) {
-        return new UserListMessage((String) j.get("wb"), (List<String>) j.get("values"));
+        return new UserListMessage((String) j.get("whiteboardID"), (List<String>) j.get("values"));
     }
 
     @Override
@@ -35,7 +43,7 @@ public class UserListMessage implements JSONable<UserListMessage> {
         JSONObject j = new JSONObject();
         j.put(Messages.type, this.getClass().getSimpleName());
         j.put("values", this.users);
-        j.put("wb", this.wb);
+        j.put("whiteboardID", this.whiteboardID);
         return j;
     }
 
@@ -44,7 +52,7 @@ public class UserListMessage implements JSONable<UserListMessage> {
         if (!(obj instanceof UserListMessage))
             return false;
         UserListMessage other = (UserListMessage) obj;
-        if (other.users.equals(this.users) && this.wb.equals(other.wb))
+        if (other.users.equals(this.users) && this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;
