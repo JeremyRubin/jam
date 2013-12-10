@@ -19,7 +19,7 @@ public class WhiteboardServerModel {
 
     // the currently connected clients should be maintained here
     private CurrentUsers users;
-    
+
     private SequentialIDGenerator sequentialIDGenerator = new SequentialIDGenerator();
 
     public WhiteboardServerModel(WhiteboardServer server) {
@@ -43,15 +43,14 @@ public class WhiteboardServerModel {
         }
     };
 
-    
     private String randomStringGenerator() {
-        return String.valueOf((int)(Math.random()*1000000));
+        return String.valueOf((int) (Math.random() * 1000000));
     }
 
     public int getServerID() {
         return sequentialIDGenerator.getID();
     }
-    
+
     /**
      * append drawable to end of drawablesList and then create a strokeMessage
      * to sync clients with.
@@ -70,24 +69,18 @@ public class WhiteboardServerModel {
      */
     public void broadcastStroke(StrokeMessage m) {
         users.broadcast(m.toJSON().toJSONString());
-    }  
-    
+    }
+
     /**
      * add a client and then send them all the data needed
      * 
      * @param user
      */
     public void addClient(User user) {
-        synchronized (users) {
-            users.addUser(user);
-            users.broadcastSelf();
-        }
+        users.addUser(user);
     }
-    
+
     public void removeClient(User user) {
-        synchronized (users) {
-            users.removeUser(user);
-            users.broadcastSelf();
-        }
+        users.removeUser(user);
     }
 }

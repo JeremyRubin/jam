@@ -19,9 +19,11 @@ import drawable.DrawableSegment;
  */
 public class DrawableSegmentTest {
 
+    // three equivalent DrawableSegments
     private static final DrawableSegment d = new DrawableSegment(0, 0, 0, 0, Color.BLACK, 1);
     private static final DrawableSegment d1 = new DrawableSegment(0, 0, 0, 0, Color.BLACK, 1);
     private static final DrawableSegment d2 = new DrawableSegment(0, 0, 0, 0);
+    
     private static final DrawableSegment d3 = new DrawableSegment(1, 9, 2, 10, Color.RED, 2);
     private static final DrawableSegment d4 = new DrawableSegment(1, 9, 2, 10);
 

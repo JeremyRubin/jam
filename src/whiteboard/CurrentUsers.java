@@ -7,48 +7,48 @@ import message.JSONable;
 import message.UserListMessage;
 
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 /**
  * Represents the collection of current users connected to a certain whiteboard.
  * 
  */
 public class CurrentUsers implements JSONable<UserListMessage> {
-    // all currently logged in users
+    // list of all currently logged in users
     // FIXME this seems really bad
     private List<User> users = new ArrayList<User>();
 
-    // a monotonically increasing field in case msgs arrive out of order
-    // private String timestamp; // ????
-
+    // whiteboardID corresponding to the whiteboard CurrentUsers is connected
+    // to.
     private final String whiteboardID;
 
     /**
-     * Use this constructor only in Messages
+     * Constructor that takes a whiteboard ID.
+     * 
+     * @param whiteboardID
+     *            of the whiteboard.
      */
-    public CurrentUsers() {
-        this.whiteboardID = null;
-    }
-
     public CurrentUsers(String whiteboardID) {
         this.whiteboardID = whiteboardID;
     }
 
+    /**
+     * Constructor that takes a whiteboard ID and existing list of users.
+     * 
+     * @param whiteboardID
+     *            of the whiteboard.
+     * @param users
+     *            list of User objects currently connected.
+     */
     public CurrentUsers(String whiteboardID, List<User> users) {
         this.whiteboardID = whiteboardID;
         this.users = users;
     }
-    
-    /**
-     * Update users to include otherUser. We allow duplicate usernames in a
-     * single CurrentUsers object.
-     */
-    public synchronized void addUser(User otherUser) {
-        users.add(otherUser);
-    };
 
     /**
-     * Send messages to all CurrentUsers.
+     * Send a message to all users in this CurrentUsers object.
+     * 
+     * @param msg
+     *            string message to be sent.
      */
     public void broadcast(String msg) {
         for (User user : users) {
@@ -57,14 +57,34 @@ public class CurrentUsers implements JSONable<UserListMessage> {
     };
 
     /**
-     * Remove user from users if it exists.
+     * Update users to include otherUser. We allow duplicate usernames in a
+     * single CurrentUsers object.
+     * 
+     * Broadcast a USersListMessage to all users in the CurrentUsers object.
+     * 
+     * @param otherUser
+     *            user to be added.
      */
-    public synchronized void removeUser(User user) {
-        users.remove(user);
+    public synchronized void addUser(User otherUser) {
+        users.add(otherUser);
+        this.broadcastSelf();
     };
 
     /**
-     * Send all users a CurrentUsersMessage after add/remove user
+     * Remove user from users if it exists. Broadcast a USersListMessage to all
+     * users in the CurrentUsers object.
+     * 
+     * @param user
+     *            user to be removed.
+     */
+    public synchronized void removeUser(User user) {
+        users.remove(user);
+        this.broadcastSelf();
+
+    };
+
+    /**
+     * Send all users a UsersListMessage after add/remove user.
      */
     public synchronized void broadcastSelf() {
         for (User user : users) {
@@ -73,7 +93,10 @@ public class CurrentUsers implements JSONable<UserListMessage> {
     };
 
     /**
-     * Only handles names of users
+     * See JSONable Interface for specs.
+     * 
+     * Note that CurrentUsers.toJSON() creates a UserListMessage that contains
+     * only a list of the String usernames of the users.
      */
     @Override
     public JSONObject toJSON() {
@@ -86,11 +109,17 @@ public class CurrentUsers implements JSONable<UserListMessage> {
         return new UserListMessage(this.whiteboardID, usersList).toJSON();
     }
 
+    /**
+     * See JSONable Interface for specs.
+     */
     @Override
     public UserListMessage fromJSON(String jsonString) {
         return new UserListMessage().fromJSON(jsonString);
     }
 
+    /**
+     * See JSONable Interface for specs.
+     */
     @Override
     public UserListMessage fromJSON(JSONObject j) {
         return new UserListMessage().fromJSON(j);
