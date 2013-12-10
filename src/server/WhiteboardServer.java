@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import whiteboard.User;
 import whiteboard.WhiteboardServerModel;
 
 /**
@@ -102,7 +101,7 @@ public class WhiteboardServer {
      *             if connection has an error or terminates unexpectedly
      */
     private void handleConnection(Socket socket) throws IOException {
-        (new Thread(new User(socket, this))).start();
+        new ConnectedUser(socket, this).run();
     }
 
     /**

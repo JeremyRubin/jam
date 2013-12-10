@@ -1,6 +1,5 @@
 package whiteboard;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,6 +15,7 @@ import message.SwitchWhiteboardMessage;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import server.ConnectedUser;
 import server.WhiteboardServer;
 
 /**
@@ -23,21 +23,19 @@ import server.WhiteboardServer;
  * 
  */
 public class User implements JSONable<User>, Runnable {
-    private final String username;
-    private final Socket socket;
-    private BlockingQueue<String> queue;
-    private final WhiteboardServer server;
-    private WhiteboardServerModel wb;
+    private String username;
+    private BlockingQueue<String> inQueue;
+    public BlockingQueue<String> outQueue;
 
-    public User(Socket socket, WhiteboardServer server) {
-        this.server = server;
-        this.socket = socket;
+    private WhiteboardServerModel wb;
+    private ConnectedUser connection;
+
+    public User(ConnectedUser connection) {
+        this.connection = connection;
     }
 
     public User(String name, Socket socket, WhiteboardServer server) {
         this.username = name;
-        this.socket = socket;
-        this.server = server;
 
     }
 
@@ -51,7 +49,7 @@ public class User implements JSONable<User>, Runnable {
      * @param msg
      */
     public void add(String msg) {
-        queue.add(msg);
+        inQueue.add(msg);
     }
 
     @Override
@@ -86,29 +84,26 @@ public class User implements JSONable<User>, Runnable {
         try {
             String output = "";
             while (output != "quit") {
-                String message = queue.take();
+                String message = inQueue.take();
                 output = handleRequest(message);
                 // what to do with output??
             }
         } catch (Exception e) {
         } finally {
-            try {
-                this.wb.removeClient(this); // remove user from users
-                this.socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            this.wb.removeClient(this); // remove user from users
+
         }
     }
 
-    private String handleRequest(String input) {
+    public String handleRequest(String input) {
         JSONObject data = (JSONObject) JSONValue.parse(input);
         String action = (String) data.get(Messages.type);
         if (action.equals(Messages.newWhiteboard)) {
             // TODO
 
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
-            wb = server.createWhiteboard();
+            wb = this.connection.server.createWhiteboard();
             return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
         } else if (action.equals(Messages.stroke)) {
             StrokeMessage s = new StrokeMessage().fromJSON(data);
@@ -118,11 +113,11 @@ public class User implements JSONable<User>, Runnable {
             // TODO
 
             SwitchWhiteboardMessage s = new SwitchWhiteboardMessage().fromJSON(data);
-            if (server.openWhiteboards.containsKey(s.whiteboardID))
-                wb = server.openWhiteboards.get(s.whiteboardID);
+            if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
+                wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
             else {
 
-                wb = server.createWhiteboard(s.whiteboardID);
+                wb = this.connection.server.createWhiteboard(s.whiteboardID);
                 return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
             }
         } else if (action.equals(Messages.setUsernameMessage)) {
