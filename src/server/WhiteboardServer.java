@@ -56,8 +56,12 @@ public class WhiteboardServer {
     public WhiteboardServerModel createWhiteboard() {
         synchronized (this.openWhiteboards) {
             WhiteboardServerModel m = new WhiteboardServerModel(this);
-            openWhiteboards.put(m.id, m);
-            return m;
+            if (! openWhiteboards.containsKey(m.id)) {
+                openWhiteboards.put(m.id, m);
+                return m;
+            } else {
+                return this.createWhiteboard();
+            }
         }
     }
 
@@ -85,7 +89,6 @@ public class WhiteboardServer {
             // handle the client
             try {
                 handleConnection(socket);
-
             } catch (IOException e) {
                 e.printStackTrace(); // but don't terminate serve()
             }
