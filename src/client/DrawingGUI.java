@@ -6,22 +6,27 @@ import javax.swing.JFrame;
 
 import whiteboard.WhiteboardClientModel;
 
-public class DrawingGUI extends JFrame {
+public class DrawingGUI {
     private Canvas canvas;
     private DrawingToolbar toolbar;
     private WhiteboardClientModel model;
 
-    public DrawingGUI() {
-        JFrame window = new JFrame("Whiteboard");
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setLayout(new BorderLayout());
+    private JFrame frame;
+
+    private ClientGUI gui;
+
+    public DrawingGUI(ClientGUI gui) {
+        frame = new JFrame("Whiteboard");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
         model = new WhiteboardClientModel();
         canvas = new Canvas(model);
-        window.add(canvas, BorderLayout.CENTER);
+        frame.add(canvas, BorderLayout.CENTER);
         toolbar = new DrawingToolbar(model);
-        window.add(toolbar, BorderLayout.PAGE_START);
-        window.pack();
-        window.setVisible(true);
+        frame.add(toolbar, BorderLayout.PAGE_START);
+        frame.setResizable(false);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

@@ -1,5 +1,8 @@
 package client;
 
+import java.io.IOException;
+import java.net.Socket;
+
 import javax.swing.SwingUtilities;
 
 public class ClientGUI {
@@ -7,8 +10,19 @@ public class ClientGUI {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new DrawingGUI();
+                new ConnectionGUI(new ClientGUI());
             }
         });
+    }
+
+    public void connect(String ip, String port) {
+        try {
+            // TODO consider catching input errors here
+            Socket socket = new Socket(ip, Integer.valueOf(port));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        new DrawingGUI(this);
     }
 }
