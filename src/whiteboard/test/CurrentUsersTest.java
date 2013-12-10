@@ -34,7 +34,6 @@ public class CurrentUsersTest {
         List<User> userList = new ArrayList<User>();
         userList.add(u);
         CurrentUsers users = new CurrentUsers("id", userList);
-        System.out.println(users);
         assertTrue(users.equals(users));
 
     }
@@ -42,6 +41,6 @@ public class CurrentUsersTest {
     @Test
     public void toJSONFromJSONEqualsTest() throws IOException {
         // test the toJSON, fromJSON methods
-        //TODO
+        // TODO
     }
 }

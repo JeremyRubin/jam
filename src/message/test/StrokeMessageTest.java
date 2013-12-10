@@ -29,8 +29,6 @@ public class StrokeMessageTest extends TestCase {
         StrokeMessage test5 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
         StrokeMessage test6 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "asa", "hello");
         StrokeMessage test7 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "as");
-        System.out.println(test7.getClass().getSimpleName());
-
         assertFalse(test.equals(test3));
         assertFalse(test.equals(test4));
         assertFalse(test.equals(test6));
