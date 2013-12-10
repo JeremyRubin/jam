@@ -1,25 +1,20 @@
 package message;
 
-import java.math.BigDecimal;
-
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage> {
-    private final int userSeqId;
     // unique id for the switch action generated sequentially by user from the
     // same pool as StrokeMessage (which is
     // where they store that in their buffer)
     // client username that drew the Drawable
     public final String whiteboardID;
 
-    public SwitchWhiteboardMessage(String whiteboardID, int userSeqId) {
-        this.userSeqId = userSeqId;
+    public SwitchWhiteboardMessage(String whiteboardID) {
         this.whiteboardID = whiteboardID;
     }
 
     public SwitchWhiteboardMessage() {
-        this.userSeqId = 0;
         this.whiteboardID = null;
     }
 
@@ -31,7 +26,7 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
     @Override
     public SwitchWhiteboardMessage fromJSON(JSONObject j) {
         // TODO Auto-generated method stub
-        return new SwitchWhiteboardMessage((String) j.get("id"), new BigDecimal((Long) j.get("usid")).intValue());
+        return new SwitchWhiteboardMessage((String) j.get("id"));
     }
 
     @Override
@@ -39,7 +34,7 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
         if (!(obj instanceof SwitchWhiteboardMessage))
             return false;
         SwitchWhiteboardMessage other = (SwitchWhiteboardMessage) obj;
-        if (this.whiteboardID.equals(other.whiteboardID) && this.userSeqId == other.userSeqId)
+        if (this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;

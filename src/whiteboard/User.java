@@ -29,6 +29,7 @@ public class User implements JSONable<User>, Runnable {
 
     private WhiteboardServerModel wb;
     private ConnectedUser connection;
+    private boolean connected;
 
     public User(ConnectedUser connection) {
         this.connection = connection;
@@ -44,7 +45,7 @@ public class User implements JSONable<User>, Runnable {
     }
 
     /**
-     * Add a msg to the queue to be sent out.
+     * Add a control msg to be processed by the user
      * 
      * @param msg
      */
@@ -83,17 +84,22 @@ public class User implements JSONable<User>, Runnable {
     public void run() {
         try {
             String output = "";
-            while (output != "quit") {
+            while (true) {
                 String message = inQueue.take();
+                if (message == null)
+                    break;
                 output = handleRequest(message);
-                // what to do with output??
+                this.outQueue.add(output);
             }
         } catch (Exception e) {
         } finally {
-
             this.wb.removeClient(this); // remove user from users
 
         }
+    }
+
+    public void disconnectUser() {
+        this.connected = false;
     }
 
     public String handleRequest(String input) {
@@ -101,10 +107,9 @@ public class User implements JSONable<User>, Runnable {
         String action = (String) data.get(Messages.type);
         if (action.equals(Messages.newWhiteboard)) {
             // TODO
-
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
-            return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
+            return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
         } else if (action.equals(Messages.stroke)) {
             StrokeMessage s = new StrokeMessage().fromJSON(data);
             // TODO what should be done with s?
@@ -118,7 +123,7 @@ public class User implements JSONable<User>, Runnable {
             else {
 
                 wb = this.connection.server.createWhiteboard(s.whiteboardID);
-                return new SwitchWhiteboardMessage(wb.id, 10).toJSON().toJSONString();
+                return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
             }
         } else if (action.equals(Messages.setUsernameMessage)) {
             // TODO

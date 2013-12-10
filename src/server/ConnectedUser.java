@@ -37,12 +37,12 @@ public class ConnectedUser implements Runnable {
                 try {
                     for (String line = in.readLine(); line != null; line = in.readLine()) {
                         this.user.add(line);
-
                     }
                 } catch (IOException e) {
                 } finally {
                     in.close();
                     this.socket.close();
+                    this.user.add(null);
                 }
             } catch (IOException e) {
             }
@@ -74,6 +74,7 @@ public class ConnectedUser implements Runnable {
                 } finally {
                     out.close();
                     this.socket.close();
+                    this.user.add(null);
                 }
             } catch (IOException e) {
             }
