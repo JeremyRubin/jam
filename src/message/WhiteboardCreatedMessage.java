@@ -4,6 +4,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class WhiteboardCreatedMessage implements JSONable<WhiteboardCreatedMessage> {
+    public final static WhiteboardCreatedMessage STATIC = new WhiteboardCreatedMessage();
+
     private final String whiteboardID;
 
     public WhiteboardCreatedMessage(String whiteboardID) {
@@ -13,7 +15,7 @@ public class WhiteboardCreatedMessage implements JSONable<WhiteboardCreatedMessa
     /**
      * Constructor to access static methods
      */
-    public WhiteboardCreatedMessage() {
+    private WhiteboardCreatedMessage() {
         this.whiteboardID = null;
     }
 

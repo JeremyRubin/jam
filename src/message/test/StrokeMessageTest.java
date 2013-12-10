@@ -16,7 +16,7 @@ public class StrokeMessageTest extends TestCase {
     @Test
     public void testEncodeDecodeEquality() {
         StrokeMessage test = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
-        assertTrue(test.equals(new StrokeMessage().fromJSON(test.toJSON().toJSONString())));
+        assertTrue(test.equals(StrokeMessage.STATIC.fromJSON(test.toJSON().toJSONString())));
     }
 
     @Test

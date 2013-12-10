@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import message.StrokeMessage;
 import server.WhiteboardServer;
-import drawable.Drawable;
 import utils.SequentialIDGenerator;
+import drawable.Drawable;
 
 public class WhiteboardServerModel {
     // unique ID per Whiteboard instance generated from the random combination

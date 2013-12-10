@@ -16,6 +16,6 @@ public class UserListMessageTest extends TestCase {
         l.add("hello");
         l.add("bye");
         UserListMessage u = new UserListMessage("w", l);
-        assertTrue(u.equals(new UserListMessage().fromJSON(u.toJSON().toJSONString())));
+        assertTrue(u.equals(UserListMessage.STATIC.fromJSON(u.toJSON().toJSONString())));
     }
 }

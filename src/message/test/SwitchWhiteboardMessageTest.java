@@ -14,6 +14,6 @@ public class SwitchWhiteboardMessageTest extends TestCase {
     @Test
     public void test() {
         SwitchWhiteboardMessage test = new SwitchWhiteboardMessage("ocelot");
-        assertTrue(test.equals(new SwitchWhiteboardMessage().fromJSON(test.toJSON().toJSONString())));
+        assertTrue(test.equals(SwitchWhiteboardMessage.STATIC.fromJSON(test.toJSON().toJSONString())));
     }
 }

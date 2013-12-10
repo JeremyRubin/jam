@@ -11,7 +11,7 @@ import drawable.Drawable;
 import drawable.DrawableSegment;
 
 public class StrokeMessage implements JSONable<StrokeMessage> {
-
+    public final static StrokeMessage STATIC = new StrokeMessage();
     // unique id for the StrokeMessage generated sequentially by server
     private int id;
 
@@ -30,7 +30,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     /**
      * Should only be used to access the fromJSON methods
      */
-    public StrokeMessage() {
+    private StrokeMessage() {
         this.id = 0;
         this.userSeqId = 0;
         this.drawable = null;

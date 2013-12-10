@@ -80,7 +80,6 @@ public class CurrentUsers implements JSONable<UserListMessage> {
     public synchronized void removeUser(User user) {
         users.remove(user);
         this.broadcastSelf();
-
     };
 
     /**
@@ -114,7 +113,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     @Override
     public UserListMessage fromJSON(String jsonString) {
-        return new UserListMessage().fromJSON(jsonString);
+        return UserListMessage.STATIC.fromJSON(jsonString);
     }
 
     /**
@@ -122,7 +121,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     @Override
     public UserListMessage fromJSON(JSONObject j) {
-        return new UserListMessage().fromJSON(j);
+        return UserListMessage.STATIC.fromJSON(j);
     }
 
 }

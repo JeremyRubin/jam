@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage> {
+    public final static SwitchWhiteboardMessage STATIC = new SwitchWhiteboardMessage();
     // unique id for the switch action generated sequentially by user from the
     // same pool as StrokeMessage (which is
     // where they store that in their buffer)
@@ -14,7 +15,7 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
         this.whiteboardID = whiteboardID;
     }
 
-    public SwitchWhiteboardMessage() {
+    private SwitchWhiteboardMessage() {
         this.whiteboardID = null;
     }
 

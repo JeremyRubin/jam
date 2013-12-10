@@ -15,9 +15,9 @@ public class WhiteboardCreatedMessageTest extends TestCase {
     @Test
     public void testEquals() {
         WhiteboardCreatedMessage m = new WhiteboardCreatedMessage("test");
-        assertTrue(m.equals(new WhiteboardCreatedMessage().fromJSON(m.toJSON().toJSONString())));
+        assertTrue(m.equals(WhiteboardCreatedMessage.STATIC.fromJSON(m.toJSON().toJSONString())));
         assertFalse(m.equals(new WhiteboardCreatedMessage("bad")));
-        assertFalse(m.equals(new StrokeMessage()));
+        assertFalse(m.equals(StrokeMessage.STATIC));
 
     }
 }

@@ -6,9 +6,8 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import whiteboard.User;
-
 public class UserListMessage implements JSONable<UserListMessage> {
+    public final static UserListMessage STATIC = new UserListMessage();
     private final List<String> users;
     public final String whiteboardID;
 
@@ -17,16 +16,15 @@ public class UserListMessage implements JSONable<UserListMessage> {
         this.whiteboardID = whiteboardID;
     }
 
-    public UserListMessage() {
+    private UserListMessage() {
         this.users = null;
         this.whiteboardID = null;
     }
 
-    
     public List<String> getUsers() {
         return new ArrayList<String>(this.users);
     }
-    
+
     @Override
     public UserListMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));

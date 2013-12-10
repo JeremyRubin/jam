@@ -76,6 +76,7 @@ public class User implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
+
             this.wb.removeClient(this); // remove user from users
         }
     }
@@ -88,12 +89,12 @@ public class User implements Runnable {
             wb = this.connection.server.createWhiteboard();
             return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
         } else if (action.equals(Messages.toServerStroke)) {
-            StrokeMessage s = new StrokeMessage().fromJSON(data);
+            StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
             s.setID(wb.getServerID());
             return ((FromServerStrokeMessage) s).toJSON().toJSONString();
         } else if (action.equals(Messages.switchWhiteboard)) {
-            SwitchWhiteboardMessage s = new SwitchWhiteboardMessage().fromJSON(data);
+            SwitchWhiteboardMessage s = SwitchWhiteboardMessage.STATIC.fromJSON(data);
             if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
                 wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
             else {
