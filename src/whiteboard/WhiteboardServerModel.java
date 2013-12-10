@@ -16,7 +16,7 @@ public class WhiteboardServerModel {
     // smaller indices indicate that the element was drawn earlier
     private ArrayList<Drawable> drawablesList;
 
-    // should keep track of its clients, assigning them their own IDâ€™s and
+    // should keep track of its clients, assigning them their ™own IDâ€s and
     // letting them set usernames
     // private Map<String, String> clients; // ???
 
