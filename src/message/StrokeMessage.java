@@ -21,6 +21,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     private final String username;
     // client username that drew the Drawable
     private final String whiteboardID;
+
     // id of WhiteboardModel
 
     /**
