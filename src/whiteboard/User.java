@@ -20,7 +20,7 @@ import server.ConnectedUser;
  * 
  */
 public class User implements Runnable {
-    private final String username;
+    private String username;
     private final BlockingQueue<String> inQueue;
     public final BlockingQueue<String> outQueue;
 
