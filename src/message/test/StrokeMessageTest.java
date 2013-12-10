@@ -5,7 +5,6 @@ import message.StrokeMessage;
 
 import org.junit.Test;
 
-import drawable.DrawablePath;
 import drawable.DrawableSegment;
 
 /**
@@ -16,20 +15,20 @@ public class StrokeMessageTest extends TestCase {
 
     @Test
     public void testEncodeDecodeEquality() {
-        StrokeMessage test = new StrokeMessage(1, 2, new DrawablePath(), "id", "hello");
+        StrokeMessage test = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
         assertTrue(test.equals(new StrokeMessage().fromJSON(test.toJSON().toJSONString())));
     }
 
     @Test
     public void testEquality() {
-        StrokeMessage test = new StrokeMessage(1, 2, new DrawablePath(), "id", "hello");
-        StrokeMessage test2 = new StrokeMessage(1, 2, new DrawablePath(), "id", "hello");
+        StrokeMessage test = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
+        StrokeMessage test2 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
         assertTrue(test.equals(test2));
-        StrokeMessage test3 = new StrokeMessage(0, 2, new DrawablePath(), "id", "hello");
-        StrokeMessage test4 = new StrokeMessage(1, 1, new DrawablePath(), "id", "hello");
-        StrokeMessage test5 = new StrokeMessage(1, 2, new DrawableSegment(), "id", "hello");
-        StrokeMessage test6 = new StrokeMessage(1, 2, new DrawablePath(), "asa", "hello");
-        StrokeMessage test7 = new StrokeMessage(1, 2, new DrawablePath(), "id", "as");
+        StrokeMessage test3 = new StrokeMessage(0, 2, DrawableSegment.STATIC, "id", "hello");
+        StrokeMessage test4 = new StrokeMessage(1, 1, DrawableSegment.STATIC, "id", "hello");
+        StrokeMessage test5 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
+        StrokeMessage test6 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "asa", "hello");
+        StrokeMessage test7 = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "as");
         System.out.println(test7.getClass().getSimpleName());
 
         assertFalse(test.equals(test3));

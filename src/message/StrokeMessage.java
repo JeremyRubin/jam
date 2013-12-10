@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import drawable.Drawable;
-import drawable.DrawablePath;
+import drawable.DrawableSegment;
 
 public class StrokeMessage implements JSONable<StrokeMessage> {
 
@@ -79,8 +79,9 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         // new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long)
         // j.get("a")).intValue());
         return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
-                (Long) j.get("userSeqId"))).intValue(), new DrawablePath().fromJSON((JSONObject) j.get("drawable")),
-                (String) j.get("username"), (String) j.get("wb"));
+                (Long) j.get("userSeqId"))).intValue(),
+                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("username"),
+                (String) j.get("wb"));
     }
 
     @Override
