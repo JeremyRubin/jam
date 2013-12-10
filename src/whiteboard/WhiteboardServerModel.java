@@ -16,7 +16,7 @@ public class WhiteboardServerModel {
     // smaller indices indicate that the element was drawn earlier
     private ArrayList<Drawable> drawablesList;
 
-    // should keep track of its clients, assigning them their ™own IDâ€s and
+    // should keep track of its clients, assigning them their ï¿½own IDï¿½s and
     // letting them set usernames
     // private Map<String, String> clients; // ???
 
@@ -45,8 +45,7 @@ public class WhiteboardServerModel {
     };
 
     private String randomWordSequenceGenerator() {
-        // TODO
-        return "hello-world-bye";
+        return String.valueOf((int)(Math.random()*1000000));
     }
 
     /**
