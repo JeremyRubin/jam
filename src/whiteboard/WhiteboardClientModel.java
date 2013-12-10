@@ -55,7 +55,7 @@ public class WhiteboardClientModel {
         g.clearRect(0, 0, image.getWidth(), image.getHeight());
 
         // draw local stuff last (on top)
-        List<Drawable> drawables = new ArrayList<>();
+        List<Drawable> drawables = new ArrayList<Drawable>();
         drawables.addAll(getSortedListFromMap(syncedState));
         drawables.addAll(getSortedListFromMap(localState));
 
@@ -67,8 +67,8 @@ public class WhiteboardClientModel {
     }
 
     private <T> List<T> getSortedListFromMap(Map<Integer, T> map) {
-        List<T> list = new ArrayList<>();
-        List<Integer> keys = new ArrayList<>(map.keySet());
+        List<T> list = new ArrayList<T>();
+        List<Integer> keys = new ArrayList<Integer>(map.keySet());
         Collections.sort(keys);
         for (int index : keys) {
             list.add(map.get(index));
@@ -96,7 +96,12 @@ public class WhiteboardClientModel {
     public void setTool(Class<? extends DrawingTool> toolClass) {
         try {
             tool = toolClass.newInstance().createFromModel(this);
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
+            // this should never happen if there are no bugs, hence
+            // System.exit(1)
+            e.printStackTrace();
+            System.exit(1);
+        } catch (IllegalAccessException e) {
             // this should never happen if there are no bugs, hence
             // System.exit(1)
             e.printStackTrace();
