@@ -1,11 +1,9 @@
 package whiteboard;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import message.StrokeMessage;
+import server.WhiteboardServer;
 import drawable.Drawable;
 
 public class WhiteboardServerModel {
@@ -14,7 +12,6 @@ public class WhiteboardServerModel {
 	// staple).
 	public final String id;
 
-	public static final Set<String> whiteboards = new HashSet<String>();
 	// sequence of Drawables
 	// smaller indices indicate that the element was drawn earlier
 	private ArrayList<Drawable> drawablesList;
@@ -26,23 +23,22 @@ public class WhiteboardServerModel {
 	// the currently connected clients should be maintained here
 	private CurrentUsers users;
 
-	public WhiteboardServerModel() {
-		synchronized (whiteboards) {
-			this.id = this.randomWordSequenceGenerator();
+	public WhiteboardServerModel(WhiteboardServer server) {
+		synchronized (server.openWhiteboards) {
 			this.users = new CurrentUsers(this.id);
-			whiteboards.add(this.id);
+			this.id = this.randomWordSequenceGenerator();
 		}
 	};
 
-	public WhiteboardServerModel(String s) {
+	public WhiteboardServerModel(WhiteboardServer server, String s) {
 		// TODO thread safety
-		synchronized (whiteboards) {
+		synchronized (server.openWhiteboards) {
 
-			if (whiteboards.contains(s))
+			if (server.openWhiteboards.containsKey(s)) {
 				this.id = this.randomWordSequenceGenerator();
-			else {
+			} else {
 				this.id = s;
-				whiteboards.add(s);
+				server.openWhiteboards.put(s, this);
 			}
 
 		}
@@ -84,11 +80,11 @@ public class WhiteboardServerModel {
 			users.broadcastSelf();
 		}
 	}
-	
+
 	public void removeClient(User user) {
 		synchronized (users) {
 			users.removeUser(user);
-			users.broadcastSelf();			
-		}		
+			users.broadcastSelf();
+		}
 	}
 }

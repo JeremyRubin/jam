@@ -39,127 +39,131 @@ import whiteboard.WhiteboardServerModel;
  */
 
 public class WhiteboardServer {
-    private final ServerSocket serverSocket;
+	private final ServerSocket serverSocket;
 
-    public final Map<String, WhiteboardServerModel> openWhiteboards;
+	public final Map<String, WhiteboardServerModel> openWhiteboards;
 
-    /**
-     * Make a WhiteboardServer that listens for connections on port.
-     * 
-     * @param port
-     *            port number, requires 0 <= port <= 65535
-     */
-    public WhiteboardServer(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
-        this.openWhiteboards = new HashMap<String, WhiteboardServerModel>();
-    }
+	/**
+	 * Make a WhiteboardServer that listens for connections on port.
+	 * 
+	 * @param port
+	 *            port number, requires 0 <= port <= 65535
+	 */
+	public WhiteboardServer(int port) throws IOException {
+		serverSocket = new ServerSocket(port);
+		this.openWhiteboards = new HashMap<String, WhiteboardServerModel>();
+	}
 
-    public WhiteboardServerModel createWhiteboard() {
-        synchronized (this.openWhiteboards) {
-            WhiteboardServerModel m = new WhiteboardServerModel();
-            openWhiteboards.put(m.id, m);
-            return m;
-        }
-    }
+	public WhiteboardServerModel createWhiteboard() {
+		synchronized (this.openWhiteboards) {
+			WhiteboardServerModel m = new WhiteboardServerModel(this);
+			openWhiteboards.put(m.id, m);
+			return m;
+		}
+	}
 
-    public WhiteboardServerModel createWhiteboard(String s) {
-        synchronized (this.openWhiteboards) {
-            WhiteboardServerModel m = new WhiteboardServerModel(s);
-            openWhiteboards.put(m.id, m);
-            return m;
-        }
-    }
+	public WhiteboardServerModel createWhiteboard(String s) {
+		synchronized (this.openWhiteboards) {
+			WhiteboardServerModel m = new WhiteboardServerModel(this, s);
+			openWhiteboards.put(m.id, m);
+			return m;
+		}
+	}
 
-    /**
-     * Run the server, listening for client connections and handling them. Never
-     * returns unless an exception is thrown.
-     * 
-     * @throws IOException
-     *             if the main server socket is broken (IOExceptions from
-     *             individual clients do *not* terminate serve())
-     */
-    public void serve() throws IOException {
-        while (true) {
-            // block until a client connects
-            Socket socket = serverSocket.accept();
+	/**
+	 * Run the server, listening for client connections and handling them. Never
+	 * returns unless an exception is thrown.
+	 * 
+	 * @throws IOException
+	 *             if the main server socket is broken (IOExceptions from
+	 *             individual clients do *not* terminate serve())
+	 */
+	public void serve() throws IOException {
+		while (true) {
+			// block until a client connects
+			Socket socket = serverSocket.accept();
 
-            // handle the client
-            try {
-                handleConnection(socket);
+			// handle the client
+			try {
+				handleConnection(socket);
 
-            } catch (IOException e) {
-                e.printStackTrace(); // but don't terminate serve()
-            }
-        }
-    }
+			} catch (IOException e) {
+				e.printStackTrace(); // but don't terminate serve()
+			}
+		}
+	}
 
-    /**
-     * Handle a single client connection. Returns when client disconnects.
-     * 
-     * @param socket
-     *            socket where the client is connected
-     * @throws IOException
-     *             if connection has an error or terminates unexpectedly
-     */
-    private void handleConnection(Socket socket) throws IOException {
-        (new Thread(new User(socket, this))).start();
-    }
+	/**
+	 * Handle a single client connection. Returns when client disconnects.
+	 * 
+	 * @param socket
+	 *            socket where the client is connected
+	 * @throws IOException
+	 *             if connection has an error or terminates unexpectedly
+	 */
+	private void handleConnection(Socket socket) throws IOException {
+		(new Thread(new User(socket, this))).start();
+	}
 
-    /**
-     * Start a WhiteboardServer using the given arguments.
-     * 
-     * Usage: WhiteboardServer [--port PORT]
-     * 
-     * PORT is an optional integer in the range 0 to 65535 inclusive, specifying
-     * the port the server should be listening on for incoming connections. E.g.
-     * "WhiteboardrServer --port 1234" starts the server listening on port 1234.
-     * 
-     */
-    public static void main(String[] args) {
-        // Command-line argument parsing
-        int port = 4444; // default port
-        Queue<String> arguments = new LinkedList<String>(Arrays.asList(args));
-        try {
-            while (!arguments.isEmpty()) {
-                String flag = arguments.remove();
-                try {
-                    if (flag.equals("--port")) {
-                        port = Integer.parseInt(arguments.remove());
-                        if (port < 0 || port > 65535) {
-                            throw new IllegalArgumentException("port " + port + " out of range");
-                        }
-                    } else {
-                        throw new IllegalArgumentException("unknown option: \"" + flag + "\"");
-                    }
-                } catch (NoSuchElementException nsee) {
-                    throw new IllegalArgumentException("missing argument for " + flag);
-                } catch (NumberFormatException nfe) {
-                    throw new IllegalArgumentException("unable to parse number for " + flag);
-                }
-            }
-        } catch (IllegalArgumentException iae) {
-            System.err.println(iae.getMessage());
-            System.err.println("usage: MinesweeperServer  [--port PORT]");
-            return;
-        }
+	/**
+	 * Start a WhiteboardServer using the given arguments.
+	 * 
+	 * Usage: WhiteboardServer [--port PORT]
+	 * 
+	 * PORT is an optional integer in the range 0 to 65535 inclusive, specifying
+	 * the port the server should be listening on for incoming connections. E.g.
+	 * "WhiteboardrServer --port 1234" starts the server listening on port 1234.
+	 * 
+	 */
+	public static void main(String[] args) {
+		// Command-line argument parsing
+		int port = 4444; // default port
+		Queue<String> arguments = new LinkedList<String>(Arrays.asList(args));
+		try {
+			while (!arguments.isEmpty()) {
+				String flag = arguments.remove();
+				try {
+					if (flag.equals("--port")) {
+						port = Integer.parseInt(arguments.remove());
+						if (port < 0 || port > 65535) {
+							throw new IllegalArgumentException("port " + port
+									+ " out of range");
+						}
+					} else {
+						throw new IllegalArgumentException("unknown option: \""
+								+ flag + "\"");
+					}
+				} catch (NoSuchElementException nsee) {
+					throw new IllegalArgumentException("missing argument for "
+							+ flag);
+				} catch (NumberFormatException nfe) {
+					throw new IllegalArgumentException(
+							"unable to parse number for " + flag);
+				}
+			}
+		} catch (IllegalArgumentException iae) {
+			System.err.println(iae.getMessage());
+			System.err.println("usage: WhiteboardServer [--port PORT]");
+			return;
+		}
 
-        try {
-            runWhiteboardServer(port);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		try {
+			runWhiteboardServer(port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Start a WhiteboardServer running on the specified port
-     * 
-     * @param port
-     *            The network port on which the server should listen.
-     */
-    public static void runWhiteboardServer(int port) throws IOException {
+	/**
+	 * Start a WhiteboardServer running on the specified port
+	 * 
+	 * @param port
+	 *            The network port on which the server should listen.
+	 */
+	public static void runWhiteboardServer(int port) throws IOException {
 
-        WhiteboardServer server = new WhiteboardServer(port);
-        server.serve();
+		WhiteboardServer server = new WhiteboardServer(port);
+		server.serve();
 
-    }
+	}
 }

@@ -10,7 +10,7 @@ import drawable.Drawable;
 
 public class WhiteboardClientModel {
 
-	private final WhiteboardServerModel model;
+	public WhiteboardServerModel serverModel;
 
 	// Drawables that have been acknowledged by the server
 	private Map<Integer, Drawable> syncedState = new HashMap<Integer, Drawable>();
@@ -19,13 +19,14 @@ public class WhiteboardClientModel {
 	// using a HashMap
 	private Map<Integer, Drawable> localState = new HashMap<Integer, Drawable>();
 
+		
 	public WhiteboardClientModel(WhiteboardServerModel model) {
-		this.model = model;
+		this.serverModel= model;
 	}
 
 	/**
 	 * After the user draws onto the GUI, handleDraw adds the Drawable to the
-	 * localState, then sends a StrokeMessage to the WhitebardServerModel.
+	 * localState, then sends a StrokeMessage to the WhiteboardServerModel.
 	 * 
 	 * @param d
 	 *            Drawable that user drew
@@ -35,7 +36,7 @@ public class WhiteboardClientModel {
 		StrokeMessage s = new StrokeMessage(id, userSeqId, d, username,
 				whiteboardID);
 		localState.put(localState.size(), d); // what should the key be?
-		model.handleDrawable(s);
+		serverModel.handleDrawable(s);
 	}
 
 	/**
