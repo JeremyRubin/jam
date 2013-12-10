@@ -20,6 +20,7 @@ import server.ConnectedUser;
  * 
  */
 public class User implements Runnable {
+    public static final String KILL_MSG = "";
     private String username;
     private final BlockingQueue<String> inQueue;
     public final BlockingQueue<String> outQueue;
@@ -64,16 +65,18 @@ public class User implements Runnable {
         try {
             while (true) {
                 String message = this.inQueue.take();
-                System.out.println(message);
-                if (message == null)
+                if (message.equals(User.KILL_MSG))
                     break;
+
                 String output = handleRequest(message);
+                System.out.println(message);
+
                 this.output(output);
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             this.wb.removeClient(this); // remove user from users
-
         }
     }
 

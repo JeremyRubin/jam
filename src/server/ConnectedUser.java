@@ -42,7 +42,7 @@ public class ConnectedUser implements Runnable {
                 } finally {
                     in.close();
                     this.socket.close();
-                    this.user.input(null);
+                    this.user.input(User.KILL_MSG);
                 }
             } catch (IOException e) {
             }
@@ -74,7 +74,7 @@ public class ConnectedUser implements Runnable {
                 } finally {
                     out.close();
                     this.socket.close();
-                    this.user.input(null);
+                    this.user.input(User.KILL_MSG);
                 }
             } catch (IOException e) {
             }
