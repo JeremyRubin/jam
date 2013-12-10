@@ -1,6 +1,7 @@
 package whiteboard;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import message.FromServerStrokeMessage;
 import message.Messages;
@@ -20,8 +21,8 @@ import server.ConnectedUser;
  */
 public class User implements Runnable {
     private String username;
-    private BlockingQueue<String> inQueue;
-    public BlockingQueue<String> outQueue;
+    private BlockingQueue<String> inQueue = new LinkedBlockingQueue<String>();
+    public BlockingQueue<String> outQueue = new LinkedBlockingQueue<String>();
 
     private WhiteboardServerModel wb;
     private ConnectedUser connection;
