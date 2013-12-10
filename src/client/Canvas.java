@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
-import whiteboard.WhiteboardClientModel;
 import drawable.Drawable;
 
 /**
@@ -38,7 +37,7 @@ public class Canvas extends JPanel {
      * relative to the upper-left corner of the drawing buffer.
      */
     private void drawSegment(int x1, int y1, int x2, int y2) {
-        Drawable segment = model.tool.draw(x1, y1, x2, y2);
+        Drawable segment = model.getTool().draw(x1, y1, x2, y2);
         model.draw(segment);
         repaint();
     }

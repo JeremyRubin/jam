@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JToolBar;
 
-import whiteboard.WhiteboardClientModel;
 import client.tools.DrawingTool;
 import client.tools.Eraser;
 import client.tools.Pen;

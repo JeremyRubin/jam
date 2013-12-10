@@ -1,4 +1,4 @@
-package whiteboard;
+package client;
 
 import global.Constants;
 

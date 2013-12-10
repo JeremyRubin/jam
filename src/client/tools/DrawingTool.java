@@ -1,6 +1,6 @@
 package client.tools;
 
-import whiteboard.WhiteboardClientModel;
+import client.WhiteboardClientModel;
 import drawable.Drawable;
 
 public interface DrawingTool {

@@ -2,7 +2,7 @@ package client.tools;
 
 import java.awt.Color;
 
-import whiteboard.WhiteboardClientModel;
+import client.WhiteboardClientModel;
 import drawable.Drawable;
 import drawable.DrawableSegment;
 

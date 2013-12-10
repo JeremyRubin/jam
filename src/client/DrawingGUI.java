@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import whiteboard.WhiteboardClientModel;
-
 public class DrawingGUI {
     private Canvas canvas;
     private DrawingToolbar toolbar;
