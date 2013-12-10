@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import message.StrokeMessage;
 import server.WhiteboardServer;
 import drawable.Drawable;
+import utils.SequentialIDGenerator;
 
 public class WhiteboardServerModel {
     // unique ID per Whiteboard instance generated from the random combination
@@ -16,17 +17,15 @@ public class WhiteboardServerModel {
     // smaller indices indicate that the element was drawn earlier
     private ArrayList<Drawable> drawablesList;
 
-    // should keep track of its clients, assigning them their �own ID�s and
-    // letting them set usernames
-    // private Map<String, String> clients; // ???
-
     // the currently connected clients should be maintained here
     private CurrentUsers users;
+    
+    private SequentialIDGenerator sequentialIDGenerator = new SequentialIDGenerator();
 
     public WhiteboardServerModel(WhiteboardServer server) {
         synchronized (server.openWhiteboards) {
             this.users = new CurrentUsers(this.id);
-            this.id = this.randomWordSequenceGenerator();
+            this.id = this.randomStringGenerator();
         }
     };
 
@@ -35,7 +34,7 @@ public class WhiteboardServerModel {
         synchronized (server.openWhiteboards) {
 
             if (server.openWhiteboards.containsKey(s)) {
-                this.id = this.randomWordSequenceGenerator();
+                this.id = this.randomStringGenerator();
             } else {
                 this.id = s;
                 server.openWhiteboards.put(s, this);
@@ -44,10 +43,15 @@ public class WhiteboardServerModel {
         }
     };
 
-    private String randomWordSequenceGenerator() {
+    
+    private String randomStringGenerator() {
         return String.valueOf((int)(Math.random()*1000000));
     }
 
+    public int getServerID() {
+        return sequentialIDGenerator.getID();
+    }
+    
     /**
      * append drawable to end of drawablesList and then create a strokeMessage
      * to sync clients with.
@@ -66,8 +70,8 @@ public class WhiteboardServerModel {
      */
     public void broadcastStroke(StrokeMessage m) {
         users.broadcast(m.toJSON().toJSONString());
-    }
-
+    }  
+    
     /**
      * add a client and then send them all the data needed
      * 
@@ -79,7 +83,7 @@ public class WhiteboardServerModel {
             users.broadcastSelf();
         }
     }
-
+    
     public void removeClient(User user) {
         synchronized (users) {
             users.removeUser(user);

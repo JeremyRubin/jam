@@ -1,10 +1,8 @@
 package whiteboard;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import message.JSONable;
+import message.FromServerStrokeMessage;
 import message.Messages;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
@@ -20,14 +18,13 @@ import server.ConnectedUser;
  * Represents a user.
  * 
  */
-public class User implements JSONable<User>, Runnable {
+public class User implements Runnable {
     private String username;
     private BlockingQueue<String> inQueue;
     public BlockingQueue<String> outQueue;
 
     private WhiteboardServerModel wb;
     private ConnectedUser connection;
-    private boolean connected;
 
     public User(ConnectedUser connection) {
         this.connection = connection;
@@ -36,6 +33,10 @@ public class User implements JSONable<User>, Runnable {
 
     public String getName() {
         return this.username;
+    }
+
+    public void setName(String newName) {
+        this.username = newName;
     }
 
     /**
@@ -49,30 +50,6 @@ public class User implements JSONable<User>, Runnable {
 
     public void output(String msg) {
         this.outQueue.add(msg);
-    }
-
-    @Override
-    public User fromJSON(String jsonString) {
-        // TODO Auto-generated method stub
-        return null;
-    };
-
-    /**
-     * Partially serialize User object.
-     */
-    @Override
-    public JSONObject toJSON() {
-        Map m = new LinkedHashMap();
-        JSONObject j = new JSONObject();
-        m.put("username", this.username);
-        j.putAll(m);
-        return j;
-    }
-
-    @Override
-    public User fromJSON(JSONObject j) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     /**
@@ -96,44 +73,39 @@ public class User implements JSONable<User>, Runnable {
         }
     }
 
-    public void disconnectUser() {
-        this.connected = false;
-    }
-
     public String handleRequest(String input) {
         JSONObject data = (JSONObject) JSONValue.parse(input);
         String action = (String) data.get(Messages.type);
         if (action.equals(Messages.newWhiteboard)) {
-            // TODO
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
             return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
-        } else if (action.equals(Messages.stroke)) {
+        } else if (action.equals(Messages.toServerStroke)) {
             StrokeMessage s = new StrokeMessage().fromJSON(data);
-            // TODO what should be done with s?
-
+            wb.handleDrawable(s);
+            s.setID(wb.getServerID());
+            return ((FromServerStrokeMessage) s).toJSON().toJSONString();
         } else if (action.equals(Messages.switchWhiteboard)) {
-            // TODO
-
             SwitchWhiteboardMessage s = new SwitchWhiteboardMessage().fromJSON(data);
             if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
                 wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
             else {
-
                 wb = this.connection.server.createWhiteboard(s.whiteboardID);
                 return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
             }
         } else if (action.equals(Messages.setUsernameMessage)) {
-            // TODO
             SetUsernameMessage s = new SetUsernameMessage().fromJSON(data);
+            this.username = s.username;
+            return new SetUsernameMessage(this.username).toJSON().toJSONString();
+        } else if (action.equals(Messages.fromServerStroke)) {
+            throw new RuntimeException("Server shouldn't recieve fromServerStrokeMessage");
+        } else if (action.equals(Messages.currentUsers)) {
+            throw new RuntimeException("Server shouldn't recieve UserListMessage");
         } else if (action.equals(Messages.whiteboardCreated)) {
-
             throw new RuntimeException("Server shouldn't recieve WhiteboardCreatedMessage");
-
         }
         // Should never get here--make sure to return in each of the valid cases
         // above.
         throw new UnsupportedOperationException();
     }
-
 }

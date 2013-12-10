@@ -38,7 +38,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
         this.whiteboardID = whiteboardID;
         this.users = users;
     }
-
+    
     /**
      * Update users to include otherUser. We allow duplicate usernames in a
      * single CurrentUsers object.
@@ -88,12 +88,12 @@ public class CurrentUsers implements JSONable<UserListMessage> {
 
     @Override
     public UserListMessage fromJSON(String jsonString) {
-        return fromJSON((JSONObject) JSONValue.parse(jsonString));
+        return new UserListMessage().fromJSON(jsonString);
     }
 
     @Override
     public UserListMessage fromJSON(JSONObject j) {
-        return new UserListMessage((String) j.get("wb"), (List<String>) j.get("users"));
+        return new UserListMessage().fromJSON(j);
     }
 
 }
