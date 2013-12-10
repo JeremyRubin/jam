@@ -1,10 +1,20 @@
 package whiteboard;
 
+import global.Constants;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import message.StrokeMessage;
+import client.tools.DrawingTool;
+import client.tools.Pen;
 import drawable.Drawable;
 
 public class WhiteboardClientModel {
@@ -14,8 +24,14 @@ public class WhiteboardClientModel {
     // Drawables that have not been acknowledged by the server yet
     private Map<Integer, Drawable> localState = new HashMap<Integer, Drawable>();
 
-    public WhiteboardClientModel() {
+    private int nextLocalIndex = 0;
 
+    public Color color = Color.BLACK;
+    public int brushWidth = 5;
+    public DrawingTool tool;
+
+    public WhiteboardClientModel() {
+        setTool(Pen.class);
     }
 
     /**
@@ -28,18 +44,35 @@ public class WhiteboardClientModel {
     public void handleDrawable(int id, int userSeqId, Drawable d, String username, String whiteboardID) {
         StrokeMessage s = new StrokeMessage(id, userSeqId, d, username, whiteboardID);
         localState.put(localState.size(), d); // what should the key be?
-        serverModel.handleDrawable(s);
     }
 
-    /**
-     * return the current contents of the buffer (to be called after all objects
-     * in the buffer have been drawn) as an Image
-     * 
-     * @return
-     */
-    public Image displayBuffer() {
-        // TODO
-        return null;
+    public Image getImage() {
+        BufferedImage image = new BufferedImage(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT,
+                BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setBackground(Color.WHITE);
+        g.clearRect(0, 0, image.getWidth(), image.getHeight());
+
+        List<Drawable> drawables = new ArrayList<>();
+        drawables.addAll(getSortedListFromMap(syncedState));
+        drawables.addAll(getSortedListFromMap(localState));
+
+        for (Drawable d : drawables) {
+            d.draw(g);
+        }
+
+        return image;
+    }
+
+    private <T> List<T> getSortedListFromMap(Map<Integer, T> map) {
+        List<T> list = new ArrayList<>();
+        List<Integer> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        for (int index : keys) {
+            list.add(map.get(index));
+        }
+        return list;
     }
 
     /**
@@ -61,5 +94,25 @@ public class WhiteboardClientModel {
      */
     public void addDrawableAt(int syncedTo, int local, Drawable drawable) {
 
+    }
+
+    public void draw(Drawable drawable) {
+        localState.put(nextLocalIndex, drawable);
+        nextLocalIndex++;
+    }
+
+    public void setTool(Class<? extends DrawingTool> toolClass) {
+        try {
+            tool = toolClass.newInstance().createFromModel(this);
+        } catch (InstantiationException | IllegalAccessException e) {
+            // this should never happen if there are no bugs
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+        setTool(this.tool.getClass());
     }
 }
