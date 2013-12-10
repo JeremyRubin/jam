@@ -67,9 +67,7 @@ public class ConnectedUser implements Runnable {
                 try {
                     String output = "";
                     while (output != "quit") {
-                        String message = this.user.outQueue.take();
-                        output = this.user.handleRequest(message);
-                        out.println(output);
+                        out.println(this.user.outQueue.take());
                     }
 
                 } catch (InterruptedException e) {
