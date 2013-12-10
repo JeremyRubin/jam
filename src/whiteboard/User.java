@@ -102,7 +102,7 @@ public class User implements Runnable {
                 return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
             }
         } else if (action.equals(Messages.setUsernameMessage)) {
-            SetUsernameMessage s = new SetUsernameMessage().fromJSON(data);
+            SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;
             return new SetUsernameMessage(this.username).toJSON().toJSONString();
         } else if (action.equals(Messages.fromServerStroke)) {

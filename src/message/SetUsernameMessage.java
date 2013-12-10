@@ -4,13 +4,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class SetUsernameMessage implements JSONable<SetUsernameMessage> {
+    public final static SetUsernameMessage STATIC = new SetUsernameMessage();
     public final String username;
 
     public SetUsernameMessage(String whiteboardID) {
         this.username = whiteboardID;
     }
 
-    public SetUsernameMessage() {
+    private SetUsernameMessage() {
         this.username = null;
     }
 

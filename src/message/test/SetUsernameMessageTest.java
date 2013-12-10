@@ -11,7 +11,7 @@ public class SetUsernameMessageTest extends TestCase {
     public void test() {
         SetUsernameMessage test = new SetUsernameMessage("ocelot");
         SetUsernameMessage test2 = new SetUsernameMessage("tiger");
-        assertTrue(test.equals(new SetUsernameMessage().fromJSON(test.toJSON().toJSONString())));
+        assertTrue(test.equals(SetUsernameMessage.STATIC.fromJSON(test.toJSON().toJSONString())));
         assertFalse(test.equals(test2));
     }
 }

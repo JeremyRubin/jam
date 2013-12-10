@@ -5,6 +5,8 @@ import org.json.simple.JSONValue;
 
 public class NewWhiteboardMessage implements JSONable<NewWhiteboardMessage> {
 
+    public static final NewWhiteboardMessage STATIC = new NewWhiteboardMessage();
+
     @Override
     public NewWhiteboardMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));
