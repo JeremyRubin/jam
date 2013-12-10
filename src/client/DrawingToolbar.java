@@ -18,7 +18,7 @@ import client.tools.Pen;
 
 public class DrawingToolbar extends JToolBar {
     private WhiteboardClientModel model;
-    private JButton button;
+    private JButton colorPickerButton;
 
     public DrawingToolbar(WhiteboardClientModel model) {
         this.model = model;
@@ -41,20 +41,20 @@ public class DrawingToolbar extends JToolBar {
         this.addSeparator();
 
         this.add(new JLabel("Current color: "));
-        button = new JButton("             "); // makes it bigger
-        button.setBackground(this.model.color);
-        button.addActionListener(new ActionListener() {
+        colorPickerButton = new JButton("             "); // makes it bigger
+        colorPickerButton.setBackground(this.model.color);
+        colorPickerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color color = JColorChooser.showDialog(DrawingToolbar.this, "Pick color",
                         DrawingToolbar.this.model.color);
                 if (color != null) {
-                    button.setBackground(color);
+                    colorPickerButton.setBackground(color);
                     DrawingToolbar.this.model.setColor(color);
                 }
             }
         });
-        this.add(button);
+        this.add(colorPickerButton);
     }
 
     private class ToolSelectionButton extends JRadioButton {
