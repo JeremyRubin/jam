@@ -13,7 +13,7 @@ import drawable.DrawableSegment;
 public class StrokeMessage implements JSONable<StrokeMessage> {
 
     // unique id for the StrokeMessage generated sequentially by server
-    private final int id;
+    private int id;
 
     // unique id for the StrokeMessage generated sequentially by user (which is
     // where they store that in their buffer)
@@ -68,6 +68,11 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         j.putAll(m);
 
         return j;
+    }
+
+    // Set the server ID of the message.
+    public void setID(int id) {
+        this.id = id;
     }
 
     @Override

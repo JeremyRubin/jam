@@ -1,6 +1,5 @@
 package message;
 
-import whiteboard.CurrentUsers;
 
 //try to fix
 /**
@@ -13,6 +12,7 @@ public final class Messages {
     public final static String switchWhiteboard = new SwitchWhiteboardMessage().getClass().getSimpleName();
     public final static String whiteboardCreated = new WhiteboardCreatedMessage().getClass().getSimpleName();
     public final static String setUsernameMessage = new SetUsernameMessage().getClass().getSimpleName();
-    public final static String currentUsers = new CurrentUsers().getClass().getSimpleName();
+    public final static String currentUsers = new UserListMessage().getClass().getSimpleName();
+
     public final static String type = "type";
 }

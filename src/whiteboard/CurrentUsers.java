@@ -6,6 +6,7 @@ import java.util.List;
 
 import message.JSONable;
 import message.Messages;
+import message.UserListMessage;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -14,8 +15,9 @@ import org.json.simple.JSONValue;
  * Represents the collection of current users connected to a certain whiteboard.
  * 
  */
-public class CurrentUsers implements JSONable<CurrentUsers> {
+public class CurrentUsers implements JSONable<UserListMessage> {
     // all currently logged in users
+    // FIXME this seems really bad
     private List<User> users = new ArrayList<User>();
 
     // a monotonically increasing field in case msgs arrive out of order
@@ -90,13 +92,13 @@ public class CurrentUsers implements JSONable<CurrentUsers> {
     }
 
     @Override
-    public CurrentUsers fromJSON(String jsonString) {
+    public UserListMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));
     }
 
     @Override
-    public CurrentUsers fromJSON(JSONObject j) {
-        return new CurrentUsers((String) j.get("wb"), (LinkedList<User>) j.get("users"));
+    public UserListMessage fromJSON(JSONObject j) {
+        return new UserListMessage((String) j.get("wb"), (LinkedList<User>) j.get("users"));
     }
 
 }

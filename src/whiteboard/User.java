@@ -1,6 +1,5 @@
 package whiteboard;
 
-import java.net.Socket;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -16,7 +15,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import server.ConnectedUser;
-import server.WhiteboardServer;
 
 /**
  * Represents a user.
@@ -33,11 +31,7 @@ public class User implements JSONable<User>, Runnable {
 
     public User(ConnectedUser connection) {
         this.connection = connection;
-    }
-
-    public User(String name, Socket socket, WhiteboardServer server) {
-        this.username = name;
-
+        this.username = "guest";
     }
 
     public String getName() {
