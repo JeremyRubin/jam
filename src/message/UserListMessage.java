@@ -9,8 +9,8 @@ public class UserListMessage implements JSONable<UserListMessage> {
     private final List<String> users;
     private final String wb;
 
-    public UserListMessage(String wb, List<String> users) {
-        this.users = users;
+    public UserListMessage(String wb, List<String> linkedList) {
+        this.users = linkedList;
         this.wb = wb;
     }
 
@@ -44,7 +44,7 @@ public class UserListMessage implements JSONable<UserListMessage> {
         if (!(obj instanceof UserListMessage))
             return false;
         UserListMessage other = (UserListMessage) obj;
-        if (other.users.equals(this.users))
+        if (other.users.equals(this.users) && this.wb.equals(other.wb))
             return true;
         else
             return false;

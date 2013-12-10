@@ -1,11 +1,9 @@
 package whiteboard;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import message.JSONable;
-import message.Messages;
 import message.UserListMessage;
 
 import org.json.simple.JSONObject;
@@ -79,16 +77,13 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     @Override
     public JSONObject toJSON() {
-        JSONObject j = new JSONObject();
-        j.put("wb", this.whiteboardID);
-
-        LinkedList usersListJSON = new LinkedList();
-        for (User user : this.users) {
-            usersListJSON.add(user);
+        List<String> usersList = new ArrayList<String>();
+        synchronized (this.users) {
+            for (User user : this.users) {
+                usersList.add(user.getName());
+            }
         }
-        j.put("users", usersListJSON);
-        j.put(Messages.type, this.getClass().getSimpleName());
-        return j;
+        return new UserListMessage(this.whiteboardID, usersList).toJSON();
     }
 
     @Override
@@ -98,7 +93,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
 
     @Override
     public UserListMessage fromJSON(JSONObject j) {
-        return new UserListMessage((String) j.get("wb"), (LinkedList<User>) j.get("users"));
+        return new UserListMessage((String) j.get("wb"), (List<String>) j.get("users"));
     }
 
 }
