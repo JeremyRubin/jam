@@ -1,10 +1,10 @@
 package drawable;
 
+import java.lang.Long;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -83,19 +83,18 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
 
     @Override
     public JSONObject toJSON() {
-        Map m = new LinkedHashMap();
         JSONObject j = new JSONObject();
-        // TODO add types
-        m.put("x1", this.x1);
-        m.put("y1", this.y1);
-        m.put("x2", this.x2);
-        m.put("y2", this.y2);
-        m.put("r", this.color.getRed());
-        m.put("g", this.color.getGreen());
-        m.put("b", this.color.getBlue());
-        m.put("a", this.color.getAlpha());
-        m.put("width", this.brushWidth);
-        j.putAll(m);
+        // TODO add types ??
+
+        j.put("x1", this.x1);
+        j.put("y1", this.y1);
+        j.put("x2", this.x2);
+        j.put("y2", this.y2);
+        j.put("r", this.color.getRed());
+        j.put("g", this.color.getGreen());
+        j.put("b", this.color.getBlue());
+        j.put("a", this.color.getAlpha());
+        j.put("width", this.brushWidth);
         return j;
     };
 
@@ -106,11 +105,20 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
 
     @Override
     public DrawableSegment fromJSON(JSONObject j) {
-        Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new BigDecimal((Long) j.get("g")).intValue(),
-                new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long) j.get("a")).intValue());
 
-        return new DrawableSegment((int) j.get("x1"), (int) j.get("y1"), (int) j.get("x2"), (int) j.get("y2"), c,
-                (int) j.get("width"));
+        int x1 = ((Long) j.get("x1")).intValue();
+        int y1 = ((Long) j.get("y1")).intValue();
+        int x2 = ((Long) j.get("x2")).intValue();
+        int y2 = ((Long) j.get("y2")).intValue();
+
+        int r = ((Long) j.get("r")).intValue();
+        int g = ((Long) j.get("g")).intValue();
+        int b = ((Long) j.get("b")).intValue();
+        int a = ((Long) j.get("a")).intValue();
+
+        int w = ((Long) j.get("width")).intValue();
+
+        return new DrawableSegment(x1, y1, x2, y2, new Color(r, g, b, a), w);
     };
 
 }
