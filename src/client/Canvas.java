@@ -5,9 +5,8 @@ import global.Constants;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -60,52 +59,29 @@ public class Canvas extends JPanel {
     /*
      * DrawingController handles the user's freehand drawing.
      */
-    private class MouseHandler implements MouseListener, MouseMotionListener {
-        // store the coordinates of the last mouse event, so we can
-        // draw a line segment from that last point to the point of the next
-        // mouse event.
+    private class MouseHandler extends MouseAdapter {
         private int lastX, lastY;
 
-        /*
-         * When mouse button is pressed down, start drawing.
-         */
         @Override
         public void mousePressed(MouseEvent e) {
             lastX = e.getX();
             lastY = e.getY();
         }
 
-        /*
-         * When mouse moves while a button is pressed down, draw a line segment.
-         */
         @Override
         public void mouseDragged(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            drawSegment(lastX, lastY, x, y);
-            lastX = x;
-            lastY = y;
-        }
-
-        // Ignore all these other mouse events.
-        @Override
-        public void mouseMoved(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
+            updateLocation(e.getX(), e.getY());
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            updateLocation(e.getX(), e.getY());
         }
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
+        private void updateLocation(int x, int y) {
+            drawSegment(lastX, lastY, x, y);
+            lastX = x;
+            lastY = y;
         }
     }
 }

@@ -1,12 +1,9 @@
 package drawable;
 
-import java.lang.Long;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -75,7 +72,7 @@ public class DrawableSegment implements Drawable<DrawableSegment> {
         Color oldColor = g.getColor();
         Stroke oldStroke = g.getStroke();
         g.setColor(this.color);
-        g.setStroke(new BasicStroke(this.brushWidth));
+        g.setStroke(new BasicStroke(this.brushWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g.drawLine(this.x1, this.y1, this.x2, this.y2);
         g.setColor(oldColor);
         g.setStroke(oldStroke);
