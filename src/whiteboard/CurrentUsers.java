@@ -1,30 +1,42 @@
 package whiteboard;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import message.StrokeMessage;
+import message.JSONable;
+import message.Messages;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * Represents the collection of current users connected to a certain whiteboard.
  * 
  */
-public class CurrentUsers {
+public class CurrentUsers implements JSONable<CurrentUsers> {
 	// all currently logged in users
-	private final List<User> users = new ArrayList<User>();
+	private List<User> users = new ArrayList<User>();
 
 	// a monotonically increasing field in case msgs arrive out of order
 	// private String timestamp; // ????
 
 	private final String whiteboardID;
 
+	/**
+	 * Use this constructor only in Messages
+	 */
+	public CurrentUsers() {
+		this.whiteboardID = null;
+	}
+
 	public CurrentUsers(String whiteboardID) {
 		this.whiteboardID = whiteboardID;
+	}
+
+	public CurrentUsers(String whiteboardID, List<User> users) {
+		this.whiteboardID = whiteboardID;
+		this.users = users;
 	}
 
 	/**
@@ -63,18 +75,28 @@ public class CurrentUsers {
 	/**
 	 * Only handles names of users
 	 */
+	@Override
 	public JSONObject toJSON() {
-		Map m = new LinkedHashMap();
 		JSONObject j = new JSONObject();
-		m.put("wb", this.whiteboardID);
+		j.put("wb", this.whiteboardID);
 
 		LinkedList usersListJSON = new LinkedList();
 		for (User user : this.users) {
 			usersListJSON.add(user);
 		}
-		m.put("users", usersListJSON);
-		j.putAll(m);
+		j.put("users", usersListJSON);
+		j.put(Messages.type, this.getClass().getSimpleName());
 		return j;
+	}
+
+	@Override
+	public CurrentUsers fromJSON(String jsonString) {
+		return fromJSON((JSONObject) JSONValue.parse(jsonString));
+	}
+
+	@Override
+	public CurrentUsers fromJSON(JSONObject j) {
+		return new CurrentUsers((String) j.get("wb"), (LinkedList<User>) j.get("users"));
 	}
 
 }

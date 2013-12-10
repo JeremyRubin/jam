@@ -21,7 +21,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     private final String username;
     // client username that drew the Drawable
     private final String whiteboardID;
-
     // id of WhiteboardModel
 
     /**
@@ -61,7 +60,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         m.put("drawable", this.drawable.toJSON());
         m.put("username", this.username);
         m.put("wb", this.whiteboardID);
-        m.put("action", this.getClass().getSimpleName());
+        m.put(Messages.type, this.getClass().getSimpleName());
         j.putAll(m);
 
         return j;
