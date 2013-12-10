@@ -11,7 +11,7 @@ public class Pen implements DrawingTool {
     private final int thickness;
 
     public Pen() {
-        // should never be used
+        // should never be used except to access the createFromModel method
         this.color = null;
         this.thickness = -1;
     }

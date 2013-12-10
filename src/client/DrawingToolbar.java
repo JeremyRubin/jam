@@ -30,6 +30,8 @@ public class DrawingToolbar extends JToolBar {
             ToolSelectionButton button = new ToolSelectionButton(toolClass);
             toolButtons.add(button);
             this.add(button);
+
+            // the first tool in the list is the one selected by default
             if (first) {
                 button.doClick();
                 first = false;

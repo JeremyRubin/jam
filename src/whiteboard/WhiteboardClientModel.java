@@ -54,6 +54,7 @@ public class WhiteboardClientModel {
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, image.getWidth(), image.getHeight());
 
+        // draw local stuff last (on top)
         List<Drawable> drawables = new ArrayList<>();
         drawables.addAll(getSortedListFromMap(syncedState));
         drawables.addAll(getSortedListFromMap(localState));
@@ -73,15 +74,6 @@ public class WhiteboardClientModel {
             list.add(map.get(index));
         }
         return list;
-    }
-
-    /**
-     * render what the buffer should (not will immediately) show in background
-     * Synchronized on something so that they are done in proper order process
-     * synced then local state
-     */
-    public void drawBuffer() {
-        // TODO
     }
 
     /**
@@ -105,7 +97,8 @@ public class WhiteboardClientModel {
         try {
             tool = toolClass.newInstance().createFromModel(this);
         } catch (InstantiationException | IllegalAccessException e) {
-            // this should never happen if there are no bugs
+            // this should never happen if there are no bugs, hence
+            // System.exit(1)
             e.printStackTrace();
             System.exit(1);
         }
