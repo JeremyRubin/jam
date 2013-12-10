@@ -20,12 +20,12 @@ import server.ConnectedUser;
  * 
  */
 public class User implements Runnable {
-    private String username;
-    private BlockingQueue<String> inQueue;
-    public BlockingQueue<String> outQueue;
+    private final String username;
+    private final BlockingQueue<String> inQueue;
+    public final BlockingQueue<String> outQueue;
 
     private WhiteboardServerModel wb;
-    private ConnectedUser connection;
+    private final ConnectedUser connection;
 
     public User(ConnectedUser connection) {
         this.connection = connection;
@@ -62,12 +62,12 @@ public class User implements Runnable {
     @Override
     public void run() {
         try {
-            String output = "";
             while (true) {
                 String message = this.inQueue.take();
+                System.out.println(message);
                 if (message == null)
                     break;
-                output = handleRequest(message);
+                String output = handleRequest(message);
                 this.output(output);
             }
         } catch (Exception e) {
