@@ -3,23 +3,25 @@ package drawable;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-public class DrawableSegment implements Drawable<DrawablePath> {
+public class DrawableSegment implements Drawable<DrawableSegment> {
     private final int x1;
     private final int y1;
     private final int x2;
     private final int y2;
 
-    private final Color color;
     // from http://docs.oracle.com/javase/7/docs/api/java/awt/Color.html
-    private final int brushWidth;
+    private final Color color;
 
     // represents thickness of brush strokes
+    private final int brushWidth;
 
     public DrawableSegment(int x1, int y1, int x2, int y2, Color color, int brushWidth) {
         this.x1 = x1;
@@ -57,6 +59,29 @@ public class DrawableSegment implements Drawable<DrawablePath> {
     public static final DrawableSegment STATIC = new DrawableSegment();
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DrawableSegment) {
+            DrawableSegment d = (DrawableSegment) obj;
+            if (this.x1 == d.x1 && this.x2 == d.x2 && this.y1 == d.y1 && this.y2 == d.y2 && this.color.equals(d.color)
+                    && this.brushWidth == d.brushWidth) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        Color oldColor = g.getColor();
+        Stroke oldStroke = g.getStroke();
+        g.setColor(this.color);
+        g.setStroke(new BasicStroke(this.brushWidth));
+        g.drawLine(this.x1, this.y1, this.x2, this.y2);
+        g.setColor(oldColor);
+        g.setStroke(oldStroke);
+    }
+
+    @Override
     public JSONObject toJSON() {
         Map m = new LinkedHashMap();
         JSONObject j = new JSONObject();
@@ -75,34 +100,17 @@ public class DrawableSegment implements Drawable<DrawablePath> {
     };
 
     @Override
-    public DrawablePath fromJSON(String data) {
+    public DrawableSegment fromJSON(String data) {
         return fromJSON((JSONObject) JSONValue.parse(data));
     };
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof DrawableSegment))
-            return false;
-        // TODO proper equals function, assume true for now.
-        return true;
-    }
+    public DrawableSegment fromJSON(JSONObject j) {
+        Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new BigDecimal((Long) j.get("g")).intValue(),
+                new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long) j.get("a")).intValue());
 
-    @Override
-    public void draw(Graphics2D g) {
-        g.setColor(Color.BLACK);
-        g.setStroke(new BasicStroke(1.0f));
-        g.drawLine(x1, y1, x2, y2);
-
-        // need to deal with this - IMPORTANT! every time we draw on the
-        // internal drawing buffer, we
-        // have to notify Swing to repaint this component on the screen.
-        // JPanel.repaint();
-    }
-
-    @Override
-    public DrawablePath fromJSON(JSONObject j) {
-        // TODO proper deserialize
-        return null;
+        return new DrawableSegment((int) j.get("x1"), (int) j.get("y1"), (int) j.get("x2"), (int) j.get("y2"), c,
+                (int) j.get("width"));
     };
 
 }
