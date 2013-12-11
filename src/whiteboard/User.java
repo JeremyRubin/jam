@@ -77,7 +77,7 @@ public class User implements Runnable {
             e.printStackTrace();
         } finally {
             if (this.wb != null) {
-                this.wb.removeClient(this); // remove user from users                
+                this.wb.removeClient(this); // remove user from users
             }
         }
     }
@@ -89,11 +89,6 @@ public class User implements Runnable {
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
             return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
-        } else if (action.equals(Messages.toServerStroke)) {
-            StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
-            wb.handleDrawable(s);
-            s.setID(wb.getServerID());
-            return ((FromServerStrokeMessage) s).toJSON().toJSONString();
         } else if (action.equals(Messages.switchWhiteboard)) {
             SwitchWhiteboardMessage s = SwitchWhiteboardMessage.STATIC.fromJSON(data);
             if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
@@ -102,6 +97,11 @@ public class User implements Runnable {
                 wb = this.connection.server.createWhiteboard(s.whiteboardID);
                 return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
             }
+        } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
+            StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
+            wb.handleDrawable(s);
+            s.setID(wb.getServerID());
+            return ((FromServerStrokeMessage) s).toJSON().toJSONString();
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;
