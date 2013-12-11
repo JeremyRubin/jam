@@ -76,8 +76,9 @@ public class User implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-
-            this.wb.removeClient(this); // remove user from users
+            if (this.wb != null) {
+                this.wb.removeClient(this); // remove user from users                
+            }
         }
     }
 
