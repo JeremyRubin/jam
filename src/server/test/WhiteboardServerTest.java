@@ -1,5 +1,6 @@
 package server.test;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,9 +9,16 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import junit.framework.TestCase;
+import message.FromServerStrokeMessage;
+import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
+import message.StrokeMessage;
+import message.SwitchWhiteboardMessage;
+import message.ToServerStrokeMessage;
 
 import org.junit.Test;
+
+import drawable.DrawableSegment;
 
 public class WhiteboardServerTest extends TestCase {
 
@@ -29,12 +37,17 @@ public class WhiteboardServerTest extends TestCase {
             Socket sock = TestUtil.connect();
             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
+            String s = new NewWhiteboardMessage().toJSON().toJSONString();
+            out.println(s);
+            String wb = SwitchWhiteboardMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)).whiteboardID;
 
-            // TODO Add test code
             SetUsernameMessage username = new SetUsernameMessage("fred");
             out.println(username.toJSON().toJSONString());
             assertEquals(username.toJSON().toJSONString(), TestUtil.nextNonEmptyLine(in));
 
+            StrokeMessage s1 = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5), "fred", wb);
+            out.println(s1.toJSON().toJSONString());
+            assertEquals(s1, FromServerStrokeMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)));
             sock.close();
         } catch (SocketTimeoutException e) {
             throw new RuntimeException(e);
