@@ -11,7 +11,7 @@ import org.json.simple.JSONValue;
 public class WhiteboardCreatedMessage implements JSONable<WhiteboardCreatedMessage> {
     public final static WhiteboardCreatedMessage STATIC = new WhiteboardCreatedMessage();
 
-    private final String whiteboardID;
+    public final String whiteboardID;
 
     public WhiteboardCreatedMessage(String whiteboardID) {
         this.whiteboardID = whiteboardID;

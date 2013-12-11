@@ -16,6 +16,7 @@ import message.FromServerStrokeMessage;
 import message.Messages;
 import message.SwitchWhiteboardMessage;
 import message.UserListMessage;
+import message.WhiteboardCreatedMessage;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -122,6 +123,12 @@ public class DrawingGUI {
         if (action.equals(Messages.switchWhiteboard)) {
             newCanvas();
             SwitchWhiteboardMessage m = SwitchWhiteboardMessage.STATIC.fromJSON(data);
+            model.whiteboard = new Whiteboard(m.whiteboardID, model);
+            frame.setTitle("Now connected to: " + m.whiteboardID);
+            return;
+        } else if (action.equals(Messages.whiteboardCreated)) {
+            newCanvas();
+            WhiteboardCreatedMessage m = WhiteboardCreatedMessage.STATIC.fromJSON(data);
             model.whiteboard = new Whiteboard(m.whiteboardID, model);
             frame.setTitle("Now connected to: " + m.whiteboardID);
             return;
