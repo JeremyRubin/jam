@@ -3,6 +3,17 @@ package message;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * NewWhiteboardMessage is sent only from Client to Server, when the client
+ * would like to connect to a new whiteboard without regard for the whiteboard
+ * name.
+ * 
+ * The server should respond with a SwitchWhiteboardMessage.
+ * 
+ * This or SwitchWhiteboardMessage should be sent by client before sending any
+ * StrokeMessages.
+ * 
+ */
 public class NewWhiteboardMessage implements JSONable<NewWhiteboardMessage> {
 
     public static final NewWhiteboardMessage STATIC = new NewWhiteboardMessage();

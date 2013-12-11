@@ -3,12 +3,21 @@ package message;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * SwitchWhiteboardMessage is sent both from Client and Server.
+ * 
+ * When the client would like to connect to a specific whiteboard or create a
+ * new one with that whiteboard name, this message should be used.
+ * 
+ * When the server connects a user to a specific whiteboard, this should be sent
+ * to the client with the new name.
+ * 
+ * This or NewWhiteboardMessage should be sent by client before sending any
+ * StrokeMessages.
+ * 
+ */
 public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage> {
     public final static SwitchWhiteboardMessage STATIC = new SwitchWhiteboardMessage();
-    // unique id for the switch action generated sequentially by user from the
-    // same pool as StrokeMessage (which is
-    // where they store that in their buffer)
-    // client username that drew the Drawable
     public final String whiteboardID;
 
     public SwitchWhiteboardMessage(String whiteboardID) {

@@ -9,6 +9,7 @@ import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
 import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
+import message.WhiteboardCreatedMessage;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -111,7 +112,6 @@ public class User implements Runnable {
      * 
      * @param input
      *            String representation of the message
-     * @return output String message
      */
     public void handleRequest(String input) {
         JSONObject data = (JSONObject) JSONValue.parse(input);
@@ -122,33 +122,32 @@ public class User implements Runnable {
             }
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
-            output(new SwitchWhiteboardMessage(wb.id));
+            output(new WhiteboardCreatedMessage(wb.id).toJSON().toJSONString());
             this.wb.addClient(this);
         } else if (action.equals(Messages.switchWhiteboard)) {
             SwitchWhiteboardMessage s = SwitchWhiteboardMessage.STATIC.fromJSON(data);
             if (wb != null) {
                 this.wb.removeClient(this);
             }
+            String msg;
             synchronized (this.connection.server.openWhiteboards) {
-                if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
+                if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID)) {
                     // if requested whiteboard exists, switch to it
                     wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
-                else {
+                    msg = new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
+                } else {
                     // if requested whiteboard doesn't exist, create it and
                     // switch to it
                     wb = this.connection.server.createWhiteboard(s.whiteboardID);
+                    msg = new WhiteboardCreatedMessage(wb.id).toJSON().toJSONString();
+
                 }
             }
-            this.output(new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString());
+            this.output(msg);
             this.wb.addClient(this);
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
             StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
-            /**
-             * HEY ANAND LOOK HERE!!!!
-             * 
-             * TODO TODO TODO TODO
-             */
             output(s.getDeleteMessage());
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);

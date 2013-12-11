@@ -13,10 +13,14 @@ import org.json.simple.JSONValue;
  * @author jeremyrubin
  * 
  */
+
+/**
+ * A Message to send to the client which initially sent in a StrokeMessage, to
+ * let it know that it can delete a message from its localState.
+ * 
+ */
 public class DeleteStrokeMessage implements JSONable<DeleteStrokeMessage> {
     public final static DeleteStrokeMessage STATIC = new DeleteStrokeMessage();
-    // unique id for the StrokeMessage generated sequentially by server
-
     // unique id for the StrokeMessage generated sequentially by user (which is
     // where they store that in their buffer)
     private final int userSeqId;
@@ -62,12 +66,6 @@ public class DeleteStrokeMessage implements JSONable<DeleteStrokeMessage> {
 
     @Override
     public DeleteStrokeMessage fromJSON(JSONObject j) {
-        // TODO this bit is useful for you later in serializing color
-
-        // Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new
-        // BigDecimal((Long) j.get("g")).intValue(),
-        // new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long)
-        // j.get("a")).intValue());
         return new DeleteStrokeMessage((new BigDecimal((Long) j.get("userSeqId"))).intValue(),
                 (String) j.get("username"), (String) j.get("wb"));
     }

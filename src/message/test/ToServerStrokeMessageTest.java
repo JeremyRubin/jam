@@ -32,7 +32,6 @@ public class ToServerStrokeMessageTest extends TestCase {
                 "asa", "hello");
         ToServerStrokeMessage test6 = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.RED, 2),
                 "id", "as");
-
         assertFalse(test.equals(test3));
         assertFalse(test.equals(test4));
         assertFalse(test.equals(test5));

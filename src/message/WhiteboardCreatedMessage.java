@@ -3,6 +3,11 @@ package message;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * 
+ * A message to send when a new whiteboard gets created. (should be treated
+ * similarly to a SwitchWhiteboardMessage on client)
+ */
 public class WhiteboardCreatedMessage implements JSONable<WhiteboardCreatedMessage> {
     public final static WhiteboardCreatedMessage STATIC = new WhiteboardCreatedMessage();
 

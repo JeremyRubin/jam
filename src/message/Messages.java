@@ -3,7 +3,8 @@ package message;
 //try to fix
 /**
  * 
- * Essentially just an enum for some method names
+ * The Messages Class serves as a kind of "enum", which has name strings for
+ * each message.
  */
 public final class Messages {
     public final static String fromServerStroke = FromServerStrokeMessage.STATIC.getClass().getSimpleName();

@@ -7,6 +7,12 @@ import org.json.simple.JSONObject;
 import drawable.Drawable;
 import drawable.DrawableSegment;
 
+/**
+ * 
+ * Sub-class of StrokeMessage used so that client implementors can create
+ * StrokeMessages for sending to the Client with only the appropriate fields, as
+ * well as more convenient naming.
+ */
 public class FromServerStrokeMessage extends StrokeMessage {
     public static final FromServerStrokeMessage STATIC = new FromServerStrokeMessage(1, 1, null, null, null);
 

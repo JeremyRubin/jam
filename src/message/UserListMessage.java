@@ -6,6 +6,11 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * 
+ * This message should be sent whenever the users/usernames on a whiteboard are
+ * updated.
+ */
 public class UserListMessage implements JSONable<UserListMessage> {
     public final static UserListMessage STATIC = new UserListMessage();
     private final List<String> users;

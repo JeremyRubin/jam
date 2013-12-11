@@ -10,20 +10,34 @@ import org.json.simple.JSONValue;
 import drawable.Drawable;
 import drawable.DrawableSegment;
 
+/**
+ * This message should be used to communicate when something is drawn. It
+ * shouldn't really be constructed directly, although it can. (better to use
+ * FromServerStrokeMessage and ToServerStrokeMessage)
+ * 
+ * This message type contains all the information needed to integrate a message
+ * on the server or client. Information not needed (ie, id on incoming message)
+ * may not be accurate).
+ * 
+ * Use getDeleteMessage to create a DeleteStrokeMessage corresponding to this
+ * message.
+ * 
+ * Use withServerID to return a StrokeMessage with the appropriately set
+ * serverID.
+ * 
+ * 
+ * 
+ */
 public class StrokeMessage implements JSONable<StrokeMessage> {
     public final static StrokeMessage STATIC = new StrokeMessage();
     // unique id for the StrokeMessage generated sequentially by server
     public final int id;
-
     // unique id for the StrokeMessage generated sequentially by user (which is
     // where they store that in their buffer)
     public final int userSeqId;
-
     public final Drawable drawable;
-
     // client username that drew the Drawable
     public final String username;
-
     // id of WhiteboardModel
     public final String whiteboardID;
 
@@ -70,19 +84,30 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         return j;
     }
 
-    // Set the server ID of the message.
+    /**
+     * Useful for generating the StrokeMessage to be broadcasted out.
+     * 
+     * @param id
+     *            the order ID to return with
+     * @return a StrokeMessage with a different server ID message.
+     */
     public FromServerStrokeMessage withServerID(int id) {
         return new FromServerStrokeMessage(id, this.userSeqId, this.drawable, this.username, this.whiteboardID);
     }
 
+    /**
+     * Used to let the client which sent a StrokeMessage in to delete this from
+     * their localState.
+     * 
+     * @see DeleteStrokeMessage
+     * @return a DeleteStrokeMessage matching this message on the client.
+     */
+    public DeleteStrokeMessage getDeleteMessage() {
+        return new DeleteStrokeMessage(this.userSeqId, this.username, this.whiteboardID);
+    }
+
     @Override
     public StrokeMessage fromJSON(JSONObject j) {
-        // TODO this bit is useful for you later in serializing color
-
-        // Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new
-        // BigDecimal((Long) j.get("g")).intValue(),
-        // new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long)
-        // j.get("a")).intValue());
         return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
                 (Long) j.get("userSeqId"))).intValue(),
                 DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("username"),
@@ -101,7 +126,4 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
             return false;
     }
 
-    public DeleteStrokeMessage getDeleteMessage() {
-        return new DeleteStrokeMessage(this.userSeqId, this.username, this.whiteboardID);
-    }
 }

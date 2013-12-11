@@ -3,6 +3,12 @@ package message;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * 
+ * The client should send this Message to the server when it wants to update its
+ * name.
+ * 
+ */
 public class SetUsernameMessage implements JSONable<SetUsernameMessage> {
     public final static SetUsernameMessage STATIC = new SetUsernameMessage();
     public final String username;
@@ -22,7 +28,6 @@ public class SetUsernameMessage implements JSONable<SetUsernameMessage> {
 
     @Override
     public SetUsernameMessage fromJSON(JSONObject j) {
-        // TODO Auto-generated method stub
         return new SetUsernameMessage((String) j.get("id"));
     }
 
