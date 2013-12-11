@@ -153,7 +153,8 @@ public class User implements Runnable {
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;
-            output(new SetUsernameMessage(this.username));
+            if (wb != null)
+                wb.broadcastUserList();
         } else if (action.equals(Messages.fromServerStroke)) {
             throw new RuntimeException("Server shouldn't recieve fromServerStrokeMessage");
         } else if (action.equals(Messages.currentUsers)) {

@@ -110,6 +110,10 @@ public class WhiteboardServerModel {
         }
     }
 
+    public void broadcastUserList() {
+        users.broadcastSelf();
+    }
+
     /**
      * Remove a user to currentUsers users if it exists.
      * 
