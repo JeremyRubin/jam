@@ -28,24 +28,38 @@ public class User implements Runnable {
     private WhiteboardServerModel wb;
     private final ConnectedUser connection;
 
+    /**
+     * Constructor for User.
+     * 
+     * @param connection
+     *            ConnectedUser
+     */
     public User(ConnectedUser connection) {
         this.connection = connection;
         this.username = "guest";
         this.inQueue = new LinkedBlockingQueue<String>();
         this.outQueue = new LinkedBlockingQueue<String>();
-
     }
 
+    /**
+     * Get instance's username.
+     * 
+     * @return username
+     */
     public String getName() {
         return this.username;
     }
 
+    /**
+     * Set instance's username.
+     * 
+     */
     public void setName(String newName) {
         this.username = newName;
     }
 
     /**
-     * Add a control msg to be processed by the user
+     * Add a control message to be processed by the user in User's run method.
      * 
      * @param msg
      */
@@ -53,23 +67,30 @@ public class User implements Runnable {
         this.inQueue.add(msg);
     }
 
+    /**
+     * Add a control message to be processed by the server in ConnectedUser's
+     * WriterQueue.
+     * 
+     * @param msg
+     */
     public void output(String msg) {
 
         this.outQueue.add(msg);
     }
 
     /**
-     * start the User thread
+     * Start the User thread.
      */
     @Override
     public void run() {
         try {
             while (true) {
                 String message = this.inQueue.take();
-                if (message.equals(User.KILL_MSG))
+                if (message.equals(User.KILL_MSG)) {
                     break;
-                else if (message.equals(User.DO_NOTHING))
+                } else if (message.equals(User.DO_NOTHING)) {
                     continue;
+                }
                 String output = handleRequest(message);
                 this.output(output);
             }
@@ -82,6 +103,13 @@ public class User implements Runnable {
         }
     }
 
+    /**
+     * Handle the message depending on its type.
+     * 
+     * @param input
+     *            String representation of the message
+     * @return output String message
+     */
     public String handleRequest(String input) {
         JSONObject data = (JSONObject) JSONValue.parse(input);
         String action = (String) data.get(Messages.type);
@@ -100,8 +128,11 @@ public class User implements Runnable {
             }
             synchronized (this.connection.server.openWhiteboards) {
                 if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
+                    // if requested whiteboard exists, switch to it
                     wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
                 else {
+                    // if requested whiteboard doesn't exist, create it and
+                    // switch to it
                     wb = this.connection.server.createWhiteboard(s.whiteboardID);
                     return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
                 }
