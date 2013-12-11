@@ -58,6 +58,7 @@ public class WhiteboardServerModel {
      * @param drawable
      */
     public synchronized void handleDrawable(StrokeMessage s) {
+        s = s.alterServerID(this.getServerID());
         drawablesList.add(s.drawable());
         this.broadcastStroke(s);
     }

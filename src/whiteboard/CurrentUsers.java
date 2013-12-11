@@ -52,7 +52,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     public void broadcast(String msg) {
         for (User user : users) {
-            user.input(msg);
+            user.output(msg);
         }
     };
 
@@ -87,7 +87,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     public synchronized void broadcastSelf() {
         for (User user : users) {
-            user.input(this.toJSON().toJSONString());
+            user.output(this.toJSON().toJSONString());
         }
     };
 

@@ -3,7 +3,6 @@ package whiteboard;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import message.FromServerStrokeMessage;
 import message.Messages;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
@@ -21,6 +20,7 @@ import server.ConnectedUser;
  */
 public class User implements Runnable {
     public static final String KILL_MSG = "";
+    private static final String DO_NOTHING = "Donot";
     private String username;
     private final BlockingQueue<String> inQueue;
     public final BlockingQueue<String> outQueue;
@@ -67,10 +67,9 @@ public class User implements Runnable {
                 String message = this.inQueue.take();
                 if (message.equals(User.KILL_MSG))
                     break;
-
+                else if (message.equals(User.DO_NOTHING))
+                    continue;
                 String output = handleRequest(message);
-                System.out.println(message);
-
                 this.output(output);
             }
         } catch (InterruptedException e) {
@@ -86,22 +85,32 @@ public class User implements Runnable {
         JSONObject data = (JSONObject) JSONValue.parse(input);
         String action = (String) data.get(Messages.type);
         if (action.equals(Messages.newWhiteboard)) {
+            if (wb != null) {
+                this.wb.removeClient(this);
+            }
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
+            this.wb.addClient(this);
             return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
         } else if (action.equals(Messages.switchWhiteboard)) {
             SwitchWhiteboardMessage s = SwitchWhiteboardMessage.STATIC.fromJSON(data);
-            if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
-                wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
-            else {
-                wb = this.connection.server.createWhiteboard(s.whiteboardID);
-                return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
+            if (wb != null) {
+                this.wb.removeClient(this);
             }
+            synchronized (this.connection.server.openWhiteboards) {
+                if (this.connection.server.openWhiteboards.containsKey(s.whiteboardID))
+                    wb = this.connection.server.openWhiteboards.get(s.whiteboardID);
+                else {
+                    wb = this.connection.server.createWhiteboard(s.whiteboardID);
+                    return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
+                }
+            }
+            this.wb.addClient(this);
+
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
             StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
-            s.setID(wb.getServerID());
-            return ((FromServerStrokeMessage) s).toJSON().toJSONString();
+            return User.DO_NOTHING;
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;
