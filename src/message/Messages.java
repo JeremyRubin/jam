@@ -6,7 +6,7 @@ package message;
  * Essentially just an enum for some method names
  */
 public final class Messages {
-    public final static String fromServerStroke = StrokeMessage.STATIC.getClass().getSimpleName();
+    public final static String fromServerStroke = FromServerStrokeMessage.STATIC.getClass().getSimpleName();
     public final static String toServerStroke = ToServerStrokeMessage.STATIC.getClass().getSimpleName();
     public final static String newWhiteboard = NewWhiteboardMessage.STATIC.getClass().getSimpleName();
     public final static String switchWhiteboard = SwitchWhiteboardMessage.STATIC.getClass().getSimpleName();

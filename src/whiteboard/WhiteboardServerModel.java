@@ -3,6 +3,7 @@ package whiteboard;
 import java.util.ArrayList;
 import java.util.List;
 
+import message.FromServerStrokeMessage;
 import message.StrokeMessage;
 import server.WhiteboardServer;
 import utils.SequentialIDGenerator;
@@ -64,6 +65,7 @@ public class WhiteboardServerModel {
 
     /**
      * Generates sequential IDs for messages.
+     * 
      * @return
      */
     public int getServerID() {
@@ -78,7 +80,9 @@ public class WhiteboardServerModel {
      */
     public synchronized void handleDrawable(StrokeMessage s) {
         s = s.withServerID(this.getServerID());
-        drawablesList.add(s.drawable());
+        synchronized (drawablesList) {
+            drawablesList.add(s.drawable());
+        }
         this.broadcastStroke(s);
     }
 
@@ -98,6 +102,13 @@ public class WhiteboardServerModel {
      */
     public void addClient(User user) {
         users.addUser(user);
+        synchronized (drawablesList) {
+            SequentialIDGenerator seq = new SequentialIDGenerator();
+            for (Drawable d : drawablesList) {
+                System.out.println(d);
+                user.output(new FromServerStrokeMessage(seq.getID(), -1, d, "", id));
+            }
+        }
     }
 
     /**

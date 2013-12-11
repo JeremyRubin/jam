@@ -51,7 +51,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      * @param msg
      *            string message to be sent.
      */
-    public void broadcast(String msg) {
+    public synchronized void broadcast(String msg) {
         for (User user : users) {
             user.output(msg);
         }

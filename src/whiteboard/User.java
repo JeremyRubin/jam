@@ -3,10 +3,11 @@ package whiteboard;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import message.FromServerStrokeMessage;
+import message.JSONable;
 import message.Messages;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
+import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
 
 import org.json.simple.JSONObject;
@@ -77,6 +78,10 @@ public class User implements Runnable {
         this.outQueue.add(msg);
     }
 
+    public void output(JSONable message) {
+        this.output(message.toJSON().toJSONString());
+    }
+
     /**
      * Start the User thread.
      */
@@ -90,9 +95,7 @@ public class User implements Runnable {
                 } else if (message.equals(User.DO_NOTHING)) {
                     continue;
                 }
-                String output = handleRequest(message);
-                if (!output.equals(User.DO_NOTHING))
-                    this.output(output);
+                handleRequest(message);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -110,7 +113,7 @@ public class User implements Runnable {
      *            String representation of the message
      * @return output String message
      */
-    public String handleRequest(String input) {
+    public void handleRequest(String input) {
         JSONObject data = (JSONObject) JSONValue.parse(input);
         String action = (String) data.get(Messages.type);
         if (action.equals(Messages.newWhiteboard)) {
@@ -119,8 +122,8 @@ public class User implements Runnable {
             }
             NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
+            output(new SwitchWhiteboardMessage(wb.id));
             this.wb.addClient(this);
-            return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
         } else if (action.equals(Messages.switchWhiteboard)) {
             SwitchWhiteboardMessage s = SwitchWhiteboardMessage.STATIC.fromJSON(data);
             if (wb != null) {
@@ -138,29 +141,28 @@ public class User implements Runnable {
             }
             this.output(new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString());
             this.wb.addClient(this);
-            return User.DO_NOTHING;
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
-            FromServerStrokeMessage s = FromServerStrokeMessage.STATIC.fromJSON(data);
+            StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
             /**
              * HEY ANAND LOOK HERE!!!!
              * 
              * TODO TODO TODO TODO
              */
-            return s.getDeleteMessage().toJSON().toJSONString();
+            output(s.getDeleteMessage());
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;
-            return new SetUsernameMessage(this.username).toJSON().toJSONString();
+            output(new SetUsernameMessage(this.username));
         } else if (action.equals(Messages.fromServerStroke)) {
             throw new RuntimeException("Server shouldn't recieve fromServerStrokeMessage");
         } else if (action.equals(Messages.currentUsers)) {
             throw new RuntimeException("Server shouldn't recieve UserListMessage");
         } else if (action.equals(Messages.whiteboardCreated)) {
             throw new RuntimeException("Server shouldn't recieve WhiteboardCreatedMessage");
+        } else {
+            // Should never get here
+            throw new UnsupportedOperationException();
         }
-        // Should never get here--make sure to return in each of the valid cases
-        // above.
-        throw new UnsupportedOperationException();
     }
 }
