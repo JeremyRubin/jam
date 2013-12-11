@@ -24,19 +24,28 @@ public class WhiteboardServerModel {
     private SequentialIDGenerator sequentialIDGenerator = new SequentialIDGenerator();
 
     /**
+     * Constructor that assigns a random string as the whiteboard ID.
      * 
      * @param server
      */
     public WhiteboardServerModel(WhiteboardServer server) {
-        this(server, "board0");
+        this(server, randomStringGenerator());
     };
 
+    /**
+     * Constructor that assigns the string s as the whiteboad ID if it's not
+     * already taken. If it is already taken, generate a random String for the
+     * ID.
+     * 
+     * @param server
+     * @param s
+     *            requested new whiteboardID
+     */
     public WhiteboardServerModel(WhiteboardServer server, String s) {
-        // TODO thread safety
         synchronized (server.openWhiteboards) {
             while (server.openWhiteboards.containsKey(s)) {
-                s = this.randomStringGenerator();
-            } 
+                s = randomStringGenerator();
+            }
             this.id = s;
             this.users = new CurrentUsers(this.id);
             this.drawablesList = new ArrayList<Drawable>();
@@ -44,10 +53,19 @@ public class WhiteboardServerModel {
         }
     };
 
-    private String randomStringGenerator() {
+    /**
+     * Generates random string for whiteboard IDs.
+     * 
+     * @return random string ID
+     */
+    private static String randomStringGenerator() {
         return String.valueOf((int) (Math.random() * 1000000));
     }
 
+    /**
+     * Generates sequential IDs for messages.
+     * @return
+     */
     public int getServerID() {
         return sequentialIDGenerator.getID();
     }
@@ -65,7 +83,7 @@ public class WhiteboardServerModel {
     }
 
     /**
-     * send all clients the StrokeMessage
+     * Send all clients the StrokeMessage.
      * 
      * @param m
      */
@@ -74,7 +92,7 @@ public class WhiteboardServerModel {
     }
 
     /**
-     * add a client and then send them all the data needed
+     * Add a user to currentUsers users.
      * 
      * @param user
      */
@@ -82,6 +100,11 @@ public class WhiteboardServerModel {
         users.addUser(user);
     }
 
+    /**
+     * Remove a user to currentUsers users if it exists.
+     * 
+     * @param user
+     */
     public void removeClient(User user) {
         users.removeUser(user);
     }
