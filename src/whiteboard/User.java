@@ -74,7 +74,6 @@ public class User implements Runnable {
      * @param msg
      */
     public void output(String msg) {
-
         this.outQueue.add(msg);
     }
 
@@ -92,7 +91,8 @@ public class User implements Runnable {
                     continue;
                 }
                 String output = handleRequest(message);
-                this.output(output);
+                if (!output.equals(User.DO_NOTHING))
+                    this.output(output);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -134,11 +134,11 @@ public class User implements Runnable {
                     // if requested whiteboard doesn't exist, create it and
                     // switch to it
                     wb = this.connection.server.createWhiteboard(s.whiteboardID);
-                    return new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString();
                 }
             }
+            this.output(new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString());
             this.wb.addClient(this);
-
+            return User.DO_NOTHING;
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
             StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
