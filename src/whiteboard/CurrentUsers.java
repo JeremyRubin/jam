@@ -15,7 +15,7 @@ import org.json.simple.JSONObject;
 public class CurrentUsers implements JSONable<UserListMessage> {
     // list of all currently logged in users
     // FIXME this seems really bad
-    private List<User> users = new ArrayList<User>();
+    private final List<User> users;
 
     // whiteboardID corresponding to the whiteboard CurrentUsers is connected
     // to.
@@ -29,6 +29,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
      */
     public CurrentUsers(String whiteboardID) {
         this.whiteboardID = whiteboardID;
+        this.users = new ArrayList<User>();
     }
 
     /**
