@@ -23,29 +23,25 @@ public class WhiteboardServerModel {
 
     private SequentialIDGenerator sequentialIDGenerator = new SequentialIDGenerator();
 
+    /**
+     * 
+     * @param server
+     */
     public WhiteboardServerModel(WhiteboardServer server) {
-        synchronized (server.openWhiteboards) {
-            this.users = new CurrentUsers(this.id);
-            this.id = this.randomStringGenerator();
-
-        }
-        this.drawablesList = new ArrayList<Drawable>();
+        this(server, "board0");
     };
 
     public WhiteboardServerModel(WhiteboardServer server, String s) {
         // TODO thread safety
         synchronized (server.openWhiteboards) {
-
-            if (server.openWhiteboards.containsKey(s)) {
-                this.id = this.randomStringGenerator();
-            } else {
-                this.id = s;
-                server.openWhiteboards.put(s, this);
-            }
-
+            while (server.openWhiteboards.containsKey(s)) {
+                s = this.randomStringGenerator();
+            } 
+            this.id = s;
+            this.users = new CurrentUsers(this.id);
+            this.drawablesList = new ArrayList<Drawable>();
+            server.openWhiteboards.put(this.id, this);
         }
-        this.drawablesList = new ArrayList<Drawable>();
-
     };
 
     private String randomStringGenerator() {
