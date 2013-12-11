@@ -105,7 +105,6 @@ public class WhiteboardServerModel {
         synchronized (drawablesList) {
             SequentialIDGenerator seq = new SequentialIDGenerator();
             for (Drawable d : drawablesList) {
-                System.out.println(d);
                 user.output(new FromServerStrokeMessage(seq.getID(), -1, d, "", id));
             }
         }

@@ -19,10 +19,10 @@ public class ClientGUI {
         try {
             // TODO consider catching input errors here
             Socket socket = new Socket(ip, Integer.valueOf(port));
+            new DrawingGUI(this, socket);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        new DrawingGUI(this);
     }
 }

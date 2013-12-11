@@ -29,7 +29,8 @@ public class Canvas extends JPanel {
      */
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(model.getImage(), 0, 0, null);
+        if (model.whiteboard != null)
+            g.drawImage(model.whiteboard.getImage(), 0, 0, null);
     }
 
     /*
@@ -38,7 +39,7 @@ public class Canvas extends JPanel {
      */
     private void drawSegment(int x1, int y1, int x2, int y2) {
         Drawable segment = model.getTool().draw(x1, y1, x2, y2);
-        model.draw(segment);
+        model.whiteboard.draw(segment);
         repaint();
     }
 

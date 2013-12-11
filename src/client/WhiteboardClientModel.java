@@ -1,103 +1,25 @@
 package client;
 
-import global.Constants;
-
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import message.StrokeMessage;
+import message.JSONable;
 import client.tools.DrawingTool;
 import client.tools.Pen;
-import drawable.Drawable;
 
 public class WhiteboardClientModel {
-    // Drawables that have been acknowledged by the server
-    private Map<Integer, Drawable> syncedState = new HashMap<Integer, Drawable>();
-
-    // Drawables that have not been acknowledged by the server yet
-    private Map<Integer, Drawable> localState = new HashMap<Integer, Drawable>();
-
-    private int nextLocalIndex = 0;
-
-    private Color color;
-    private int brushWidth;
+    private Color color = Color.BLACK;
+    private int brushWidth = 5;
     private DrawingTool tool;
 
-    public final String whiteboardID;
+    public BlockingQueue<String> outgoing = new LinkedBlockingQueue<>();
+    public BlockingQueue<String> incoming = new LinkedBlockingQueue<>();
 
-    public WhiteboardClientModel(String whiteboardID) {
-        this.whiteboardID = whiteboardID;
+    public Whiteboard whiteboard;
 
-        // default tool
-        brushWidth = 5;
-        setColor(Color.BLACK);
+    public WhiteboardClientModel() {
         setTool(Pen.class);
-    }
-
-    /**
-     * After the user draws onto the GUI, handleDrawable adds the Drawable to
-     * the localState, then sends a StrokeMessage to the WhiteboardServerModel.
-     * 
-     * @param d
-     *            Drawable that user drew
-     */
-    public void handleDrawable(int id, int userSeqId, Drawable d, String username, String whiteboardID) {
-        StrokeMessage s = new StrokeMessage(id, userSeqId, d, username, whiteboardID);
-        localState.put(localState.size(), d); // what should the key be?
-    }
-
-    public Image getImage() {
-        BufferedImage image = new BufferedImage(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT,
-                BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        g.setBackground(Color.WHITE);
-        g.clearRect(0, 0, image.getWidth(), image.getHeight());
-
-        // draw local stuff last (on top)
-        List<Drawable> drawables = new ArrayList<Drawable>();
-        drawables.addAll(getSortedListFromMap(syncedState));
-        drawables.addAll(getSortedListFromMap(localState));
-
-        for (Drawable d : drawables) {
-            d.draw(g);
-        }
-
-        return image;
-    }
-
-    private <T> List<T> getSortedListFromMap(Map<Integer, T> map) {
-        List<T> list = new ArrayList<T>();
-        List<Integer> keys = new ArrayList<Integer>(map.keySet());
-        Collections.sort(keys);
-        for (int index : keys) {
-            list.add(map.get(index));
-        }
-        return list;
-    }
-
-    /**
-     * The global state has assigned a certain index for the board, so add it to
-     * syncedState and remove from localState
-     * 
-     * @param syncedTo
-     * @param local
-     * @param drawable
-     */
-    public void addDrawableAt(int syncedTo, int local, Drawable drawable) {
-
-    }
-
-    public void draw(Drawable drawable) {
-        localState.put(nextLocalIndex, drawable);
-        nextLocalIndex++;
     }
 
     public void setTool(Class<? extends DrawingTool> toolClass) {
@@ -129,5 +51,13 @@ public class WhiteboardClientModel {
 
     public DrawingTool getTool() {
         return tool;
+    }
+
+    private void sendMessage(String message) {
+        outgoing.offer(message);
+    }
+
+    public void sendMessage(JSONable message) {
+        sendMessage(message.toJSON().toJSONString());
     }
 }
