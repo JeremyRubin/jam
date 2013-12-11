@@ -71,7 +71,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     }
 
     // Set the server ID of the message.
-    public StrokeMessage alterServerID(int id) {
+    public StrokeMessage withServerID(int id) {
         return new StrokeMessage(id, this.userSeqId, this.drawable, this.username, this.whiteboardID);
     }
 

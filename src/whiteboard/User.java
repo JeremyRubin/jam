@@ -54,6 +54,7 @@ public class User implements Runnable {
     }
 
     public void output(String msg) {
+
         this.outQueue.add(msg);
     }
 

@@ -37,23 +37,25 @@ public class WhiteboardServerTest extends TestCase {
             Socket sock = TestUtil.connect();
             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
-            String s = new NewWhiteboardMessage().toJSON().toJSONString();
-            out.println(s);
-            String wb = SwitchWhiteboardMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)).whiteboardID;
 
-            System.out.println(wb);
+            String setup = new NewWhiteboardMessage().toJSON().toJSONString();
 
-            System.out.println(TestUtil.nextNonEmptyLine(in));
+            out.println(setup);
+            String clients = TestUtil.nextNonEmptyLine(in);
+            String wbData = TestUtil.nextNonEmptyLine(in);
+            String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
             SetUsernameMessage username = new SetUsernameMessage("fred");
             out.println(username.toJSON().toJSONString());
-            assertEquals(username.toJSON().toJSONString(), TestUtil.nextNonEmptyLine(in));
+            String switchedName = TestUtil.nextNonEmptyLine(in);
+            assertEquals(username.toJSON().toJSONString(), switchedName);
 
-            StrokeMessage s1 = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5), "fred", wb);
-            out.println(s1.toJSON().toJSONString());
-            s = TestUtil.nextNonEmptyLine(in);
-            System.out.print(s);
-            assertEquals(s1, FromServerStrokeMessage.STATIC.fromJSON(s));
+            // make sure we manually manage ID
+            StrokeMessage stroke = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5), "fred",
+                    wb);
+            out.println(stroke.toJSON().toJSONString());
+            String strokeResponse = TestUtil.nextNonEmptyLine(in);
+            assertEquals(stroke, FromServerStrokeMessage.STATIC.fromJSON(strokeResponse));
             sock.close();
         } catch (SocketTimeoutException e) {
             throw new RuntimeException(e);

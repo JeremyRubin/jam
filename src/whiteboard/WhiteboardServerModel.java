@@ -1,6 +1,7 @@
 package whiteboard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import message.StrokeMessage;
 import server.WhiteboardServer;
@@ -15,7 +16,7 @@ public class WhiteboardServerModel {
 
     // sequence of Drawables
     // smaller indices indicate that the element was drawn earlier
-    private ArrayList<Drawable> drawablesList;
+    private final List<Drawable> drawablesList;
 
     // the currently connected clients should be maintained here
     private CurrentUsers users;
@@ -26,7 +27,9 @@ public class WhiteboardServerModel {
         synchronized (server.openWhiteboards) {
             this.users = new CurrentUsers(this.id);
             this.id = this.randomStringGenerator();
+
         }
+        this.drawablesList = new ArrayList<Drawable>();
     };
 
     public WhiteboardServerModel(WhiteboardServer server, String s) {
@@ -41,6 +44,8 @@ public class WhiteboardServerModel {
             }
 
         }
+        this.drawablesList = new ArrayList<Drawable>();
+
     };
 
     private String randomStringGenerator() {
@@ -58,7 +63,7 @@ public class WhiteboardServerModel {
      * @param drawable
      */
     public synchronized void handleDrawable(StrokeMessage s) {
-        s = s.alterServerID(this.getServerID());
+        s = s.withServerID(this.getServerID());
         drawablesList.add(s.drawable());
         this.broadcastStroke(s);
     }
