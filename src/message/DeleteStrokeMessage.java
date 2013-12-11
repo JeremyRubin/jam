@@ -7,19 +7,13 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import drawable.Drawable;
-import drawable.DrawableSegment;
-
-public class StrokeMessage implements JSONable<StrokeMessage> {
-    public final static StrokeMessage STATIC = new StrokeMessage();
+public class DeleteStrokeMessage implements JSONable<DeleteStrokeMessage> {
+    public final static DeleteStrokeMessage STATIC = new DeleteStrokeMessage();
     // unique id for the StrokeMessage generated sequentially by server
-    private int id;
 
     // unique id for the StrokeMessage generated sequentially by user (which is
     // where they store that in their buffer)
     private final int userSeqId;
-
-    private final Drawable drawable;
 
     // client username that drew the Drawable
     private final String username;
@@ -30,28 +24,20 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     /**
      * Should only be used to access the fromJSON methods
      */
-    private StrokeMessage() {
-        this.id = 0;
+    private DeleteStrokeMessage() {
         this.userSeqId = 0;
-        this.drawable = null;
         this.username = null;
         this.whiteboardID = null;
     }
 
-    public StrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID) {
-        this.id = id;
+    public DeleteStrokeMessage(int userSeqId, String username, String whiteboardID) {
         this.userSeqId = userSeqId;
-        this.drawable = drawable;
         this.username = username;
         this.whiteboardID = whiteboardID;
     }
 
-    public Drawable drawable() {
-        return this.drawable;
-    }
-
     @Override
-    public StrokeMessage fromJSON(String jsonString) {
+    public DeleteStrokeMessage fromJSON(String jsonString) {
         return fromJSON((JSONObject) JSONValue.parse(jsonString));
     }
 
@@ -59,9 +45,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
     public JSONObject toJSON() {
         Map m = new LinkedHashMap();
         JSONObject j = new JSONObject();
-        m.put("id", this.id);
         m.put("userSeqId", this.userSeqId);
-        m.put("drawable", this.drawable.toJSON());
         m.put("username", this.username);
         m.put("wb", this.whiteboardID);
         m.put(Messages.type, this.getClass().getSimpleName());
@@ -70,38 +54,28 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         return j;
     }
 
-    // Set the server ID of the message.
-    public StrokeMessage withServerID(int id) {
-        return new StrokeMessage(id, this.userSeqId, this.drawable, this.username, this.whiteboardID);
-    }
-
     @Override
-    public StrokeMessage fromJSON(JSONObject j) {
+    public DeleteStrokeMessage fromJSON(JSONObject j) {
         // TODO this bit is useful for you later in serializing color
 
         // Color c = new Color(new BigDecimal((Long) j.get("r")).intValue(), new
         // BigDecimal((Long) j.get("g")).intValue(),
         // new BigDecimal((Long) j.get("b")).intValue(), new BigDecimal((Long)
         // j.get("a")).intValue());
-        return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
-                (Long) j.get("userSeqId"))).intValue(),
-                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("username"),
-                (String) j.get("wb"));
+        return new DeleteStrokeMessage((new BigDecimal((Long) j.get("userSeqId"))).intValue(),
+                (String) j.get("username"), (String) j.get("wb"));
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof StrokeMessage))
+        if (!(obj instanceof DeleteStrokeMessage))
             return false;
-        StrokeMessage other = (StrokeMessage) obj;
-        if (this.id == other.id && this.userSeqId == other.userSeqId && this.drawable.equals(other.drawable)
-                && this.username.equals(other.username) && this.whiteboardID.equals(other.whiteboardID))
+        DeleteStrokeMessage other = (DeleteStrokeMessage) obj;
+        if (this.userSeqId == other.userSeqId && this.username.equals(other.username)
+                && this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;
     }
 
-    public DeleteStrokeMessage getDeleteMessage() {
-        return new DeleteStrokeMessage(this.userSeqId, this.username, this.whiteboardID);
-    }
 }
