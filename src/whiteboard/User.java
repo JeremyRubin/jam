@@ -142,6 +142,11 @@ public class User implements Runnable {
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
             StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
+            /**
+             * HEY ANAND LOOK HERE!!!!
+             * 
+             * TODO TODO TODO TODO
+             */
             return s.getDeleteMessage().toJSON().toJSONString();
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);

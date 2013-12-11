@@ -7,6 +7,12 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * TODO WRITE TEST CASES PLS
+ * 
+ * @author jeremyrubin
+ * 
+ */
 public class DeleteStrokeMessage implements JSONable<DeleteStrokeMessage> {
     public final static DeleteStrokeMessage STATIC = new DeleteStrokeMessage();
     // unique id for the StrokeMessage generated sequentially by server
