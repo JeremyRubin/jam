@@ -13,19 +13,19 @@ import drawable.DrawableSegment;
 public class StrokeMessage implements JSONable<StrokeMessage> {
     public final static StrokeMessage STATIC = new StrokeMessage();
     // unique id for the StrokeMessage generated sequentially by server
-    private int id;
+    public final int id;
 
     // unique id for the StrokeMessage generated sequentially by user (which is
     // where they store that in their buffer)
-    private final int userSeqId;
+    public final int userSeqId;
 
-    private final Drawable drawable;
+    public final Drawable drawable;
 
     // client username that drew the Drawable
-    private final String username;
+    public final String username;
 
     // id of WhiteboardModel
-    private final String whiteboardID;
+    public final String whiteboardID;
 
     /**
      * Should only be used to access the fromJSON methods

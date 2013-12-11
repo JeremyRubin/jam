@@ -3,10 +3,10 @@ package whiteboard;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import message.FromServerStrokeMessage;
 import message.Messages;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
-import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
 
 import org.json.simple.JSONObject;
@@ -140,7 +140,7 @@ public class User implements Runnable {
             this.wb.addClient(this);
             return User.DO_NOTHING;
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
-            StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
+            FromServerStrokeMessage s = FromServerStrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
             /**
              * HEY ANAND LOOK HERE!!!!
