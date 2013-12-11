@@ -37,7 +37,7 @@ public class User implements Runnable {
      */
     public User(ConnectedUser connection) {
         this.connection = connection;
-        this.username = "guest";
+        this.username = String.format("guest-%04d", (int) (Math.random() * 1000));
         this.inQueue = new LinkedBlockingQueue<String>();
         this.outQueue = new LinkedBlockingQueue<String>();
     }
