@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,6 +9,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JToolBar;
 
@@ -54,6 +56,18 @@ public class DrawingToolbar extends JToolBar {
             }
         });
         this.add(colorPickerButton);
+
+        this.addSeparator(new Dimension(40, 1));
+        JButton changeUsernameButton = new JButton("Change username...");
+        changeUsernameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = JOptionPane.showInputDialog(DrawingToolbar.this, "Change username to",
+                        DrawingToolbar.this.model.getUsername());
+                DrawingToolbar.this.model.setUsername(username);
+            }
+        });
+        this.add(changeUsernameButton);
     }
 
     private class ToolSelectionButton extends JRadioButton {

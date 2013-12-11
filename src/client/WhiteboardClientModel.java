@@ -5,6 +5,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import message.JSONable;
+import message.SetUsernameMessage;
 import client.tools.DrawingTool;
 import client.tools.Pen;
 
@@ -17,9 +18,11 @@ public class WhiteboardClientModel {
     public BlockingQueue<String> incoming = new LinkedBlockingQueue<>();
 
     public Whiteboard whiteboard;
+    private String username;
 
     public WhiteboardClientModel() {
         setTool(Pen.class);
+        setUsername(String.format("guest-%04d", (int) (Math.random() * 1000)));
     }
 
     public void setTool(Class<? extends DrawingTool> toolClass) {
@@ -59,5 +62,14 @@ public class WhiteboardClientModel {
 
     public void sendMessage(JSONable message) {
         sendMessage(message.toJSON().toJSONString());
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        sendMessage(new SetUsernameMessage(username));
     }
 }
