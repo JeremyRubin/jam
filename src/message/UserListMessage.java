@@ -55,7 +55,9 @@ public class UserListMessage implements JSONable<UserListMessage> {
         if (!(obj instanceof UserListMessage))
             return false;
         UserListMessage other = (UserListMessage) obj;
-        if (other.users.equals(this.users) && this.whiteboardID.equals(other.whiteboardID))
+
+        if (other.users.containsAll(this.users) && this.users.size() == other.users.size()
+                && this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;

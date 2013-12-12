@@ -8,6 +8,10 @@ import message.UserListMessage;
 
 import org.junit.Test;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class UserListMessageTest extends TestCase {
 
     @Test

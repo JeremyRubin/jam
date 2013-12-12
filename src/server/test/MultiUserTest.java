@@ -22,6 +22,10 @@ import org.junit.Test;
 
 import drawable.DrawableSegment;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class MultiUserTest extends TestCase {
 
     /**
@@ -34,12 +38,19 @@ public class MultiUserTest extends TestCase {
     private class UserTester implements Runnable {
         private Exception exception = null;
         private Error error = null;
+        private String name;
+        private int port;
+
+        public UserTester(String name, int port) {
+            this.name = name;
+            this.port = port;
+        }
 
         @Override
         public void run() {
 
             try {
-                Socket sock = TestUtil.connect(4444);
+                Socket sock = TestUtil.connect(this.port);
                 BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 
@@ -50,15 +61,16 @@ public class MultiUserTest extends TestCase {
                 String oldUserList = TestUtil.nextNonEmptyLine(in);
                 String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
-                SetUsernameMessage username = new SetUsernameMessage("fred");
+                SetUsernameMessage username = new SetUsernameMessage(this.name);
                 out.println(username.toJSON().toJSONString());
+                Thread.sleep(1000);
                 String newUserList = TestUtil.nextNonEmptyLine(in);
-                assertEquals(new UserListMessage(wb, new LinkedList<String>(Arrays.asList(new String[] { "fred" })))
+                assertEquals(new UserListMessage(wb, new LinkedList<String>(Arrays.asList(new String[] { this.name })))
                         .toJSON().toJSONString(), newUserList);
 
                 // make sure we manually manage ID
                 StrokeMessage stroke = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5),
-                        "fred", wb);
+                        this.name, wb);
                 out.println(stroke.toJSON().toJSONString());
                 String strokeResponse = TestUtil.nextNonEmptyLine(in);
                 assertEquals(stroke, FromServerStrokeMessage.STATIC.fromJSON(strokeResponse));
@@ -87,9 +99,9 @@ public class MultiUserTest extends TestCase {
         TestUtil.startServer("4444");
         // Avoid race where we try to connect to server too early
         Thread.sleep(100);
-        UserTester x = new UserTester();
-        UserTester y = new UserTester();
-        UserTester z = new UserTester();
+        UserTester x = new UserTester("fred", 4444);
+        UserTester y = new UserTester("joe", 4444);
+        UserTester z = new UserTester("ted", 4444);
 
         Thread a = new Thread(x);
         Thread b = new Thread(y);

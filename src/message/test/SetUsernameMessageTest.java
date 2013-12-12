@@ -5,6 +5,10 @@ import message.SetUsernameMessage;
 
 import org.junit.Test;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class SetUsernameMessageTest extends TestCase {
 
     @Test

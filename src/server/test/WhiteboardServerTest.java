@@ -23,6 +23,10 @@ import org.junit.Test;
 
 import drawable.DrawableSegment;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class WhiteboardServerTest extends TestCase {
 
     /**

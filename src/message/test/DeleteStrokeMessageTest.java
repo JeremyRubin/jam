@@ -5,6 +5,10 @@ import message.DeleteStrokeMessage;
 
 import org.junit.Test;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class DeleteStrokeMessageTest extends TestCase {
     @Test
     public void testEncodeDecodeEquality() {

@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import drawable.DrawableSegment;
 
+/**
+ * @category no_didit
+ * 
+ */
 public class ToServerStrokeMessageTest extends TestCase {
 
     @Test
