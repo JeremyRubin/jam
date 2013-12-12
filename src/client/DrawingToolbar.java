@@ -81,7 +81,7 @@ public class DrawingToolbar extends JToolBar {
 
         this.addSeparator();
 
-        this.add(new JLabel("Brush width: "));
+        this.add(new JLabel("Pen width: "));
         JSlider brushWidthSlider = new JSlider(1, 20, 5);
         brushWidthSlider.addChangeListener(new ChangeListener() {
             @Override
