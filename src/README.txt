@@ -1,10 +1,10 @@
 README:
 
-Start the server by running WhiteboardServer with the desired port.
+Start the server by running "WhiteboardServer --port <PORT>" with the desired port. (if running from eclipse, default is 4444, which is recommended)
 
-Start as many clients as you wish by running ClientGUI, putting in your IP and current port.
+Start as many clients as you wish by running ClientGUI, putting in your IP and selected server port.
 
-Now you can click to draw, change whiteboards, colors, usernames, etc.
+Now you can click to draw, change whiteboards, colors, brush widths, erase, usernames, etc.
 
 
 External Libraries:
