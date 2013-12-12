@@ -1,6 +1,7 @@
 package message.test;
 
 import junit.framework.TestCase;
+import message.DeleteStrokeMessage;
 import message.StrokeMessage;
 
 import org.junit.Test;
@@ -35,5 +36,21 @@ public class StrokeMessageTest extends TestCase {
         assertFalse(test.equals(test7));
         assertTrue(test.equals(test5));
 
+    }
+
+    @Test
+    public void testUpdateId() {
+        StrokeMessage test = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
+        StrokeMessage test2 = new StrokeMessage(10, 2, DrawableSegment.STATIC, "id", "hello");
+
+        assertTrue(test.withServerID(10).equals(test2));
+    }
+
+    @Test
+    public void testDeleteMessageCreator() {
+        StrokeMessage test = new StrokeMessage(1, 2, DrawableSegment.STATIC, "id", "hello");
+        DeleteStrokeMessage test1 = new DeleteStrokeMessage(2, "id", "hello");
+
+        assertTrue(test.getDeleteMessage().equals(test1));
     }
 }
