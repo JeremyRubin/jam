@@ -4,7 +4,7 @@ Start the server by running "WhiteboardServer --port <PORT>" with the desired po
 
 Start as many clients as you wish by running ClientGUI, putting in your IP and selected server port.
 
-Now you can click to draw, change whiteboards, colors, brush widths, erase, usernames, etc.
+Now you can click to draw, change whiteboards, colors, brush widths, erase, usernames, etc. To create a new board, switch whiteboards with blank input.
 
 
 External Libraries:

@@ -26,7 +26,30 @@ import org.json.simple.JSONValue;
  * Creates drawing canvas GUI that includes the canvas and the drawing tools.
  * 
  * DrawingGUI Testing Strategy:
- * TODO !!!!
+ * 
+ * 1) Test logging in to server running on several ports/various IP addresses.
+ * 
+ * 2) Test connecting to a whiteboard which already exists and one which does
+ * not
+ * 
+ * 3) Test creating a new whiteboard
+ * 
+ * 4) Test Switching brush sizes
+ * 
+ * 5) Test lag with three open clients (how long to display)
+ * 
+ * 6) Test that names update appropriately with three clients
+ * 
+ * 7) Test Eraser works
+ * 
+ * 8) Test changing color
+ * 
+ * 9) Test changing color while on Eraser keeps it as an eraser.
+ * 
+ * 10) Test That userlist shrinks when a client disconnects/switches boards.
+ * 
+ * 11) Test changing usernames
+ * 
  */
 public class DrawingGUI {
     private Canvas canvas;
