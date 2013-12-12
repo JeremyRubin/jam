@@ -119,7 +119,7 @@ public class WhiteboardServer {
      */
     public static void main(String[] args) {
         // Command-line argument parsing
-        int port = 8444; // default port
+        int port = 4444; // default port
         Queue<String> arguments = new LinkedList<String>(Arrays.asList(args));
         try {
             while (!arguments.isEmpty()) {
