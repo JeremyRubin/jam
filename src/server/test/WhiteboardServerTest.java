@@ -55,7 +55,7 @@ public class WhiteboardServerTest extends TestCase {
 
             out.println(setup);
             String wbData = TestUtil.nextNonEmptyLine(in);
-            String oldUserList = TestUtil.nextNonEmptyLine(in);
+            TestUtil.nextNonEmptyLine(in); // old user list message
             String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
             SetUsernameMessage username = new SetUsernameMessage("fred");

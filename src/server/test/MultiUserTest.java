@@ -58,7 +58,7 @@ public class MultiUserTest extends TestCase {
 
                 out.println(setup);
                 String wbData = TestUtil.nextNonEmptyLine(in);
-                String oldUserList = TestUtil.nextNonEmptyLine(in);
+                TestUtil.nextNonEmptyLine(in); // old users list
                 String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
                 SetUsernameMessage username = new SetUsernameMessage(this.name);

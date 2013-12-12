@@ -5,7 +5,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import message.JSONable;
 import message.Messages;
-import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
 import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
@@ -125,7 +124,6 @@ public class User implements Runnable {
             if (wb != null) {
                 this.wb.removeClient(this);
             }
-            NewWhiteboardMessage s = new NewWhiteboardMessage().fromJSON(data);
             wb = this.connection.server.createWhiteboard();
             output(new SwitchWhiteboardMessage(wb.id).toJSON().toJSONString());
             this.wb.addClient(this);
@@ -149,7 +147,6 @@ public class User implements Runnable {
         } else if (action.equals(Messages.toServerStroke) && this.wb != null) {
             StrokeMessage s = StrokeMessage.STATIC.fromJSON(data);
             wb.handleDrawable(s);
-            output(s.getDeleteMessage());
         } else if (action.equals(Messages.setUsernameMessage)) {
             SetUsernameMessage s = SetUsernameMessage.STATIC.fromJSON(data);
             this.username = s.username;

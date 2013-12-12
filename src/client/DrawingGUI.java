@@ -37,15 +37,12 @@ public class DrawingGUI {
 
     private JFrame frame;
 
-    private ClientGUI gui;
-
     private Socket socket;
 
     private IncomingReader readerThread;
     private OutgoingWriter writerThread;
 
     public DrawingGUI(ClientGUI gui, Socket socket) {
-        this.gui = gui;
         this.socket = socket;
 
         model = new WhiteboardClientModel();

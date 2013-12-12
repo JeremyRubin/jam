@@ -95,17 +95,6 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         return new FromServerStrokeMessage(id, this.userSeqId, this.drawable, this.username, this.whiteboardID);
     }
 
-    /**
-     * Used to let the client which sent a StrokeMessage in to delete this from
-     * their localState.
-     * 
-     * @see DeleteStrokeMessage
-     * @return a DeleteStrokeMessage matching this message on the client.
-     */
-    public DeleteStrokeMessage getDeleteMessage() {
-        return new DeleteStrokeMessage(this.userSeqId, this.username, this.whiteboardID);
-    }
-
     @Override
     public StrokeMessage fromJSON(JSONObject j) {
         return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(

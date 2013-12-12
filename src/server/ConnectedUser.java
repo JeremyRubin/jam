@@ -21,12 +21,10 @@ public class ConnectedUser implements Runnable {
 
     class ReaderThread implements Runnable {
         private final Socket socket;
-        private final WhiteboardServer server;
         private final User user;
 
         public ReaderThread(Socket socket, WhiteboardServer server, User user) {
             this.socket = socket;
-            this.server = server;
             this.user = user;
         }
 
@@ -51,12 +49,10 @@ public class ConnectedUser implements Runnable {
 
     class WriterThread implements Runnable {
         private final Socket socket;
-        private final WhiteboardServer server;
         private final User user;
 
         public WriterThread(Socket socket, WhiteboardServer server, User user) {
             this.socket = socket;
-            this.server = server;
             this.user = user;
         }
 
