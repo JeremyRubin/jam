@@ -11,7 +11,10 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import client.tools.DrawingTool;
 import client.tools.Eraser;
@@ -76,7 +79,20 @@ public class DrawingToolbar extends JToolBar {
         });
         this.add(colorPickerButton);
 
+        this.addSeparator();
+
+        this.add(new JLabel("Brush width: "));
+        JSlider brushWidthSlider = new JSlider(1, 20, 5);
+        brushWidthSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                DrawingToolbar.this.model.setBrushWidth(((JSlider) (e.getSource())).getValue());
+            }
+        });
+        this.add(brushWidthSlider);
+
         this.addSeparator(new Dimension(40, 1));
+
         JButton changeUsernameButton = new JButton("Change username...");
         changeUsernameButton.addActionListener(new ActionListener() {
             @Override

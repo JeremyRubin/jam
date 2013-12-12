@@ -105,4 +105,9 @@ public class WhiteboardClientModel {
     private static String getGuestUsername() {
         return String.format("guest-%04d", (int) (Math.random() * 1000));
     }
+
+    public void setBrushWidth(int brushWidth) {
+        this.brushWidth = brushWidth;
+        setTool(this.tool.getClass());
+    }
 }
