@@ -8,13 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 /**
- * TODO WRITE TEST CASES PLS
- * 
- * @author jeremyrubin
- * 
- */
-
-/**
  * A Message to send to the client which initially sent in a StrokeMessage, to
  * let it know that it can delete a message from its localState.
  * 

@@ -82,7 +82,6 @@ public class DrawingGUI {
                     });
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
                 writerThread.terminate();
@@ -105,12 +104,10 @@ public class DrawingGUI {
                         String message = model.outgoing.take();
                         out.println(message);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

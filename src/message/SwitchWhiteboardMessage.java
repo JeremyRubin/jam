@@ -35,7 +35,6 @@ public class SwitchWhiteboardMessage implements JSONable<SwitchWhiteboardMessage
 
     @Override
     public SwitchWhiteboardMessage fromJSON(JSONObject j) {
-        // TODO Auto-generated method stub
         return new SwitchWhiteboardMessage((String) j.get("id"));
     }
 
