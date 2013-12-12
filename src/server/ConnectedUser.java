@@ -8,6 +8,12 @@ import java.net.Socket;
 
 import whiteboard.User;
 
+/**
+ * Connected User
+ * 
+ * This class serves as a controller for the User Object which writes out and
+ * reads in from the client.
+ */
 public class ConnectedUser implements Runnable {
     private final Socket socket;
     public final WhiteboardServer server;
@@ -19,6 +25,11 @@ public class ConnectedUser implements Runnable {
         this.user = new User(this);
     }
 
+    /**
+     * This runnable reads lines from the server and feeds them into the User's
+     * input queue.
+     * 
+     */
     class ReaderThread implements Runnable {
         private final Socket socket;
         private final User user;
@@ -47,6 +58,10 @@ public class ConnectedUser implements Runnable {
         }
     }
 
+    /**
+     * 
+     * This runnable writes lines out to the client from the Users output queue
+     */
     class WriterThread implements Runnable {
         private final Socket socket;
         private final User user;
