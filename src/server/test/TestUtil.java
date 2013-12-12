@@ -13,17 +13,17 @@ import server.WhiteboardServer;
  */
 public class TestUtil {
 
-    public static void startServer() {
-        startServer("--port", "4444");
+    public static void startServer(String port) {
+        startServer("--port", port);
     }
 
-    public static Socket connect() throws IOException {
+    public static Socket connect(int port) throws IOException {
         Socket ret = null;
         final int MAX_ATTEMPTS = 50;
         int attempts = 0;
         do {
             try {
-                ret = new Socket("127.0.0.1", 4444);
+                ret = new Socket("127.0.0.1", port);
             } catch (ConnectException ce) {
                 try {
                     if (++attempts > MAX_ATTEMPTS)

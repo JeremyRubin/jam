@@ -33,11 +33,11 @@ public class WhiteboardServerTest extends TestCase {
      */
     @Test(timeout = 1000000)
     public void test() throws IOException, InterruptedException {
-        TestUtil.startServer();
+        TestUtil.startServer("4445");
         // Avoid race where we try to connect to server too early
         Thread.sleep(100);
         try {
-            Socket sock = TestUtil.connect();
+            Socket sock = TestUtil.connect(4445);
             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 

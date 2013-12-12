@@ -39,7 +39,7 @@ public class MultiUserTest extends TestCase {
         public void run() {
 
             try {
-                Socket sock = TestUtil.connect();
+                Socket sock = TestUtil.connect(4444);
                 BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
                 PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 
@@ -84,7 +84,7 @@ public class MultiUserTest extends TestCase {
 
     @Test(timeout = 1000000)
     public void test() throws IOException, InterruptedException {
-        TestUtil.startServer();
+        TestUtil.startServer("4444");
         // Avoid race where we try to connect to server too early
         Thread.sleep(100);
         UserTester x = new UserTester();
