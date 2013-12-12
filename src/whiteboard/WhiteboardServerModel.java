@@ -9,19 +9,24 @@ import server.WhiteboardServer;
 import utils.SequentialIDGenerator;
 import drawable.Drawable;
 
+/**
+ * Model for a specific whiteboard.
+ * 
+ */
 public class WhiteboardServerModel {
-    // unique ID per Whiteboard instance generated from the random combination
-    // of 2 or more words from a large dictionary (i.e., correct horse battery
-    // staple).
+    // unique ID per Whiteboard instance
     public final String id;
 
-    // sequence of Drawables
-    // smaller indices indicate that the element was drawn earlier
+    // sequence of Drawables. smaller indices indicate that the element was
+    // drawn earlier
     private final List<Drawable> drawablesList;
 
     // the currently connected clients should be maintained here
     private CurrentUsers users;
 
+    /**
+     * Generator of sequential message IDs.
+     */
     private SequentialIDGenerator sequentialIDGenerator = new SequentialIDGenerator();
 
     /**
@@ -55,7 +60,7 @@ public class WhiteboardServerModel {
     };
 
     /**
-     * Generates random string for whiteboard IDs.
+     * Generate random string for whiteboard IDs.
      * 
      * @return random string ID
      */
@@ -64,7 +69,7 @@ public class WhiteboardServerModel {
     }
 
     /**
-     * Generates sequential IDs for messages.
+     * Generate sequential IDs for messages.
      * 
      * @return
      */
@@ -73,7 +78,7 @@ public class WhiteboardServerModel {
     }
 
     /**
-     * append drawable to end of drawablesList and then create a strokeMessage
+     * Append drawable to end of drawablesList and then create a strokeMessage
      * to sync clients with.
      * 
      * @param drawable
@@ -96,22 +101,27 @@ public class WhiteboardServerModel {
     }
 
     /**
+     * Broadcasts a message with this whiteboard's currentUsers.
+     */
+    public void broadcastUserList() {
+        users.broadcastSelf();
+    }
+    
+    /**
      * Add a user to currentUsers users.
      * 
      * @param user
      */
     public void addClient(User user) {
         users.addUser(user);
+        
+        // Render any already existing strokes.
         synchronized (drawablesList) {
             SequentialIDGenerator seq = new SequentialIDGenerator();
             for (Drawable d : drawablesList) {
                 user.output(new FromServerStrokeMessage(seq.getID(), -1, d, "", id));
             }
         }
-    }
-
-    public void broadcastUserList() {
-        users.broadcastSelf();
     }
 
     /**

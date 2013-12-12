@@ -18,7 +18,7 @@ import drawable.Drawable;
 //TODO Anand finish documentation/comments
 
 /**
- * Represents a specific whiteboard.
+ * Represents a specific whiteboard's client.
  * 
  */
 public class Whiteboard {

@@ -14,7 +14,7 @@ import client.tools.Pen;
 //TODO Anand finish documentation/comments
 
 /**
- * Model for a DrawingGUI.
+ * Model for a user's DrawingGUI.
  * 
  */
 public class WhiteboardClientModel {

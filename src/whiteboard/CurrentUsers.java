@@ -84,7 +84,7 @@ public class CurrentUsers implements JSONable<UserListMessage> {
     };
 
     /**
-     * Send all users a UsersListMessage after add/remove user.
+     * Send all users a UsersListMessage (usually after add/remove user).
      */
     public synchronized void broadcastSelf() {
         String msg = this.toJSON().toJSONString();

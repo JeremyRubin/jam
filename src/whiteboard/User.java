@@ -69,7 +69,7 @@ public class User implements Runnable {
     }
 
     /**
-     * Add a control message to be processed by the server in ConnectedUser's
+     * Add a control message that's a String to be processed by the server in ConnectedUser's
      * WriterQueue.
      * 
      * @param msg
@@ -78,6 +78,12 @@ public class User implements Runnable {
         this.outQueue.add(msg);
     }
 
+    /**
+     * Add a control message that's a JSONable to be processed by the server in ConnectedUser's
+     * WriterQueue.
+     * 
+     * @param msg
+     */
     public void output(JSONable message) {
         this.output(message.toJSON().toJSONString());
     }

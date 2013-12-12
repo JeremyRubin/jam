@@ -14,8 +14,6 @@ import drawable.DrawableSegment;
  * We unit test the constructors, equals, toJSON, fromJSON methods. We will
  * manually test the draw method.
  * 
- * @author Merry
- * 
  */
 public class DrawableSegmentTest {
 
