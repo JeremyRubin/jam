@@ -54,15 +54,7 @@ public class WhiteboardServer {
     }
 
     public WhiteboardServerModel createWhiteboard() {
-        synchronized (this.openWhiteboards) {
-            WhiteboardServerModel m = new WhiteboardServerModel(this);
-            if (!openWhiteboards.containsKey(m.id)) {
-                openWhiteboards.put(m.id, m);
-                return m;
-            } else {
-                return this.createWhiteboard();
-            }
-        }
+        return new WhiteboardServerModel(this);
     }
 
     public WhiteboardServerModel createWhiteboard(String s) {
