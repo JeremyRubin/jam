@@ -64,8 +64,8 @@ public class DrawingGUI {
         new Thread(readerThread).start();
         new Thread(writerThread).start();
 
-        // TODO remove (automatically connects to a test whiteboard)
-        model.sendMessage(new SwitchWhiteboardMessage("abc"));
+        // automatically connects to a default whiteboard
+        model.sendMessage(new SwitchWhiteboardMessage("default"));
     }
 
     private class IncomingReader implements Runnable {
