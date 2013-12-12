@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import junit.framework.TestCase;
-import message.DeleteStrokeMessage;
 import message.FromServerStrokeMessage;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
@@ -71,8 +70,6 @@ public class WhiteboardServerTest extends TestCase {
             String strokeResponse = TestUtil.nextNonEmptyLine(in);
             StrokeMessage strokeResponseMessage = FromServerStrokeMessage.STATIC.fromJSON(strokeResponse);
             assertEquals(stroke, strokeResponseMessage);
-            assertEquals(DeleteStrokeMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)),
-                    strokeResponseMessage.getDeleteMessage());
 
             String switchBoard = new SwitchWhiteboardMessage("A").toJSON().toJSONString();
             out.println(switchBoard);

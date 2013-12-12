@@ -14,25 +14,25 @@ import whiteboard.WhiteboardServerModel;
 
 /**
  * 
- *         The Whiteboard server is thread safe.
+ * The Whiteboard server is thread safe.
  * 
- *         For each client, it opens a new thread to handle it.
+ * For each client, it opens a new thread to handle it.
  * 
- *         These client threads only ever call two methods in the server,
- *         addConnection and removeConnection and never directly access fields.
- *         These methods are both synchronized, and therefore are immune to
- *         blocking the client handling threads individually.
+ * These client threads only ever call two methods in the server,
+ * addConnection and removeConnection and never directly access fields.
+ * These methods are both synchronized, and therefore are immune to
+ * blocking the client handling threads individually.
  * 
- *         A deadlock *could* arise if several Connection threads try to obtain
- *         both a server lock and a board lock for a single operation, however
- *         these operations are independent and don't ever attempt to acquire
- *         both locks at the same time.
+ * A deadlock *could* arise if several Connection threads try to obtain
+ * both a server lock and a board lock for a single operation, however
+ * these operations are independent and don't ever attempt to acquire
+ * both locks at the same time.
  * 
- *         If serve gets run in multiple threads, it won't be an issue as serve
- *         opens up its own new threads
+ * If serve gets run in multiple threads, it won't be an issue as serve
+ * opens up its own new threads
  * 
- *         The other public methods are static and do not modify any class
- *         variables and are therefore also threadsafe
+ * The other public methods are static and do not modify any class
+ * variables and are therefore also threadsafe
  */
 
 public class WhiteboardServer {

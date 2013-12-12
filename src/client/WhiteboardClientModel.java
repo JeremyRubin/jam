@@ -32,7 +32,7 @@ public class WhiteboardClientModel {
      * Constructor for WhiteboardClientModel.
      */
     public WhiteboardClientModel() {
-        setTool(Pen.class);        // set default tool as Pen
+        setTool(Pen.class); // set default tool as Pen
         setUsername(getGuestUsername());
     }
 

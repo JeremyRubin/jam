@@ -106,7 +106,7 @@ public class WhiteboardServerModel {
     public void broadcastUserList() {
         users.broadcastSelf();
     }
-    
+
     /**
      * Add a user to currentUsers users.
      * 
@@ -114,7 +114,7 @@ public class WhiteboardServerModel {
      */
     public void addClient(User user) {
         users.addUser(user);
-        
+
         // Render any already existing strokes.
         synchronized (drawablesList) {
             SequentialIDGenerator seq = new SequentialIDGenerator();

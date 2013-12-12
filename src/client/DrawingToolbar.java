@@ -34,6 +34,7 @@ import client.tools.Pen;
  * not an empty string to be selected. Change should be reflected in
  * "current user" list at the bottom of the DrawingGUI.
  */
+@SuppressWarnings("serial")
 public class DrawingToolbar extends JToolBar {
     private WhiteboardClientModel model;
     private JButton colorPickerButton;

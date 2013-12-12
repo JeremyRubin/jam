@@ -5,8 +5,6 @@ import drawable.Drawable;
 
 /**
  * Interface for a drawing tool.
- * @author Merry
- *
  */
 public interface DrawingTool {
     /**

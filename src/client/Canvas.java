@@ -17,6 +17,7 @@ import drawable.Drawable;
  * 
  * Canvas Testing Strategy: see DrawingGUI Testing Strategy.
  */
+@SuppressWarnings("serial")
 public class Canvas extends JPanel {
     private final WhiteboardClientModel model;
 
