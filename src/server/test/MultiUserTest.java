@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import junit.framework.TestCase;
 import message.FromServerStrokeMessage;
@@ -14,6 +16,7 @@ import message.SetUsernameMessage;
 import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
 import message.ToServerStrokeMessage;
+import message.UserListMessage;
 
 import org.junit.Test;
 
@@ -43,14 +46,15 @@ public class MultiUserTest extends TestCase {
                 String setup = new NewWhiteboardMessage().toJSON().toJSONString();
 
                 out.println(setup);
-                String clients = TestUtil.nextNonEmptyLine(in);
                 String wbData = TestUtil.nextNonEmptyLine(in);
+                String oldUserList = TestUtil.nextNonEmptyLine(in);
                 String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
                 SetUsernameMessage username = new SetUsernameMessage("fred");
                 out.println(username.toJSON().toJSONString());
-                String switchedName = TestUtil.nextNonEmptyLine(in);
-                assertEquals(username.toJSON().toJSONString(), switchedName);
+                String newUserList = TestUtil.nextNonEmptyLine(in);
+                assertEquals(new UserListMessage(wb, new LinkedList<String>(Arrays.asList(new String[] { "fred" })))
+                        .toJSON().toJSONString(), newUserList);
 
                 // make sure we manually manage ID
                 StrokeMessage stroke = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5),
@@ -59,7 +63,6 @@ public class MultiUserTest extends TestCase {
                 String strokeResponse = TestUtil.nextNonEmptyLine(in);
                 assertEquals(stroke, FromServerStrokeMessage.STATIC.fromJSON(strokeResponse));
                 sock.close();
-
             } catch (Exception e) {
                 exception = e;
             } catch (Error e) {
@@ -91,15 +94,12 @@ public class MultiUserTest extends TestCase {
         Thread a = new Thread(x);
         Thread b = new Thread(y);
         Thread c = new Thread(z);
-        // c.start();
-        Thread.sleep(10);
+        c.start();
         a.start();
-        Thread.sleep(10);
-
-        // b.start();
+        b.start();
         a.join();
-        // b.join();
-        // c.join();
+        b.join();
+        c.join();
         try {
             x.test();
             y.test();
