@@ -17,28 +17,19 @@ public class ToServerStrokeMessageTest extends TestCase {
 
     @Test
     public void testEncodeDecodeEquality() {
-        ToServerStrokeMessage test = new ToServerStrokeMessage(2, DrawableSegment.STATIC, "id", "hello");
+        ToServerStrokeMessage test = new ToServerStrokeMessage(DrawableSegment.STATIC, "hello");
         assertTrue(test.equals(ToServerStrokeMessage.STATIC.fromJSON(test.toJSON().toJSONString())));
     }
 
     @Test
     public void testEquality() {
-        ToServerStrokeMessage test = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.RED, 2), "id",
-                "hello");
-        ToServerStrokeMessage test2 = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.RED, 2),
-                "id", "hello");
+        ToServerStrokeMessage test = new ToServerStrokeMessage(new DrawableSegment(1, 9, 2, 10, Color.RED, 2), "hello");
+        ToServerStrokeMessage test2 = new ToServerStrokeMessage(new DrawableSegment(1, 9, 2, 10, Color.RED, 2), "hello");
         assertTrue(test.equals(test2));
-        ToServerStrokeMessage test3 = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.BLUE, 2),
-                "id", "hello");
-        ToServerStrokeMessage test4 = new ToServerStrokeMessage(1, new DrawableSegment(1, 9, 2, 10, Color.RED, 2),
-                "id", "hello");
-        ToServerStrokeMessage test5 = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.RED, 2),
-                "asa", "hello");
-        ToServerStrokeMessage test6 = new ToServerStrokeMessage(2, new DrawableSegment(1, 9, 2, 10, Color.RED, 2),
-                "id", "as");
+        ToServerStrokeMessage test3 = new ToServerStrokeMessage(new DrawableSegment(1, 9, 2, 10, Color.BLUE, 2),
+                "hello");
+        ToServerStrokeMessage test4 = new ToServerStrokeMessage(new DrawableSegment(1, 9, 2, 10, Color.RED, 2), "as");
         assertFalse(test.equals(test3));
         assertFalse(test.equals(test4));
-        assertFalse(test.equals(test5));
-        assertFalse(test.equals(test6));
     }
 }

@@ -30,14 +30,12 @@ import drawable.DrawableSegment;
  */
 public class StrokeMessage implements JSONable<StrokeMessage> {
     public final static StrokeMessage STATIC = new StrokeMessage();
+
     // unique id for the StrokeMessage generated sequentially by server
     public final int id;
-    // unique id for the StrokeMessage generated sequentially by user (which is
-    // where they store that in their buffer)
-    public final int userSeqId;
+
     public final Drawable drawable;
-    // client username that drew the Drawable
-    public final String username;
+
     // id of WhiteboardModel
     public final String whiteboardID;
 
@@ -46,17 +44,13 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
      */
     private StrokeMessage() {
         this.id = 0;
-        this.userSeqId = 0;
         this.drawable = null;
-        this.username = null;
         this.whiteboardID = null;
     }
 
-    public StrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID) {
+    public StrokeMessage(int id, Drawable drawable, String whiteboardID) {
         this.id = id;
-        this.userSeqId = userSeqId;
         this.drawable = drawable;
-        this.username = username;
         this.whiteboardID = whiteboardID;
     }
 
@@ -74,9 +68,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         Map m = new LinkedHashMap();
         JSONObject j = new JSONObject();
         m.put("id", this.id);
-        m.put("userSeqId", this.userSeqId);
         m.put("drawable", this.drawable.toJSON());
-        m.put("username", this.username);
         m.put("wb", this.whiteboardID);
         m.put(Messages.type, this.getClass().getSimpleName());
         j.putAll(m);
@@ -92,15 +84,13 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
      * @return a StrokeMessage with a different server ID message.
      */
     public FromServerStrokeMessage withServerID(int id) {
-        return new FromServerStrokeMessage(id, this.userSeqId, this.drawable, this.username, this.whiteboardID);
+        return new FromServerStrokeMessage(id, this.drawable, this.whiteboardID);
     }
 
     @Override
     public StrokeMessage fromJSON(JSONObject j) {
-        return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
-                (Long) j.get("userSeqId"))).intValue(),
-                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("username"),
-                (String) j.get("wb"));
+        return new StrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(),
+                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("wb"));
     }
 
     @Override
@@ -108,8 +98,7 @@ public class StrokeMessage implements JSONable<StrokeMessage> {
         if (!(obj instanceof StrokeMessage))
             return false;
         StrokeMessage other = (StrokeMessage) obj;
-        if (this.id == other.id && this.userSeqId == other.userSeqId && this.drawable.equals(other.drawable)
-                && this.username.equals(other.username) && this.whiteboardID.equals(other.whiteboardID))
+        if (this.id == other.id && this.drawable.equals(other.drawable) && this.whiteboardID.equals(other.whiteboardID))
             return true;
         else
             return false;

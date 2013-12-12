@@ -29,11 +29,6 @@ public class Whiteboard {
     // Drawables that have been acknowledged by the server
     private Map<Integer, Drawable> serverDrawables = new HashMap<Integer, Drawable>();
 
-    // Drawables that have not been acknowledged by the server yet
-    private Map<Integer, Drawable> localState = new HashMap<Integer, Drawable>();
-
-    private int nextLocalIndex = 0;
-
     public Whiteboard(String whiteboardID, WhiteboardClientModel model) {
         this.whiteboardID = whiteboardID;
         this.model = model;
@@ -47,16 +42,7 @@ public class Whiteboard {
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, image.getWidth(), image.getHeight());
 
-        // draw local stuff last (on top)
-        List<Drawable> drawables = new ArrayList<Drawable>();
-        drawables.addAll(getSortedListFromMap(serverDrawables));
-
-        // TODO this is commented out for now because it saves us a lot of work
-        // at the expense of a little performance
-        //
-        // drawables.addAll(getSortedListFromMap(localState));
-
-        for (Drawable d : drawables) {
+        for (Drawable d : getSortedListFromMap(serverDrawables)) {
             d.draw(g);
         }
 
@@ -74,9 +60,7 @@ public class Whiteboard {
     }
 
     public void draw(Drawable drawable) {
-        localState.put(nextLocalIndex, drawable);
-        model.sendMessage(new ToServerStrokeMessage(nextLocalIndex, drawable, "", whiteboardID));
-        nextLocalIndex++;
+        model.sendMessage(new ToServerStrokeMessage(drawable, whiteboardID));
     }
 
     public void addDrawableFromServer(int id, Drawable drawable) {

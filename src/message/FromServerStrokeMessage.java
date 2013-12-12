@@ -14,17 +14,15 @@ import drawable.DrawableSegment;
  * well as more convenient naming.
  */
 public class FromServerStrokeMessage extends StrokeMessage {
-    public static final FromServerStrokeMessage STATIC = new FromServerStrokeMessage(1, 1, null, null, null);
+    public static final FromServerStrokeMessage STATIC = new FromServerStrokeMessage(1, null, null);
 
-    public FromServerStrokeMessage(int id, int userSeqId, Drawable drawable, String username, String whiteboardID) {
-        super(id, userSeqId, drawable, username, whiteboardID);
+    public FromServerStrokeMessage(int id, Drawable drawable, String whiteboardID) {
+        super(id, drawable, whiteboardID);
     }
 
     @Override
     public FromServerStrokeMessage fromJSON(JSONObject j) {
-        return new FromServerStrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(), (new BigDecimal(
-                (Long) j.get("userSeqId"))).intValue(),
-                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("username"),
-                (String) j.get("wb"));
+        return new FromServerStrokeMessage((new BigDecimal((Long) j.get("id"))).intValue(),
+                DrawableSegment.STATIC.fromJSON((JSONObject) j.get("drawable")), (String) j.get("wb"));
     }
 }

@@ -9,10 +9,9 @@ import drawable.Drawable;
  * naming.
  */
 public class ToServerStrokeMessage extends StrokeMessage {
-    public static final ToServerStrokeMessage STATIC = new ToServerStrokeMessage(1, null, null, null);
+    public static final ToServerStrokeMessage STATIC = new ToServerStrokeMessage(null, null);
 
-    public ToServerStrokeMessage(int userSeqId, Drawable drawable, String username, String whiteboardID) {
-        super(0, userSeqId, drawable, username, whiteboardID);
+    public ToServerStrokeMessage(Drawable drawable, String whiteboardID) {
+        super(0, drawable, whiteboardID);
     }
-
 }

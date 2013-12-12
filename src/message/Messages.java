@@ -1,8 +1,6 @@
 package message;
 
-//TODO try to fix
 /**
- * 
  * The Messages Class serves as a kind of "enum", which has name strings for
  * each message.
  */

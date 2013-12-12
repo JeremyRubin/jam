@@ -64,8 +64,7 @@ public class WhiteboardServerTest extends TestCase {
                     .toJSON().toJSONString(), newUserList);
 
             // make sure we manually manage ID
-            StrokeMessage stroke = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5), "fred",
-                    wb);
+            StrokeMessage stroke = new ToServerStrokeMessage(new DrawableSegment(0, 0, 5, 10, Color.RED, 5), wb);
             out.println(stroke.toJSON().toJSONString());
             String strokeResponse = TestUtil.nextNonEmptyLine(in);
             StrokeMessage strokeResponseMessage = FromServerStrokeMessage.STATIC.fromJSON(strokeResponse);
