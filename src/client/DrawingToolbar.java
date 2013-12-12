@@ -17,6 +17,18 @@ import client.tools.DrawingTool;
 import client.tools.Eraser;
 import client.tools.Pen;
 
+/**
+ * Creates drawing toolbar GUI.
+ * 
+ * Includes: pen/eraser chooser, color picker, change username button.
+ * 
+ * DrawingToolbar Testing Strategy:
+ * 
+ * 1) Clicking pen radio button: only pen radio button selected, user should be able to draw black lines
+ * 2) Clicking eraser radio button: only eraser radio button selected, user should be able to erase by drawing thick white lines
+ * 3) Clicking color button: should bring up a color selector window. After user updates the color, the button should be the selected color, and the user should be drawing in the selected color.
+ * 4) Clicking username button: should bring up a window to input a new username. Should allow any username that's not an empty string to be selected. Change should be reflected in "current user" list at the bottom of the DrawingGUI.
+ */
 public class DrawingToolbar extends JToolBar {
     private WhiteboardClientModel model;
     private JButton colorPickerButton;

@@ -22,6 +22,12 @@ import message.WhiteboardCreatedMessage;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * Creates drawing canvas GUI that includes the canvas and the drawing tools.
+ * 
+ * DrawingGUI Testing Strategy:
+ * TODO !!!!
+ */
 public class DrawingGUI {
     private Canvas canvas;
     private DrawingToolbar toolbar;
@@ -68,6 +74,10 @@ public class DrawingGUI {
         model.sendMessage(new SwitchWhiteboardMessage("default"));
     }
 
+    /**
+     * Read in incoming messages.
+     * 
+     */
     private class IncomingReader implements Runnable {
         @Override
         public void run() {
@@ -89,6 +99,10 @@ public class DrawingGUI {
         }
     }
 
+    /**
+     * Print out server's outgoing messages.
+     * 
+     */
     private class OutgoingWriter implements Runnable {
         private volatile boolean running = true;
 
@@ -113,6 +127,12 @@ public class DrawingGUI {
         }
     }
 
+    /**
+     * Handle the message depending on its type.
+     * 
+     * @param message
+     *            String representation of the message
+     */
     private void handleMessage(String message) {
         JSONObject data = (JSONObject) JSONValue.parse(message);
         String action = (String) data.get(Messages.type);
@@ -144,6 +164,12 @@ public class DrawingGUI {
         frame.repaint();
     }
 
+    /**
+     * Update userList
+     * 
+     * @param users
+     *            updated list of users
+     */
     private void setCurrentUsers(List<String> users) {
         StringBuilder sb = new StringBuilder();
         sb.append("Currently connected users: ");
@@ -156,12 +182,18 @@ public class DrawingGUI {
         userList.setText(sb.toString());
     }
 
+    /**
+     * Remove existing canvas (if it exists), then add new one.
+     */
     private void newCanvas() {
         if (canvas != null)
             removeCanvas();
         addCanvas();
     }
 
+    /**
+     * Set new canvas variable, update GUI.
+     */
     private void addCanvas() {
         canvas = new Canvas(model);
         frame.add(canvas, BorderLayout.CENTER);
@@ -170,6 +202,9 @@ public class DrawingGUI {
         frame.add(userList, BorderLayout.PAGE_END);
     }
 
+    /**
+     * Set canvas variable to null, update GUI.
+     */
     private void removeCanvas() {
         frame.remove(canvas);
         canvas = null;

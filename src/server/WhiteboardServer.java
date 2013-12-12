@@ -14,8 +14,6 @@ import whiteboard.WhiteboardServerModel;
 
 /**
  * 
- * @author jeremyrubin
- * 
  *         The Whiteboard server is thread safe.
  * 
  *         For each client, it opens a new thread to handle it.

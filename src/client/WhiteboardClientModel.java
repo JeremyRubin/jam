@@ -11,6 +11,12 @@ import message.SwitchWhiteboardMessage;
 import client.tools.DrawingTool;
 import client.tools.Pen;
 
+//TODO Anand finish documentation/comments
+
+/**
+ * Model for a DrawingGUI.
+ * 
+ */
 public class WhiteboardClientModel {
     private Color color = Color.BLACK;
     private int brushWidth = 5;
@@ -22,11 +28,19 @@ public class WhiteboardClientModel {
     public Whiteboard whiteboard;
     private String username;
 
+    /**
+     * Constructor for WhiteboardClientModel.
+     */
     public WhiteboardClientModel() {
-        setTool(Pen.class);
+        setTool(Pen.class);        // set default tool as Pen
         setUsername(getGuestUsername());
     }
 
+    /**
+     * Create new tool object of type toolClass.
+     * 
+     * @param toolClass
+     */
     public void setTool(Class<? extends DrawingTool> toolClass) {
         try {
             tool = toolClass.newInstance().createFromModel(this);

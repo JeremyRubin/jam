@@ -14,6 +14,8 @@ import drawable.Drawable;
 /**
  * Canvas represents a drawing surface that allows the user to draw on it
  * freehand, with the mouse.
+ * 
+ * Canvas Testing Strategy: see DrawingGUI Testing Strategy.
  */
 public class Canvas extends JPanel {
     private final WhiteboardClientModel model;

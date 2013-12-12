@@ -9,6 +9,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+/**
+ * Creates connection GUI that asks for a user's IP address and port number.
+ * 
+ * ConnectionGUI Testing Strategy:
+ * 
+ * 1) Default values: IP address should default to 127.0.0.1, port number to
+ * 4444.
+ * 
+ * 2) Pressing 'connect' button: If IP and port are valid, ConnectionGUI should
+ * close, and a DrawingGUI should start up.
+ * 
+ */
 public class ConnectionGUI {
     private JTextField ipAddressTextField = new JTextField(20);
     private JTextField portTextField = new JTextField(20);
@@ -25,11 +37,12 @@ public class ConnectionGUI {
         frame.setLayout(new FlowLayout());
 
         frame.add(new JLabel("IP address: "));
-        ipAddressTextField = new JTextField("127.0.0.1", 20);
+        ipAddressTextField = new JTextField("127.0.0.1", 20); // set default IP
+                                                              // address
         frame.add(ipAddressTextField);
 
         frame.add(new JLabel("Port: "));
-        portTextField = new JTextField("4444", 20);
+        portTextField = new JTextField("4444", 20); // set default port number
         frame.add(portTextField);
 
         JButton connectButton = new JButton("Connect");

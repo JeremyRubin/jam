@@ -5,6 +5,10 @@ import java.net.Socket;
 
 import javax.swing.SwingUtilities;
 
+/**
+ * Run this class to start the client.
+ * 
+ */
 public class ClientGUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -15,6 +19,13 @@ public class ClientGUI {
         });
     }
 
+    /**
+     * Open a whiteboard. Precondition: ip and port must be valid IP addresses
+     * and port numbers, respectively.
+     * 
+     * @param ip
+     * @param port
+     */
     public void connect(String ip, String port) {
         try {
             // TODO consider catching input errors here

@@ -15,6 +15,12 @@ import java.util.Map;
 import message.ToServerStrokeMessage;
 import drawable.Drawable;
 
+//TODO Anand finish documentation/comments
+
+/**
+ * Represents a specific whiteboard.
+ * 
+ */
 public class Whiteboard {
     public final WhiteboardClientModel model;
 
