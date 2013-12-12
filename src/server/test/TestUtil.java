@@ -41,6 +41,7 @@ public class TestUtil {
     private static void startServer(final String... args) {
         final String myArgs[] = args;
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     WhiteboardServer.main(myArgs);
@@ -55,6 +56,7 @@ public class TestUtil {
     public static String nextNonEmptyLine(BufferedReader in) throws IOException {
         while (true) {
             String ret = in.readLine();
+            System.out.println(ret);
             if (ret == null || !ret.equals(""))
                 return ret;
         }

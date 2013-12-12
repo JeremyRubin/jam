@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import junit.framework.TestCase;
 import message.FromServerStrokeMessage;
@@ -15,6 +17,7 @@ import message.SetUsernameMessage;
 import message.StrokeMessage;
 import message.SwitchWhiteboardMessage;
 import message.ToServerStrokeMessage;
+import message.UserListMessage;
 
 import org.junit.Test;
 
@@ -41,14 +44,15 @@ public class WhiteboardServerTest extends TestCase {
             String setup = new NewWhiteboardMessage().toJSON().toJSONString();
 
             out.println(setup);
-            String clients = TestUtil.nextNonEmptyLine(in);
             String wbData = TestUtil.nextNonEmptyLine(in);
+            String oldUserList = TestUtil.nextNonEmptyLine(in);
             String wb = SwitchWhiteboardMessage.STATIC.fromJSON(wbData).whiteboardID;
 
             SetUsernameMessage username = new SetUsernameMessage("fred");
             out.println(username.toJSON().toJSONString());
-            String switchedName = TestUtil.nextNonEmptyLine(in);
-            assertEquals(username.toJSON().toJSONString(), switchedName);
+            String newUserList = TestUtil.nextNonEmptyLine(in);
+            assertEquals(new UserListMessage(wb, new LinkedList<String>(Arrays.asList(new String[] { "fred" })))
+                    .toJSON().toJSONString(), newUserList);
 
             // make sure we manually manage ID
             StrokeMessage stroke = new ToServerStrokeMessage(0, new DrawableSegment(0, 0, 5, 10, Color.RED, 5), "fred",
