@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -147,7 +148,15 @@ public class DrawingGUI {
     }
 
     private void setCurrentUsers(List<String> users) {
-        userList.setText(users.toString());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Currently connected users: ");
+        for (String user : users) {
+            sb.append(user);
+            sb.append(", ");
+        }
+        if (sb.lastIndexOf(",") >= 0)
+            sb.delete(sb.lastIndexOf(","), sb.length());
+        userList.setText(sb.toString());
     }
 
     private void newCanvas() {

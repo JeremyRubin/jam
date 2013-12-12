@@ -64,6 +64,9 @@ public class DrawingToolbar extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 String username = JOptionPane.showInputDialog(DrawingToolbar.this, "Change username to",
                         DrawingToolbar.this.model.getUsername());
+                if (username == null)
+                    return;
+                username = WhiteboardClientModel.sanitizeString(username);
                 DrawingToolbar.this.model.setUsername(username);
             }
         });
