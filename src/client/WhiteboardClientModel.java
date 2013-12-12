@@ -23,7 +23,6 @@ public class WhiteboardClientModel {
     private DrawingTool tool;
 
     public BlockingQueue<String> outgoing = new LinkedBlockingQueue<>();
-    public BlockingQueue<String> incoming = new LinkedBlockingQueue<>();
 
     public Whiteboard whiteboard;
     private String username;
