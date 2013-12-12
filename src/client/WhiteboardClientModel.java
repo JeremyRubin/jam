@@ -24,7 +24,7 @@ public class WhiteboardClientModel {
 
     public WhiteboardClientModel() {
         setTool(Pen.class);
-        setUsername(String.format("guest-%04d", (int) (Math.random() * 1000)));
+        setUsername(getGuestUsername());
     }
 
     public void setTool(Class<? extends DrawingTool> toolClass) {
@@ -71,6 +71,8 @@ public class WhiteboardClientModel {
     }
 
     public void setUsername(String username) {
+        if (username.equals(""))
+            username = getGuestUsername();
         this.username = username;
         sendMessage(new SetUsernameMessage(username));
     }
@@ -84,5 +86,9 @@ public class WhiteboardClientModel {
 
     public static String sanitizeString(String s) {
         return s.replaceAll("[^a-zA-Z0-9 '!?.,\\-\\(\\)]", "");
+    }
+
+    private static String getGuestUsername() {
+        return String.format("guest-%04d", (int) (Math.random() * 1000));
     }
 }
