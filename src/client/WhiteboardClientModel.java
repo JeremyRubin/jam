@@ -11,8 +11,6 @@ import message.SwitchWhiteboardMessage;
 import client.tools.DrawingTool;
 import client.tools.Pen;
 
-//TODO Anand finish documentation/comments
-
 /**
  * Model for a user's DrawingGUI.
  */

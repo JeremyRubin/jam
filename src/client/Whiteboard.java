@@ -15,25 +15,42 @@ import java.util.Map;
 import message.ToServerStrokeMessage;
 import drawable.Drawable;
 
-//TODO Anand finish documentation/comments
-
 /**
  * Represents a specific whiteboard's client.
- * 
  */
 public class Whiteboard {
+    /**
+     * the parent WhiteboardClientModel
+     */
     public final WhiteboardClientModel model;
 
+    /**
+     * the ID of this whiteboard
+     */
     public final String whiteboardID;
 
     // Drawables that have been acknowledged by the server
     private Map<Integer, Drawable> serverDrawables = new HashMap<Integer, Drawable>();
 
+    /**
+     * Creates a new local mirror of a remote whiteboard with id "whiteboardID", with the given
+     * WhiteboardClientModel as a parent.
+     * 
+     * @param whiteboardID
+     *            a String whiteboard ID
+     * @param model
+     *            the parent model
+     */
     public Whiteboard(String whiteboardID, WhiteboardClientModel model) {
         this.whiteboardID = whiteboardID;
         this.model = model;
     }
 
+    /**
+     * Renders the whiteboard and returns an Image.
+     * 
+     * @return an Image
+     */
     public Image getImage() {
         BufferedImage image = new BufferedImage(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT,
                 BufferedImage.TYPE_INT_RGB);
@@ -49,6 +66,11 @@ public class Whiteboard {
         return image;
     }
 
+    /**
+     * @param map
+     *            a Map<Integer, T>
+     * @return a List<T> with each of the values of the map, sorted by their keys
+     */
     private <T> List<T> getSortedListFromMap(Map<Integer, T> map) {
         List<T> list = new ArrayList<T>();
         List<Integer> keys = new ArrayList<Integer>(map.keySet());
@@ -59,11 +81,27 @@ public class Whiteboard {
         return list;
     }
 
+    /**
+     * Adds a drawable to the whiteboard.
+     * 
+     * (Sends it to the server.)
+     * 
+     * @param drawable
+     *            a Drawable
+     */
     public void draw(Drawable drawable) {
         model.sendMessage(new ToServerStrokeMessage(drawable, whiteboardID));
     }
 
-    public void addDrawableFromServer(int id, Drawable drawable) {
-        serverDrawables.put(id, drawable);
+    /**
+     * Adds a Drawable to the collection of Drawables to render, in the correct position.
+     * 
+     * @param index
+     *            the index
+     * @param drawable
+     *            a Drawable
+     */
+    public void addDrawableFromServer(int index, Drawable drawable) {
+        serverDrawables.put(index, drawable);
     }
 }
