@@ -56,7 +56,6 @@ public class TestUtil {
     public static String nextNonEmptyLine(BufferedReader in) throws IOException {
         while (true) {
             String ret = in.readLine();
-            System.out.println(ret);
             if (ret == null || !ret.equals(""))
                 return ret;
         }
