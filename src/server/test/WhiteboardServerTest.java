@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import junit.framework.TestCase;
+import message.DeleteStrokeMessage;
 import message.FromServerStrokeMessage;
 import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
@@ -24,13 +25,18 @@ import org.junit.Test;
 import drawable.DrawableSegment;
 
 /**
+ * WhiteboardServer test, "the most complete test". This test should ensure the
+ * functionality of multiple classes (WhiteboardServer, CurrentUsers,
+ * ConnectedUser, User)
+ * 
+ * 
+ * 
  * @category no_didit
  * 
  */
 public class WhiteboardServerTest extends TestCase {
 
     /**
-     * WhiteboardServer test, "the most complete test"
      * 
      * @throws IOException
      * @throws InterruptedException
@@ -63,7 +69,23 @@ public class WhiteboardServerTest extends TestCase {
                     wb);
             out.println(stroke.toJSON().toJSONString());
             String strokeResponse = TestUtil.nextNonEmptyLine(in);
-            assertEquals(stroke, FromServerStrokeMessage.STATIC.fromJSON(strokeResponse));
+            StrokeMessage strokeResponseMessage = FromServerStrokeMessage.STATIC.fromJSON(strokeResponse);
+            assertEquals(stroke, strokeResponseMessage);
+            assertEquals(DeleteStrokeMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)),
+                    strokeResponseMessage.getDeleteMessage());
+
+            String switchBoard = new SwitchWhiteboardMessage("A").toJSON().toJSONString();
+            out.println(switchBoard);
+            assertEquals(SwitchWhiteboardMessage.STATIC.fromJSON(TestUtil.nextNonEmptyLine(in)),
+                    new SwitchWhiteboardMessage("A"));
+            assertEquals(new UserListMessage("A", new LinkedList<String>(Arrays.asList(new String[] { "fred" })))
+                    .toJSON().toJSONString(), TestUtil.nextNonEmptyLine(in));
+
+            String returnToBoard = new SwitchWhiteboardMessage(wb).toJSON().toJSONString();
+            out.println(returnToBoard);
+
+            assertEquals(TestUtil.nextNonEmptyLine(in), new SwitchWhiteboardMessage(wb).toJSON().toJSONString());
+
             sock.close();
         } catch (SocketTimeoutException e) {
             throw new RuntimeException(e);
