@@ -68,6 +68,22 @@ public class DrawingToolbar extends JToolBar {
             }
         });
         this.add(changeUsernameButton);
+
+        JButton switchWhiteboardButton = new JButton("Switch whiteboard...");
+        switchWhiteboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String whiteboardID = JOptionPane.showInputDialog(DrawingToolbar.this,
+                        "Switch to whiteboard: (leave blank for a new randomly-named board)",
+                        DrawingToolbar.this.model.whiteboard == null ? ""
+                                : DrawingToolbar.this.model.whiteboard.whiteboardID);
+                if (whiteboardID == null)
+                    return;
+                whiteboardID = WhiteboardClientModel.sanitizeString(whiteboardID);
+                DrawingToolbar.this.model.switchWhiteboard(whiteboardID);
+            }
+        });
+        this.add(switchWhiteboardButton);
     }
 
     private class ToolSelectionButton extends JRadioButton {

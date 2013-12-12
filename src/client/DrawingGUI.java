@@ -50,8 +50,6 @@ public class DrawingGUI {
 
         toolbar = new DrawingToolbar(model);
         frame.add(toolbar, BorderLayout.PAGE_START);
-        userList = new JLabel("Currently connected users: XXXXXXXXXXXXXXXXXXXXXX");
-        frame.add(userList, BorderLayout.PAGE_END);
 
         // to make the window the right size
         addCanvas();
@@ -161,10 +159,15 @@ public class DrawingGUI {
     private void addCanvas() {
         canvas = new Canvas(model);
         frame.add(canvas, BorderLayout.CENTER);
+        userList = new JLabel();
+        setCurrentUsers(Collections.EMPTY_LIST);
+        frame.add(userList, BorderLayout.PAGE_END);
     }
 
     private void removeCanvas() {
         frame.remove(canvas);
         canvas = null;
+        frame.remove(userList);
+        userList = null;
     }
 }

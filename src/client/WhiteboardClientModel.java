@@ -5,7 +5,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import message.JSONable;
+import message.NewWhiteboardMessage;
 import message.SetUsernameMessage;
+import message.SwitchWhiteboardMessage;
 import client.tools.DrawingTool;
 import client.tools.Pen;
 
@@ -71,5 +73,16 @@ public class WhiteboardClientModel {
     public void setUsername(String username) {
         this.username = username;
         sendMessage(new SetUsernameMessage(username));
+    }
+
+    public void switchWhiteboard(String whiteboardID) {
+        if (whiteboardID.equals(""))
+            sendMessage(new NewWhiteboardMessage());
+        else
+            sendMessage(new SwitchWhiteboardMessage(whiteboardID));
+    }
+
+    public static String sanitizeString(String s) {
+        return s.replaceAll("[^a-zA-Z0-9 '!?.,\\-\\(\\)]", "");
     }
 }
