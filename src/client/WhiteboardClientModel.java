@@ -22,7 +22,7 @@ public class WhiteboardClientModel {
     private int brushWidth = 5;
     private DrawingTool tool;
 
-    public BlockingQueue<String> outgoing = new LinkedBlockingQueue<>();
+    public final BlockingQueue<String> outgoing = new LinkedBlockingQueue<>();
 
     public Whiteboard whiteboard;
     private String username;
