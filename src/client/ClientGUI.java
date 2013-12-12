@@ -18,7 +18,6 @@ public class ClientGUI {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -30,15 +29,18 @@ public class ClientGUI {
     }
 
     /**
-     * Open a whiteboard. Precondition: ip and port must be valid IP addresses
+     * Open a whiteboard.
+     * 
+     * Precondition: ip and port must be valid IP addresses
      * and port numbers, respectively.
      * 
      * @param ip
+     *            a String representing an IP address
      * @param port
+     *            a String representing a port number
      */
     public void connect(String ip, String port) {
         try {
-            // TODO consider catching input errors here
             Socket socket = new Socket(ip, Integer.valueOf(port));
             new DrawingGUI(this, socket);
         } catch (IOException e) {

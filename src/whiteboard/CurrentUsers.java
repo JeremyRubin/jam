@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
  */
 public class CurrentUsers implements JSONable<UserListMessage> {
     // list of all currently logged in users
-    // FIXME this seems really bad
     private final List<User> users;
 
     // whiteboardID corresponding to the whiteboard CurrentUsers is connected
